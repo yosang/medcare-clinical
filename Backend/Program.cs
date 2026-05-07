@@ -1,6 +1,10 @@
+using Extensions; 
+
+
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddControllers();
+builder.Services.AddDatabaseConfig(builder.Configuration)
+                .AddControllers();
 
 var app = builder.Build();
 
