@@ -21,6 +21,20 @@ public class DatabaseContext : DbContext
     {
         base.OnModelCreating(modelBuilder);
 
+        // Constraints
+        modelBuilder.Entity<City>().HasIndex(c => c.Name).IsUnique();
+        
+        modelBuilder.Entity<Clinic>().HasIndex(c => c.Name).IsUnique();
+
+        modelBuilder.Entity<Specialty>().HasIndex(c => c.Name).IsUnique();
+        modelBuilder.Entity<Doctor>().HasIndex(c => new { c.FirstName, c.LastName}).IsUnique();
+
+        modelBuilder.Entity<Category>().HasIndex(c => c.Name).IsUnique();
+        modelBuilder.Entity<Status>().HasIndex(c => c.Name).IsUnique();
+        modelBuilder.Entity<Appointment>().HasIndex(c => c.AppointmentDate).IsUnique();
+
+        modelBuilder.Entity<Patient>().HasIndex(c => new { c.FirstName, c.LastName}).IsUnique();
+
         // Relationships
         modelBuilder.Entity<Clinic>()
                     .HasOne<City>(ci => ci.City)
