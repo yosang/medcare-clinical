@@ -48,4 +48,21 @@ public static class SeedsData
         new Status { Id = 2, Name = "Completed"},
         new Status { Id = 3, Name = "Cancelled"}
     };
+
+    // Mixed list of patients, registered and guests
+    public static List<Patient> Patients { get; } = new List<Patient>()
+    {
+        new Patient { Id = 1, FirstName = "Mark", LastName = "Johanson", Phone = "24242424", Email = "mark.j@mail.com", DateOfBirth = new DateOnly(1992, 05, 24), NationalIdentityNumber = 524231231, PasswordHash = "FAKEHASH", IsRegistered = true},
+        new Patient { Id = 2, FirstName = "Tobias", LastName = "Karevik", Phone = "555555", Email = "tobben@mail.com", DateOfBirth = new DateOnly(1991, 02, 13), NationalIdentityNumber = 66666666, PasswordHash = "FAKEHASH", IsRegistered = true},
+        new Patient { Id = 3, FirstName = "Daniela", LastName = "Thomson", Phone = "333222333", Email = "danny@mail.com", DateOfBirth = new DateOnly(1982, 08, 04), NationalIdentityNumber = 878787878, PasswordHash = "FAKEHASH", IsRegistered = true},
+        new Patient { Id = 4, FirstName = "Carlos", LastName = "Rodriguez", Phone = "777788877", Email = "carlos@mail.com", DateOfBirth = new DateOnly(1986, 10, 07), NationalIdentityNumber = null, PasswordHash = null, IsRegistered = false},
+        new Patient { Id = 5, FirstName = "Jan", LastName = "Dan", Phone = "222777722", Email = "jandan@mail.com", DateOfBirth = new DateOnly(1984, 03, 22), NationalIdentityNumber = null, PasswordHash = null, IsRegistered = false}
+    };
+
+    public static List<Appointment> Appointments { get; } = new List<Appointment>()
+    {
+        new Appointment { Id = 1, AppointmentDate = new DateTime(2026, 05, 24, 08, 15, 0), Note = null, PatientId = 1, DoctorId = 1, ClinicId = 1, CategoryId = 1, StatusId = 1 },
+        new Appointment { Id = 2, AppointmentDate = new DateTime(2026, 05, 24, 10, 30, 0), Note = null, PatientId = 2, DoctorId = 1, ClinicId = 1, CategoryId = 1, StatusId = 1 },
+        new Appointment { Id = 3, AppointmentDate = new DateTime(2026, 05, 24, 12, 30, 0), Note = null, PatientId = 3, DoctorId = 1, ClinicId = 1, CategoryId = 1, StatusId = 1 }
+    };
 }

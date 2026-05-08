@@ -73,5 +73,8 @@ public class DatabaseContext : DbContext
 
         modelBuilder.Entity<Category>().HasData(SeedsData.Categories);
         modelBuilder.Entity<Status>().HasData(SeedsData.Statuses);
+
+        modelBuilder.Entity<Patient>().HasData(SeedsData.Patients);
+        modelBuilder.Entity<Appointment>().HasData(SeedsData.Appointments);
     }
 }
