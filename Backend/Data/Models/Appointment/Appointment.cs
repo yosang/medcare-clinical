@@ -4,7 +4,7 @@ public class Appointment
 {
     // Primary key
     public int Id { get; set; }
-    public required DateTime AppointmentDate { get; set;}
+    public required DateTime AppointmentDate { get; set; }
     public string? Note { get; set; }
 
     // Foreign Keys
@@ -15,9 +15,9 @@ public class Appointment
     public int StatusId { get; set; }
 
     // Nav props
-    public required Patient Patient { get; set; }
-    public required Doctor Doctor { get; set; }
-    public required Clinic Clinic { get; set; }
-    public required Category Category { get; set; }
-    public required Status Status { get; set; }
+    public Patient? Patient { get; set; }
+    public Doctor? Doctor { get; set; }
+    public Clinic? Clinic { get; set; }
+    public Category? Category { get; set; }
+    public Status? Status { get; set; }
 }

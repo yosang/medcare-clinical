@@ -1,26 +1,27 @@
 using Microsoft.EntityFrameworkCore;
 using Models;
-using Mysqlx.Crud;
+using Seeds;
 
 namespace Context;
 
-public class DatabaseContext: DbContext
+public class DatabaseContext : DbContext
 {
     public DbSet<City> Cities { get; set; }
     public DbSet<Clinic> Clinics { get; set; }
     public DbSet<Specialty> Specialties { get; set; }
-    public DbSet<Doctor> Doctors { get; set;}
+    public DbSet<Doctor> Doctors { get; set; }
     public DbSet<Category> Categories { get; set; }
     public DbSet<Status> Statuses { get; set; }
-    public DbSet<Appointment> Appointments { get; set;}
+    public DbSet<Appointment> Appointments { get; set; }
     public DbSet<Patient> Patients { get; set; }
 
-    public DatabaseContext(DbContextOptions<DatabaseContext> options) : base(options) {}
+    public DatabaseContext(DbContextOptions<DatabaseContext> options) : base(options) { }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
 
+        // Relationships
         modelBuilder.Entity<Clinic>()
                     .HasOne<City>(ci => ci.City)
                     .WithMany(cli => cli.Clinics)
@@ -62,5 +63,10 @@ public class DatabaseContext: DbContext
                     .WithMany(ap => ap.Appointments)
                     .HasForeignKey(ap => ap.PatientId)
                     .OnDelete(DeleteBehavior.Restrict);
+
+        // Seeds
+        modelBuilder.Entity<City>().HasData(SeedsData.Cities);
+        modelBuilder.Entity<Clinic>().HasData(SeedsData.Clinics);
+        modelBuilder.Entity<Specialty>().HasData(SeedsData.Specialties);
     }
 }

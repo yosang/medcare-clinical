@@ -3,6 +3,7 @@ using System;
 using Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace booking_rest_api.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20260508104916_SeedClinics")]
+    partial class SeedClinics
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -254,28 +257,6 @@ namespace booking_rest_api.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Specialties");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Name = "General Health"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Name = "Cardiologist"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Name = "Dermatologist"
-                        },
-                        new
-                        {
-                            Id = 4,
-                            Name = "Peditrician"
-                        });
                 });
 
             modelBuilder.Entity("Models.Status", b =>

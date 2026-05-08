@@ -3,6 +3,7 @@ using System;
 using Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace booking_rest_api.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20260508103354_SeedCities")]
+    partial class SeedCities
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -138,38 +141,6 @@ namespace booking_rest_api.Migrations
                     b.HasIndex("CityId");
 
                     b.ToTable("Clinics");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Address = "Karl Johans gate 8",
-                            CityId = 1,
-                            Email = "oslo@klinikken.no",
-                            Name = "Oslo Sentrum Klinikk",
-                            Phone = "222522222",
-                            PostalCode = "2232"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Address = "Maruksens gate 32",
-                            CityId = 2,
-                            Email = "stavanger@klinikken.no",
-                            Name = "Stavanger Medisinske",
-                            Phone = "522223233",
-                            PostalCode = "5223"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Address = "Brygga 9",
-                            CityId = 3,
-                            Email = "bergen@klinikken.no",
-                            Name = "Bergen Bryggen Klinikk",
-                            Phone = "22525252",
-                            PostalCode = "3232"
-                        });
                 });
 
             modelBuilder.Entity("Models.Doctor", b =>
@@ -254,28 +225,6 @@ namespace booking_rest_api.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Specialties");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Name = "General Health"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Name = "Cardiologist"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Name = "Dermatologist"
-                        },
-                        new
-                        {
-                            Id = 4,
-                            Name = "Peditrician"
-                        });
                 });
 
             modelBuilder.Entity("Models.Status", b =>

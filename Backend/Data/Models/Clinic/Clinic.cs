@@ -1,10 +1,10 @@
 namespace Models;
 
 public class Clinic
-{   
+{
     // Primary Key
     public int Id { get; set; }
-    
+
     // Attributes
     public required string Name { get; set; }
     public string? Phone { get; set; }
@@ -16,6 +16,6 @@ public class Clinic
     public int CityId { get; set; }
 
     // Navigation props
-    public required City City { get; set; } 
-    public IEnumerable<Doctor>? Doctors { get; set; }
+    public City? City { get; set; }
+    public IEnumerable<Doctor>? Doctors { get; set; }
 }
