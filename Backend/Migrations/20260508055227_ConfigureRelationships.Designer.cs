@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace booking_rest_api.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20260508053725_NullablePatientAttributes")]
-    partial class NullablePatientAttributes
+    [Migration("20260508055227_ConfigureRelationships")]
+    partial class ConfigureRelationships
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -139,9 +139,11 @@ namespace booking_rest_api.Migrations
                         .HasColumnType("longtext");
 
                     b.Property<string>("FirstName")
+                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<string>("LastName")
+                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<int>("SpecialtyId")
