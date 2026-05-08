@@ -17,21 +17,20 @@ public class CityService
     {
 
         var cities = await _ctx.Cities.AsNoTracking()
-                            .Include(cli => cli.Clinics)
-                            .Select(city => new CityWithDetailsDTO
-                            {
-                                Id = city.Id,
-                                Name = city.Name,
-                                Clinics = city.Clinics!.Select(clinic => new ClinicDTO
-                                {
-                                    Id = clinic.Id,
-                                    Name = clinic.Name,
-                                    Phone = clinic.Phone,
-                                    Email = clinic.Email,
-                                    Address = clinic.Address,
-                                    PostalCode = clinic.PostalCode,
-                                })
-                            }).ToListAsync();
+                                      .Select(city => new CityWithDetailsDTO
+                                      {
+                                          Id = city.Id,
+                                          Name = city.Name,
+                                          Clinics = city.Clinics!.Select(clinic => new ClinicDTO
+                                          {
+                                              Id = clinic.Id,
+                                              Name = clinic.Name,
+                                              Phone = clinic.Phone,
+                                              Email = clinic.Email,
+                                              Address = clinic.Address,
+                                              PostalCode = clinic.PostalCode,
+                                          })
+                                      }).ToListAsync();
 
         return cities;
     }
@@ -40,7 +39,6 @@ public class CityService
     {
         var city = await _ctx.Cities.AsNoTracking()
                                     .Where(city => city.Id == id)
-                                    .Include(city => city.Clinics)
                                     .Select(city => new CityWithDetailsDTO
                                     {
                                         Id = city.Id,
@@ -84,19 +82,8 @@ public class CityService
 
         _ctx.Cities.Add(newCity);
 
-        try
-        {
-            await _ctx.SaveChangesAsync();
-            return newCity;
-        } catch(DbUpdateException ex)
-        {
-            Console.WriteLine("Database operation failed with message: " + ex.Message);
-            throw;
-        } catch(Exception ex)
-        {
-            Console.WriteLine("Something went wrong: " + ex.Message);
-            throw;
-        }
+        await _ctx.SaveChangesAsync();
+        return newCity;
     }
 
     public async Task<CityDTO?> UpdateCity(int id, UpdateCityDTO city)
@@ -106,23 +93,13 @@ public class CityService
 
         existingCity.Name = city.Name;
 
-        try
+        await _ctx.SaveChangesAsync();
+
+        return new CityDTO
         {
-            await _ctx.SaveChangesAsync();
-            return new CityDTO
-            {
-                Id = existingCity.Id,
-                Name = existingCity.Name
-            };
-         } catch(DbUpdateException ex)
-        {
-            Console.WriteLine("Database operation failed with message: " + ex.Message);
-            throw;
-        } catch(Exception ex)
-        {
-            Console.WriteLine("Something went wrong: " + ex.Message);
-            throw;
-        }
+            Id = existingCity.Id,
+            Name = existingCity.Name
+        };
     }
 
     public async Task<bool> DeleteCity(int id)
@@ -132,18 +109,8 @@ public class CityService
 
         _ctx.Remove(city);
 
-        try
-        {
-            await _ctx.SaveChangesAsync();
-            return true;
-         } catch(DbUpdateException ex)
-        {
-            Console.WriteLine("Database operation failed with message: " + ex.Message);
-            throw;
-        } catch(Exception ex)
-        {
-            Console.WriteLine("Something went wrong: " + ex.Message);
-            throw;
-        }
+        await _ctx.SaveChangesAsync();
+        
+        return true;
     }
 }
