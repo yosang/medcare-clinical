@@ -8,6 +8,7 @@ builder.Services.AddDatabaseConfig(builder.Configuration)
 
 var app = builder.Build();
 
+app.UseExceptionHandler("/error");
 app.MapControllers();
 
 app.MapGet("/", () => "Hello World!");

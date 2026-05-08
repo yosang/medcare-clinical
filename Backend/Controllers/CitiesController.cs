@@ -8,7 +8,7 @@ using Services;
 public class CitiesController : ControllerBase
 {
 
-    public CityService _service { get; set; }
+    public readonly CityService _service;
 
     public CitiesController(CityService cityService)
     {
@@ -56,14 +56,20 @@ public class CitiesController : ControllerBase
     }
 
     [HttpPut("{id}")]
-    public async Task<ActionResult<string>> Update(int id)
+    public async Task<ActionResult> Update(int id, UpdateCityDTO city)
     {
-        return $"City with id {id} updated";
+        var updated = await _service.UpdateCity(id, city);
+        if(updated == null) return NotFound();
+
+        return NoContent();
     }
 
     [HttpDelete("{id}")]
-    public async Task<ActionResult<string>> Delete(int id)
+    public async Task<ActionResult> Delete(int id)
     {
-        return $"City with id {id} deleted";
+        var deleted = await _service.DeleteCity(id);
+        if(!deleted) return NotFound();
+
+        return NoContent();
     }
 }

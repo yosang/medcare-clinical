@@ -16,3 +16,8 @@ public class CityWithDetailsDTO
 public class CreateCityDTO {
     public string Name { get; set; } = null!;
 }
+
+public class UpdateCityDTO
+{
+    public string Name { get; set;} = null!;
+}

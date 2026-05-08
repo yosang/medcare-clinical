@@ -6,7 +6,7 @@ using Models;
 namespace Services;
 public class CityService
 {
-    public DatabaseContext _ctx { get; set; }
+    public readonly DatabaseContext _ctx;
 
     public CityService(DatabaseContext context)
     {
@@ -89,6 +89,54 @@ public class CityService
             await _ctx.SaveChangesAsync();
             return newCity;
         } catch(DbUpdateException ex)
+        {
+            Console.WriteLine("Database operation failed with message: " + ex.Message);
+            throw;
+        } catch(Exception ex)
+        {
+            Console.WriteLine("Something went wrong: " + ex.Message);
+            throw;
+        }
+    }
+
+    public async Task<CityDTO?> UpdateCity(int id, UpdateCityDTO city)
+    {
+        var existingCity = await _ctx.Cities.FindAsync(id);
+        if(existingCity == null) return null;
+
+        existingCity.Name = city.Name;
+
+        try
+        {
+            await _ctx.SaveChangesAsync();
+            return new CityDTO
+            {
+                Id = existingCity.Id,
+                Name = existingCity.Name
+            };
+         } catch(DbUpdateException ex)
+        {
+            Console.WriteLine("Database operation failed with message: " + ex.Message);
+            throw;
+        } catch(Exception ex)
+        {
+            Console.WriteLine("Something went wrong: " + ex.Message);
+            throw;
+        }
+    }
+
+    public async Task<bool> DeleteCity(int id)
+    {
+        var city = await _ctx.Cities.FindAsync(id);
+        if(city == null) return false;
+
+        _ctx.Remove(city);
+
+        try
+        {
+            await _ctx.SaveChangesAsync();
+            return true;
+         } catch(DbUpdateException ex)
         {
             Console.WriteLine("Database operation failed with message: " + ex.Message);
             throw;
