@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Models;
+using Mysqlx.Crud;
 
 namespace Context;
 
@@ -21,9 +22,45 @@ public class DatabaseContext: DbContext
         base.OnModelCreating(modelBuilder);
 
         modelBuilder.Entity<Clinic>()
-                    .HasOne<City>(ci => ci.City) // A clinic belongs to one city 
-                    .WithMany(cli => cli.Clinics) // while cities can have many clinics
-                    .HasForeignKey(ci => ci.CityId) // The foreign key referencing to cities on the clinic model
-                    .OnDelete(DeleteBehavior.Restrict); // We want to restrict records in the City table from being deleted, if a parent table (Clinic) has a reference to it
+                    .HasOne<City>(ci => ci.City)
+                    .WithMany(cli => cli.Clinics)
+                    .HasForeignKey(ci => ci.CityId)
+                    .OnDelete(DeleteBehavior.Restrict);
+
+        modelBuilder.Entity<Doctor>()
+                    .HasOne<Specialty>(sp => sp.Specialty)
+                    .WithMany(d => d.Doctors)
+                    .HasForeignKey(d => d.SpecialtyId)
+                    .OnDelete(DeleteBehavior.Restrict);
+
+        modelBuilder.Entity<Doctor>()
+                    .HasOne<Clinic>(ci => ci.Clinic)
+                    .WithMany(d => d.Doctors)
+                    .HasForeignKey(ci => ci.ClinicId)
+                    .OnDelete(DeleteBehavior.Restrict);
+
+        modelBuilder.Entity<Appointment>()
+                    .HasOne<Category>(ca => ca.Category)
+                    .WithMany(ap => ap.Appointments)
+                    .HasForeignKey(ca => ca.CategoryId)
+                    .OnDelete(DeleteBehavior.Restrict);
+
+        modelBuilder.Entity<Appointment>()
+                    .HasOne<Status>(st => st.Status)
+                    .WithMany(ap => ap.Appointments)
+                    .HasForeignKey(st => st.StatusId)
+                    .OnDelete(DeleteBehavior.Restrict);
+
+        modelBuilder.Entity<Appointment>()
+                    .HasOne<Doctor>(p => p.Doctor)
+                    .WithMany(ap => ap.Appointments)
+                    .HasForeignKey(ap => ap.DoctorId)
+                    .OnDelete(DeleteBehavior.Restrict);
+
+        modelBuilder.Entity<Appointment>()
+                    .HasOne<Patient>(p => p.Patient)
+                    .WithMany(ap => ap.Appointments)
+                    .HasForeignKey(ap => ap.PatientId)
+                    .OnDelete(DeleteBehavior.Restrict);
     }
 }

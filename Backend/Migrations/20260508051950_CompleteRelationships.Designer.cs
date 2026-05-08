@@ -3,6 +3,7 @@ using System;
 using Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace booking_rest_api.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20260508051950_CompleteRelationships")]
+    partial class CompleteRelationships
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -146,8 +149,6 @@ namespace booking_rest_api.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ClinicId");
-
                     b.HasIndex("SpecialtyId");
 
                     b.ToTable("Doctors");
@@ -159,7 +160,7 @@ namespace booking_rest_api.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<DateOnly?>("DateOfBirth")
+                    b.Property<DateOnly>("DateOfBirth")
                         .HasColumnType("date");
 
                     b.Property<string>("Email")
@@ -176,7 +177,7 @@ namespace booking_rest_api.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<int?>("NationalIdentityNumber")
+                    b.Property<int>("NationalIdentityNumber")
                         .HasColumnType("int");
 
                     b.Property<string>("PasswordHash")
@@ -276,19 +277,11 @@ namespace booking_rest_api.Migrations
 
             modelBuilder.Entity("Models.Doctor", b =>
                 {
-                    b.HasOne("Models.Clinic", "Clinic")
-                        .WithMany("Doctors")
-                        .HasForeignKey("ClinicId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
                     b.HasOne("Models.Specialty", "Specialty")
                         .WithMany("Doctors")
                         .HasForeignKey("SpecialtyId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
-
-                    b.Navigation("Clinic");
 
                     b.Navigation("Specialty");
                 });
@@ -301,11 +294,6 @@ namespace booking_rest_api.Migrations
             modelBuilder.Entity("Models.City", b =>
                 {
                     b.Navigation("Clinics");
-                });
-
-            modelBuilder.Entity("Models.Clinic", b =>
-                {
-                    b.Navigation("Doctors");
                 });
 
             modelBuilder.Entity("Models.Doctor", b =>

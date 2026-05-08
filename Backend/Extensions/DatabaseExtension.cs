@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Extensions;
 
-public static class DatabaseConfig
+public static class DatabaseExtension
 {
     public static IServiceCollection AddDatabaseConfig(this IServiceCollection service, IConfiguration config)
     {

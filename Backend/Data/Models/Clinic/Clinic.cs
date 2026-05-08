@@ -17,4 +17,5 @@ public class Clinic
 
     // Navigation props
     public required City City { get; set; } 
+    public IEnumerable<Doctor>? Doctors { get; set; }
 }
