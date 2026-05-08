@@ -67,6 +67,11 @@ public class DatabaseContext : DbContext
         // Seeds
         modelBuilder.Entity<City>().HasData(SeedsData.Cities);
         modelBuilder.Entity<Clinic>().HasData(SeedsData.Clinics);
+
         modelBuilder.Entity<Specialty>().HasData(SeedsData.Specialties);
+        modelBuilder.Entity<Doctor>().HasData(SeedsData.Doctors);
+
+        modelBuilder.Entity<Category>().HasData(SeedsData.Categories);
+        modelBuilder.Entity<Status>().HasData(SeedsData.Statuses);
     }
 }

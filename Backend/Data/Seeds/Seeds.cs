@@ -25,4 +25,27 @@ public static class SeedsData
         new Specialty { Id = 3, Name = "Dermatologist" },
         new Specialty { Id = 4, Name = "Peditrician" }
     };
+
+    public static List<Doctor> Doctors { get; } = new List<Doctor>()
+    {
+        new Doctor { Id = 1, FirstName = "Mathias", LastName = "Bekkemellem", Email = "mb@klinikken.no", SpecialtyId = 1, ClinicId = 1},
+        new Doctor { Id = 2, FirstName = "Carina", LastName = "Johansen", Email = "cj@klinikken.no", SpecialtyId = 2, ClinicId = 2},
+        new Doctor { Id = 3, FirstName = "John", LastName = "Carlsen", Email = "jc@klinikken.no", SpecialtyId = 1, ClinicId = 3},
+    };
+
+    public static List<Category> Categories { get; } = new List<Category>()
+    {
+        new Category { Id = 1, Name = "General Health Consultation"},
+        new Category { Id = 2, Name = "Follow-up Consultation"},
+        new Category { Id = 3, Name = "Vaccination"},
+        new Category { Id = 4, Name = "Medicine Prescription"},
+        new Category { Id = 5, Name = "Emergency"}
+    };
+
+    public static List<Status> Statuses { get; } = new List<Status>()
+    {
+        new Status { Id = 1, Name = "Pending"},
+        new Status { Id = 2, Name = "Completed"},
+        new Status { Id = 3, Name = "Cancelled"}
+    };
 }
