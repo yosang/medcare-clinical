@@ -7,7 +7,6 @@ using Services;
 [Produces("application/json")]
 public class CitiesController : ControllerBase
 {
-
     public readonly CityService _service;
 
     public CitiesController(CityService cityService)

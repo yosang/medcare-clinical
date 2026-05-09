@@ -1,0 +1,1026 @@
+{
+  "info": {
+    "_postman_id": "a792bacf-ed3b-4e9e-ad0f-a1fac5afcfc4",
+    "name": "Medical Booking API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "38768954"
+  },
+  "item": [
+    {
+      "name": "Clinics",
+      "item": [
+        {
+          "name": "Cities",
+          "item": [
+            {
+              "name": "GET - All",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:5067/api/cities",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "5067",
+                  "path": [
+                    "api",
+                    "cities"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "GET - Single",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:5067/api/cities/2",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "5067",
+                  "path": [
+                    "api",
+                    "cities",
+                    "2"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "GET - Clinics",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:5067/api/cities/2/clinics",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "5067",
+                  "path": [
+                    "api",
+                    "cities",
+                    "2",
+                    "clinics"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "POST - Create",
+              "request": {
+                "method": "POST",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:5067/api/cities",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "5067",
+                  "path": [
+                    "api",
+                    "cities"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "PUT- Update",
+              "request": {
+                "method": "PUT",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:5067/api/cities/2",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "5067",
+                  "path": [
+                    "api",
+                    "cities",
+                    "2"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "DELETE - Delete",
+              "request": {
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:5067/api/cities/1",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "5067",
+                  "path": [
+                    "api",
+                    "cities",
+                    "1"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "Clinics",
+          "item": [
+            {
+              "name": "GET - All",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:5067/api/clinics",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "5067",
+                  "path": [
+                    "api",
+                    "clinics"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "GET - Single",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:5067/api/clinics/2",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "5067",
+                  "path": [
+                    "api",
+                    "clinics",
+                    "2"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "GET - Doctors",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:5067/api/clinics/2/doctors",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "5067",
+                  "path": [
+                    "api",
+                    "clinics",
+                    "2",
+                    "doctors"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "POST - Create",
+              "request": {
+                "method": "POST",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:5067/api/clinics",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "5067",
+                  "path": [
+                    "api",
+                    "clinics"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "PUT- Update",
+              "request": {
+                "method": "PUT",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:5067/api/clinics/2",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "5067",
+                  "path": [
+                    "api",
+                    "clinics",
+                    "2"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "DELETE - Delete",
+              "request": {
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:5067/api/clinics/1",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "5067",
+                  "path": [
+                    "api",
+                    "clinics",
+                    "1"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Doctors",
+      "item": [
+        {
+          "name": "Specialty",
+          "item": [
+            {
+              "name": "GET - All",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:5067/api/specialties",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "5067",
+                  "path": [
+                    "api",
+                    "specialties"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "GET - Single",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:5067/api/specialties/2",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "5067",
+                  "path": [
+                    "api",
+                    "specialties",
+                    "2"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "GET - Doctors",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:5067/api/specialties/2/doctors",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "5067",
+                  "path": [
+                    "api",
+                    "specialties",
+                    "2",
+                    "doctors"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "POST - Create",
+              "request": {
+                "method": "POST",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:5067/api/specialties",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "5067",
+                  "path": [
+                    "api",
+                    "specialties"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "PUT- Update",
+              "request": {
+                "method": "PUT",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:5067/api/specialties/2",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "5067",
+                  "path": [
+                    "api",
+                    "specialties",
+                    "2"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "DELETE - Delete",
+              "request": {
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:5067/api/specialties/1",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "5067",
+                  "path": [
+                    "api",
+                    "specialties",
+                    "1"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "Doctors",
+          "item": [
+            {
+              "name": "GET - All",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:5067/api/doctors",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "5067",
+                  "path": [
+                    "api",
+                    "doctors"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "GET - Single",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:5067/api/doctors/2",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "5067",
+                  "path": [
+                    "api",
+                    "doctors",
+                    "2"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "GET - Doctors",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:5067/api/doctors/2/appointments",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "5067",
+                  "path": [
+                    "api",
+                    "doctors",
+                    "2",
+                    "appointments"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "POST - Create",
+              "request": {
+                "method": "POST",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:5067/api/doctors",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "5067",
+                  "path": [
+                    "api",
+                    "doctors"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "PUT- Update Copy",
+              "request": {
+                "method": "PUT",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:5067/api/doctors/2",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "5067",
+                  "path": [
+                    "api",
+                    "doctors",
+                    "2"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "DELETE - Delete Copy",
+              "request": {
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:5067/api/doctors/1",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "5067",
+                  "path": [
+                    "api",
+                    "doctors",
+                    "1"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Appointments",
+      "item": [
+        {
+          "name": "Category",
+          "item": [
+            {
+              "name": "GET - All",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:5067/api/categories",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "5067",
+                  "path": [
+                    "api",
+                    "categories"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "GET - Single",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:5067/api/categories/2",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "5067",
+                  "path": [
+                    "api",
+                    "categories",
+                    "2"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "GET - Appointments",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:5067/api/categories/2/appointments",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "5067",
+                  "path": [
+                    "api",
+                    "categories",
+                    "2",
+                    "appointments"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "POST - Create",
+              "request": {
+                "method": "POST",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:5067/api/categories",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "5067",
+                  "path": [
+                    "api",
+                    "categories"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "PUT- Update",
+              "request": {
+                "method": "PUT",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:5067/api/categories/2",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "5067",
+                  "path": [
+                    "api",
+                    "categories",
+                    "2"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "DELETE - Delete",
+              "request": {
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:5067/api/categories/1",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "5067",
+                  "path": [
+                    "api",
+                    "categories",
+                    "1"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "Status",
+          "item": [
+            {
+              "name": "GET - All",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:5067/api/status",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "5067",
+                  "path": [
+                    "api",
+                    "status"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "GET - Single",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:5067/api/status/2",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "5067",
+                  "path": [
+                    "api",
+                    "status",
+                    "2"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "GET - Appointments",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:5067/api/status/2/appointments",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "5067",
+                  "path": [
+                    "api",
+                    "status",
+                    "2",
+                    "appointments"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "POST - Create",
+              "request": {
+                "method": "POST",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:5067/api/status",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "5067",
+                  "path": [
+                    "api",
+                    "status"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "PUT- Update",
+              "request": {
+                "method": "PUT",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:5067/api/status/2",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "5067",
+                  "path": [
+                    "api",
+                    "status",
+                    "2"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "DELETE - Delete",
+              "request": {
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:5067/api/status/1",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "5067",
+                  "path": [
+                    "api",
+                    "status",
+                    "1"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "Appointments",
+          "item": [
+            {
+              "name": "GET - All",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:5067/api/appointments",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "5067",
+                  "path": [
+                    "api",
+                    "appointments"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "GET - Single",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:5067/api/appointments/2",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "5067",
+                  "path": [
+                    "api",
+                    "appointments",
+                    "2"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "POST - Create",
+              "request": {
+                "method": "POST",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:5067/api/appointments",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "5067",
+                  "path": [
+                    "api",
+                    "appointments"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "PUT- Update",
+              "request": {
+                "method": "PUT",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:5067/api/appointments/2",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "5067",
+                  "path": [
+                    "api",
+                    "appointments",
+                    "2"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "DELETE - Delete",
+              "request": {
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:5067/api/appointments/1",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "5067",
+                  "path": [
+                    "api",
+                    "appointments",
+                    "1"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Patients",
+      "item": [
+        {
+          "name": "Patients",
+          "item": [
+            {
+              "name": "GET - All",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:5067/api/patients",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "5067",
+                  "path": [
+                    "api",
+                    "patients"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "GET - Single",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:5067/api/patients/2",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "5067",
+                  "path": [
+                    "api",
+                    "patients",
+                    "2"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "POST - Create",
+              "request": {
+                "method": "POST",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:5067/api/patients",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "5067",
+                  "path": [
+                    "api",
+                    "patients"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "PUT- Update",
+              "request": {
+                "method": "PUT",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:5067/api/patients/2",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "5067",
+                  "path": [
+                    "api",
+                    "patients",
+                    "2"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "DELETE - Delete",
+              "request": {
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:5067/api/patients/1",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "5067",
+                  "path": [
+                    "api",
+                    "patients",
+                    "1"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -27,4 +27,40 @@ If you need help with any instructions for the course assignment, contact your t
 
 ### ENDPOINTS
 
+#### Cities
+- GET `api/cities` - Returns a list of cities.
+- GET `api/cities/:id` - Returns a single city.
+- GET `api/cities/:id/clinics` - Returns a list of clinics for city id.
+- POST `api/cities` - Creates a new city.
+- PUT `api/cities/:id` - Updates an existing city.
+- DELETE `api/cities/:id` - Deletes an existing city.
+
 ### REFERENCES
+
+#### Project Requirements
+- Noroff LMS - Exam Project 2 Assignment Brief (Moodle) - Noroff Portal
+- [Noroff Backend Development Course Materials](https://learning.noroff.no) - Noroff Portal
+
+#### Documentation 
+- [Database ER-Diagram](./Backend/Docs//ER-Diagram.pdf) - Created with draw.io
+- [API Documentation](https://swagger.io/) - Swagger
+
+#### Official resources
+- [ASP.NET Core Web API Documentation](https://learn.microsoft.com/en-us/aspnet/core/web-api/) - Microsoft Docs
+- [Entity Framework Core Documentation](https://learn.microsoft.com/en-us/ef/core/) - Microsoft Docs
+- [.NET Dependency Injection](https://learn.microsoft.com/en-us/dotnet/core/extensions/dependency-injection/overview) - Microsoft Docs
+- [.NET Service Registration](https://learn.microsoft.com/en-us/dotnet/core/extensions/dependency-injection/service-registration) - Microsoft Docs
+- [ASP.NET Core Error Handling](https://learn.microsoft.com/en-us/aspnet/core/fundamentals/error-handling?view=aspnetcore-10.0) - Microsoft 
+
+#### Tutorials and Learning resources
+- [Normalization](https://www.youtube.com/watch?v=ABwD8IYByfk) - YouTube tutorial
+- [Notes on Normalization](https://gist.github.com/yosang/1754a374cf3c52b89b10bbe99af9db78) - Github Gists
+- [REST API Design Rulebok](https://www.oreilly.com/library/view/rest-api-design/9781449317904/) - Physical book
+
+#### Tools and additional resources
+- [DBMS Online Tool for reverse engineering a SQL schema](https://dbdiagram.io/d) - dbdiagram.io
+- [Postman](https://www.postman.com/) - Postman for API testing (collection is provided in [Docs](./Backend/Docs/Medical%20Booking%20API.postman_collection.json))
+- [NuGet](https://www.nuget.org/) - .NET Package manager
+- [Project Management](https://linear.app/) - Linear (alternative to Jira)
+- [Version Control](https://github.com/) - Git + Github
+- [AI for sample seed generation and questions around specific assumptions and implementation feedback](https://grok.com/) - Grok
