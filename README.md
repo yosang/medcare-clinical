@@ -63,4 +63,5 @@ If you need help with any instructions for the course assignment, contact your t
 - [NuGet](https://www.nuget.org/) - .NET Package manager
 - [Project Management](https://linear.app/) - Linear (alternative to Jira)
 - [Version Control](https://github.com/) - Git + Github
+- [Notes on Feature branches workflow](https://gist.github.com/yosang/ff9fba77bc317562aa955b76a2c54c3a) - Github feature branches workflow
 - [AI for sample seed generation and questions around specific assumptions and implementation feedback](https://grok.com/) - Grok
