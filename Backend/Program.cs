@@ -5,6 +5,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddDatabaseConfig(builder.Configuration)
                 .AddServices()
+                .AddSwagger()
                 .AddExceptionHandler<GlobalExceptionHandler>()
                 .AddProblemDetails()
                 .AddControllers();
@@ -12,6 +13,7 @@ builder.Services.AddDatabaseConfig(builder.Configuration)
 var app = builder.Build();
 
 app.UseExceptionHandler();
+app.UseSwaggerMiddlewares();
 app.MapControllers();
 
 app.MapGet("/", () => "Hello World!");
