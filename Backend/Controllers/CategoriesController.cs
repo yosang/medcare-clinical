@@ -61,7 +61,7 @@ public class CategoryController : ControllerBase
     /// Sample request:
     ///
     ///     {
-    ///         "Name": "Consultation",
+    ///         "Name": "Laboratory Testing"
     ///     }
     ///
     /// </remarks>
@@ -87,7 +87,7 @@ public class CategoryController : ControllerBase
     /// Sample request:
     ///
     ///     {
-    ///         "Name": "Consultation",
+    ///         "Name": "Specialist Referral"
     ///     }
     ///
     /// </remarks>

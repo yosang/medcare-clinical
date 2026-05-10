@@ -60,7 +60,7 @@ public class SpecialtiesController : ControllerBase
     /// Sample request:
     ///
     ///     {
-    ///         "Name": "Cardiologist",
+    ///         "Name": "Neurologist"
     ///     }
     ///
     /// </remarks>
@@ -86,7 +86,7 @@ public class SpecialtiesController : ControllerBase
     /// Sample request:
     ///
     ///     {
-    ///         "Name": "Cardiologist",
+    ///         "Name": "Psychiatrist"
     ///     }
     ///
     /// </remarks>

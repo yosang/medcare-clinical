@@ -61,7 +61,7 @@ public class StatusController : ControllerBase
     /// Sample request:
     ///
     ///     {
-    ///         "Name": "Scheduled",
+    ///         "Name": "Scheduled"
     ///     }
     ///
     /// </remarks>
@@ -87,7 +87,7 @@ public class StatusController : ControllerBase
     /// Sample request:
     ///
     ///     {
-    ///         "Name": "Scheduled",
+    ///         "Name": "Postponed"
     ///     }
     ///
     /// </remarks>
