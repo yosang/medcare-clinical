@@ -1,10 +1,66 @@
+using System.ComponentModel.DataAnnotations;
+
 namespace DTOS;
 
 public class DoctorDTO
 {
     public int Id { get; set; }
-
     public string FirstName { get; set; } = null!;
     public string LastName { get; set; } = null!;
     public string? Email { get; set; }
+    public int SpecialtyId { get; set; }
+    public int ClinicId { get; set; }
+
+}
+
+public class DoctorWithDetailsDTO
+{
+    public int Id { get; set; }
+    public string FirstName { get; set; } = null!;
+    public string LastName { get; set; } = null!;
+    public string? Email { get; set; }
+
+    public IEnumerable<AppointmentDTO>? Appointments { get; set; }
+    public SpecialtyDTO? Specialty { get; set; }
+    public ClinicDTO? Clinic { get; set; }
+}
+
+public class CreateDoctorDTO {
+    [Required]
+    [MinLength(2)]
+    [MaxLength(100)]
+    public string FirstName { get; set; } = null!;
+
+    [Required]
+    [MinLength(2)]
+    [MaxLength(100)]
+    public string LastName { get; set; } = null!;
+    
+    [EmailAddress]
+    [MinLength(2)]
+    [MaxLength(100)]
+    public string? Email { get; set; }
+
+    public int SpecialtyId { get; set; }
+    public int ClinicId { get; set; }
+}
+
+public class UpdateDoctorDTO
+{
+    [Required]
+    [MinLength(2)]
+    [MaxLength(100)]
+    public string FirstName { get; set;} = null!;
+    
+    [Required]
+    [MinLength(2)]
+    [MaxLength(100)]
+    public string LastName { get; set;} = null!;
+
+    [EmailAddress]
+    [MinLength(2)]
+    [MaxLength(100)]
+    public string? Email { get; set;}
+    public int SpecialtyId { get; set; }
+    public int ClinicId { get; set; }
 }
