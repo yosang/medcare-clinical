@@ -43,7 +43,7 @@ If you need help with any instructions for the course assignment, contact your t
 
 #### Documentation 
 - [Database ER-Diagram](./Backend/Docs//ER-Diagram.pdf) - Created with draw.io
-- [API Documentation](https://swagger.io/) - Swagger
+- [API Documentation](https://learn.microsoft.com/en-us/aspnet/core/tutorials/getting-started-with-swashbuckle?view=aspnetcore-8.0&tabs=visual-studio-code) - Swagger
 
 #### Official resources
 - [ASP.NET Core Web API Documentation](https://learn.microsoft.com/en-us/aspnet/core/web-api/) - Microsoft Docs

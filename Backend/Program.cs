@@ -16,6 +16,6 @@ app.UseExceptionHandler();
 app.UseSwaggerMiddlewares();
 app.MapControllers();
 
-app.MapGet("/", () => "Hello World!");
+app.MapGet("/", () => "Visit the /doc endpoint for documentation");
 
 app.Run();
