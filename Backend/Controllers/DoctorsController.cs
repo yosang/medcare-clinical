@@ -1,44 +1,127 @@
+using DTOS;
 using Microsoft.AspNetCore.Mvc;
+using Models;
+using Services;
 
 [ApiController]
 [Route("api/[Controller]")]
 [Produces("application/json")]
 public class DoctorsController : ControllerBase
 {
+    private readonly DoctorService _service;
 
+    public DoctorsController(DoctorService service)
+    {
+        _service = service;
+    }
+
+    /// <summary>
+    /// Returns a list of doctors
+    /// </summary>
+    /// <response code="200">Resources returned</response>
     [HttpGet]
-    public async Task<ActionResult<string>> Get()
+    [ProducesResponseType(typeof(IEnumerable<DoctorWithDetailsDTO>), StatusCodes.Status200OK)]
+    public async Task<ActionResult<IEnumerable<DoctorWithDetailsDTO>>> Get()
     {
-        return "List of doctors";
+        var doctors = await _service.GetDoctors();
+
+        return Ok(doctors);
     }
 
+    /// <summary>
+    /// Returns a single doctor
+    /// </summary>
+    /// <param name="id"></param>
+    /// <response code="200">Resource returned</response>
+    /// <response code="404">Resource not found</response>
     [HttpGet("{id}")]
-    public async Task<ActionResult<string>> Get(int id)
+    [ProducesResponseType(typeof(DoctorDTO), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<ActionResult<DoctorDTO>> Get(int id)
     {
-        return $"A single doctor with id {id}";
+        var doctor = await _service.GetDoctor(id);
+        if(doctor == null ) return NotFound();
+
+        return Ok(doctor);
     }
 
+    /// <summary>
+    /// Returns a list of Appointments for Doctor
+    /// </summary>
+    /// <param name="id"></param>
+    /// <response code="200">Resources returned</response>
     [HttpGet("{id}/appointments")]
-    public async Task<ActionResult<string>> GetAppointments(int id)
+    [ProducesResponseType(typeof(IEnumerable<AppointmentDTO>), StatusCodes.Status200OK)]
+    public async Task<ActionResult<IEnumerable<AppointmentDTO>>> GetAppointments(int id)
     {
-        return $"A list of appointments for doctor with id {id}";
+        var appointments = await _service.GetAppointments(id);
+
+        return Ok(appointments);
     }
 
+    /// <summary>Create a new doctor</summary>
+    /// <remarks>
+    /// Sample request:
+    ///
+    ///     {
+    ///       "firstName": "Henry",
+    ///       "lastName": "Jekyll",
+    ///       "email": "drjekyll@mail.com",
+    ///       "specialtyId": 1,
+    ///       "clinicId": 1
+    ///     }
+    ///
+    /// </remarks>
+    /// <param name="doctor"></param>
+    /// <response code="201">Resource created</response>
     [HttpPost]
-    public async Task<ActionResult<string>> Create()
+    [ProducesResponseType(typeof(DoctorDTO), StatusCodes.Status201Created)]
+    public async Task<ActionResult<DoctorDTO>> Create(CreateDoctorDTO doctor)
     {
-        return "Doctor created";
+        var created = await _service.CreateDoctor(doctor);
+
+        return CreatedAtAction(nameof(Get), new { id = created.Id}, created);
     }
 
+    /// <summary>Update a doctor</summary>
+    /// <remarks>
+    /// Sample request:
+    ///
+    ///     {
+    ///       "firstName": "Edward",
+    ///       "lastName": "Hyde",
+    ///       "email": "mrhyde@mail.com",
+    ///       "specialtyId": 1,
+    ///       "clinicId": 1
+    ///     }
+    ///
+    /// </remarks>
+    /// <param name="id"></param>
+    /// <param name="doctor"></param>
+    /// <response code="204">Update successful, no content returned</response>
+    /// <response code="404">Resource not found by id</response>
     [HttpPut("{id}")]
-    public async Task<ActionResult<string>> Update(int id)
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> Update(int id, UpdateDoctorDTO doctor)
     {
-        return $"Doctor with id {id} updated";
+        var updated = await _service.UpdateDoctor(id, doctor);
+        if(updated == null) return NotFound();
+        return NoContent();
     }
 
+    /// <summary>Delete a doctor</summary>
+    /// <param name="id"></param>
+    /// <response code="204">Deletion successful, no content returned</response>
+    /// <response code="404">Resource not found by id</response>
     [HttpDelete("{id}")]
-    public async Task<ActionResult<string>> Delete(int id)
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> Delete(int id)
     {
-        return $"Doctor with id {id} deleted";
+ 
+        var deleted = await _service.DeleteDoctor(id);
+        if(!deleted) return NotFound();
+        return NoContent();
     }
 }
