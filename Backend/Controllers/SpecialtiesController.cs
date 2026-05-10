@@ -7,7 +7,7 @@ using Services;
 [Produces("application/json")]
 public class SpecialtiesController : ControllerBase
 {
-    public readonly SpecialtyService _service;
+    private readonly SpecialtyService _service;
 
     public SpecialtiesController(SpecialtyService service) => (_service) = (service);
 
@@ -16,7 +16,7 @@ public class SpecialtiesController : ControllerBase
     /// </summary>
     /// <response code="200">List of specialties returned</response>
     [HttpGet]
-    [ProducesResponseType(typeof(SpecialtyWithDetailsDTO), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(IEnumerable<SpecialtyWithDetailsDTO>), StatusCodes.Status200OK)]
     public async Task<ActionResult<IEnumerable<SpecialtyWithDetailsDTO>>> Get()
     {
         var specialties = await _service.GetSpecialties();
@@ -97,7 +97,7 @@ public class SpecialtiesController : ControllerBase
     [HttpPut("{id}")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<ActionResult<string>> Update(int id, UpdateSpecialtyDTO specialty)
+    public async Task<IActionResult> Update(int id, UpdateSpecialtyDTO specialty)
     {
         var updated = await _service.UpdateSpecialty(id, specialty);
         if(updated == null) return NotFound();
@@ -112,7 +112,7 @@ public class SpecialtiesController : ControllerBase
     [HttpDelete("{id}")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<ActionResult<string>> Delete(int id)
+    public async Task<IActionResult> Delete(int id)
     {
         var deleted = await _service.DeleteSpecialty(id);
         if(!deleted) return NotFound();

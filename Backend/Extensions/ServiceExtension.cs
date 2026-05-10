@@ -6,7 +6,8 @@ public static class ServiceExtension
     {
         service.AddScoped<CityService>()
                 .AddScoped<SpecialtyService>()
-                .AddScoped<StatusService>();
+                .AddScoped<StatusService>()
+                .AddScoped<CategoryService>();
 
         return service;
     }

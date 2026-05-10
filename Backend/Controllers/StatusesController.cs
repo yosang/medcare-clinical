@@ -8,7 +8,7 @@ using Services;
 public class StatusController : ControllerBase
 {
 
-    public readonly StatusService _service;
+    private readonly StatusService _service;
 
     public StatusController(StatusService service) => (_service) = (service); 
 
@@ -18,7 +18,7 @@ public class StatusController : ControllerBase
     /// <response code="200">Resources returned</response>
     [HttpGet]
     [ProducesResponseType(typeof(IEnumerable<StatusWithDetailsDTO>), StatusCodes.Status200OK)]
-    public async Task<ActionResult<StatusWithDetailsDTO>> Get()
+    public async Task<ActionResult<IEnumerable<StatusWithDetailsDTO>>> Get()
     {
         var statuses = await _service.GetStatuses();
 
@@ -34,7 +34,7 @@ public class StatusController : ControllerBase
     [HttpGet("{id}")]
     [ProducesResponseType(typeof(StatusWithDetailsDTO), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<ActionResult<StatusDTO>> Get(int id)
+    public async Task<ActionResult<StatusWithDetailsDTO>> Get(int id)
     {
         var status = await _service.GetStatus(id);
         if(status == null) return NotFound();
@@ -43,13 +43,13 @@ public class StatusController : ControllerBase
     }
 
     /// <summary>
-    /// Returns a list of Appojntments for Status
+    /// Returns a list of Appointments for Status
     /// </summary>
     /// <param name="id"></param>
     /// <response code="200">Resources returned</response>
     [HttpGet("{id}/appointments")]
-    [ProducesResponseType(typeof(IEnumerable<StatusDTO>), StatusCodes.Status200OK)]
-    public async Task<ActionResult<string>> GetAppointments(int id)
+    [ProducesResponseType(typeof(IEnumerable<AppointmentDTO>), StatusCodes.Status200OK)]
+    public async Task<ActionResult<IEnumerable<AppointmentDTO>>> GetAppointments(int id)
     {
         var appointments = await _service.GetAppointments(id);
 
@@ -69,7 +69,7 @@ public class StatusController : ControllerBase
     /// <response code="201">Resource created</response>
     [HttpPost]
     [ProducesResponseType(typeof(StatusDTO), StatusCodes.Status201Created)]
-    public async Task<ActionResult<string>> Create(CreateStatusDTO status)
+    public async Task<ActionResult<StatusDTO>> Create(CreateStatusDTO status)
     {
         var result = await _service.CreateStatus(status);
         
@@ -98,7 +98,7 @@ public class StatusController : ControllerBase
     [HttpPut("{id}")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<ActionResult<string>> Update(int id, UpdateStatusDTO status)
+    public async Task<IActionResult> Update(int id, UpdateStatusDTO status)
     {
         var updated = await _service.UpdateStatus(id, status);
         if(updated == null) return NotFound();
@@ -113,7 +113,7 @@ public class StatusController : ControllerBase
     [HttpDelete("{id}")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<ActionResult<string>> Delete(int id)
+    public async Task<IActionResult> Delete(int id)
     {
         var deleted = await _service.DeleteStatus(id);
         if(!deleted) return NotFound();

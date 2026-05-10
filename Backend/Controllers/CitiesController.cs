@@ -7,7 +7,7 @@ using Services;
 [Produces("application/json")]
 public class CitiesController : ControllerBase
 {
-    public readonly CityService _service;
+    private readonly CityService _service;
 
     public CitiesController(CityService cityService)
     {
@@ -101,7 +101,7 @@ public class CitiesController : ControllerBase
     [HttpPut("{id}")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<ActionResult> Update(int id, UpdateCityDTO city)
+    public async Task<IActionResult> Update(int id, UpdateCityDTO city)
     {
         var updated = await _service.UpdateCity(id, city);
         if(updated == null) return NotFound();
@@ -116,7 +116,7 @@ public class CitiesController : ControllerBase
     [HttpDelete("{id}")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<ActionResult> Delete(int id)
+    public async Task<IActionResult> Delete(int id)
     {
         var deleted = await _service.DeleteCity(id);
         if(!deleted) return NotFound();
