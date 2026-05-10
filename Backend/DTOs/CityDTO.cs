@@ -17,6 +17,7 @@ public class CityWithDetailsDTO
 }
 
 public class CreateCityDTO {
+    [Required]
     [MinLength(2)]
     [MaxLength(100)]
     public string Name { get; set; } = null!;
@@ -24,6 +25,7 @@ public class CreateCityDTO {
 
 public class UpdateCityDTO
 {
+    [Required]
     [MinLength(2)]
     [MaxLength(100)]
     public string Name { get; set;} = null!;
