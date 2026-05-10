@@ -42,7 +42,7 @@ public class CitiesController : ControllerBase
 
         if(city == null) return NotFound();
 
-        return city;
+        return Ok(city);
     }
 
     /// <summary>
