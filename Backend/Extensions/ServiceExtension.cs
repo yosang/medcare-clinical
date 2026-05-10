@@ -5,7 +5,8 @@ public static class ServiceExtension
     public static IServiceCollection AddServices(this IServiceCollection service)
     {
         service.AddScoped<CityService>()
-                .AddScoped<SpecialtyService>();
+                .AddScoped<SpecialtyService>()
+                .AddScoped<StatusService>();
 
         return service;
     }
