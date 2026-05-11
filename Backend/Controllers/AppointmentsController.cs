@@ -58,7 +58,7 @@ public class AppointmentsController : ControllerBase
     ///        "ClinicId": 1,
     ///        "CategoryId": 1,
     ///        "StatusId": 1
-    ///    }
+    ///     }
     ///
     /// </remarks>
     /// <param name="dto"></param>
@@ -85,7 +85,7 @@ public class AppointmentsController : ControllerBase
     ///        "ClinicId": 1,
     ///        "CategoryId": 1,
     ///        "StatusId": 1
-    ///    }
+    ///     }
     ///
     /// </remarks>
     /// <param name="id"></param>
