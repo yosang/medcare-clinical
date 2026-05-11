@@ -13,4 +13,22 @@ public static class StatusMapper
             Name = status.Name
         };
     }   
+
+    public static Status ToStatus(this CreateStatusDTO dto)
+    {
+        return new Status
+        {
+            Name = dto.Name
+        };
+    }
+
+    public static StatusWithDetailsDTO ToStatusWithDetailsDTO(this Status status)
+    {
+        return new StatusWithDetailsDTO
+        {
+            Id = status.Id,
+            Name = status.Name,
+            Appointments = status.Appointments?.Select(appointment => appointment.ToAppointmentDTO())
+        };
+    }
 }

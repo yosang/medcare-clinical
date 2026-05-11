@@ -1,5 +1,6 @@
 using Context;
 using DTOS;
+using Extensions.Mappers;
 using Microsoft.EntityFrameworkCore;
 using Models;
 
@@ -17,17 +18,9 @@ public class StatusService
     {
 
         var statuses = await _ctx.Statuses.AsNoTracking()
-                                            .Select(status => new StatusWithDetailsDTO
-                                            {
-                                                Id = status.Id,
-                                                Name = status.Name,
-                                                Appointments = status.Appointments!.Select(appointment => new AppointmentDTO
-                                                {
-                                                    Id = appointment.Id,
-                                                    AppointmentDate = appointment.AppointmentDate,
-                                                    Note = appointment.Note
-                                                })
-                                            }).ToListAsync();
+                                            .Include(s => s.Appointments)
+                                            .Select(status => status.ToStatusWithDetailsDTO())
+                                            .ToListAsync();
 
         return statuses;
     }
@@ -36,17 +29,9 @@ public class StatusService
     {
         var status = await _ctx.Statuses.AsNoTracking()
                                         .Where(status => status.Id == id)
-                                        .Select(status => new StatusWithDetailsDTO
-                                        {
-                                            Id = status.Id,
-                                            Name = status.Name,
-                                            Appointments = status.Appointments!.Select(appointment => new AppointmentDTO
-                                            {
-                                                Id = appointment.Id,
-                                                AppointmentDate = appointment.AppointmentDate,
-                                                Note = appointment.Note
-                                            })
-                                        }).FirstOrDefaultAsync();
+                                        .Include(s => s.Appointments)
+                                        .Select(status => status.ToStatusWithDetailsDTO())
+                                        .FirstOrDefaultAsync();
         return status;
     }
 
@@ -54,51 +39,40 @@ public class StatusService
     {
         var appointments = await _ctx.Appointments.AsNoTracking()
                                         .Where(appointment => appointment.StatusId == id)
-                                        .Select(appointment => new AppointmentDTO
-                                        {
-                                            Id = appointment.Id,
-                                            AppointmentDate = appointment.AppointmentDate,
-                                            Note = appointment.Note
-                                        })
+                                        .Select(appointment => appointment.ToAppointmentDTO())
                                         .ToListAsync();
         return appointments;
     }
 
-    public async Task<Status> CreateStatus(CreateStatusDTO status)
+    public async Task<Status> CreateStatus(CreateStatusDTO dto)
     {
-        var newStatus = new Status
-        {
-            Name = status.Name
-        };
+        var newStatus = dto.ToStatus();
 
         _ctx.Statuses.Add(newStatus);
 
         await _ctx.SaveChangesAsync();
+
         return newStatus;
     }
 
-    public async Task<StatusDTO?> UpdateStatus(int id, UpdateStatusDTO status)
+    public async Task<StatusDTO?> UpdateStatus(int id, UpdateStatusDTO dto)
     {
-        var existingStatus = await _ctx.Statuses.FindAsync(id);
-        if(existingStatus == null) return null;
+        var existing = await _ctx.Statuses.FindAsync(id);
+        if(existing == null) return null;
 
-        existingStatus.Name = status.Name;
+        existing.Name = dto.Name;
 
         await _ctx.SaveChangesAsync();
 
-        return new StatusDTO
-        {
-            Id = existingStatus.Id,
-            Name = existingStatus.Name
-        };
+        return existing.ToStatusDTO();
     }
 
     public async Task<bool> DeleteStatus(int id)
     {
-        var status = await _ctx.Statuses.FindAsync(id);
-        if(status == null) return false;
+        var existing = await _ctx.Statuses.FindAsync(id);
+        if(existing == null) return false;
 
-        _ctx.Remove(status);
+        _ctx.Remove(existing);
 
         await _ctx.SaveChangesAsync();
         
