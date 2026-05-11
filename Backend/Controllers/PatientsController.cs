@@ -1,4 +1,7 @@
+using DTOS;
 using Microsoft.AspNetCore.Mvc;
+using Models;
+using Services;
 
 [ApiController]
 [Route("api/[Controller]")]
@@ -6,16 +9,40 @@ using Microsoft.AspNetCore.Mvc;
 public class PatientsController : ControllerBase
 {
 
-    [HttpGet]
-    public async Task<ActionResult<string>> Get()
+    private readonly PatientService _service;
+
+    public PatientsController(PatientService service)
     {
-        return "List of patients";
+        _service = service;
     }
 
-    [HttpGet("{id}")]
-    public async Task<ActionResult<string>> Get(int id)
+    /// <summary>
+    /// Retrieve a list of patients
+    /// </summary>
+    /// <response code="200">Resources returned</response>
+    [HttpGet]
+    [ProducesResponseType(typeof(IEnumerable<PatientWithDetailsDTO>), StatusCodes.Status200OK)]
+    public async Task<ActionResult<IEnumerable<PatientWithDetailsDTO>>> Get()
     {
-        return $"A single patient with id {id}";
+        var patients = await _service.GetPatients();
+
+        return Ok(patients);
+    }
+
+    /// <summary>
+    /// Retreive a single patient
+    /// </summary>
+    /// <param name="id"></param>
+    /// <response code="200">Resource returned</response>
+    /// <response code="404">Resource not found</response>
+    [HttpGet("{id}")]
+    [ProducesResponseType(typeof(PatientWithDetailsDTO), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<ActionResult<PatientWithDetailsDTO>> Get(int id)
+    {
+        var patient = await _service.GetPatient(id);
+        if (patient == null) return NotFound();
+        return Ok(patient);
     }
 
     [HttpGet("{id}/appointments")]
