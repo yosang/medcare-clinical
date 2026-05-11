@@ -72,13 +72,7 @@ public class SpecialtiesController : ControllerBase
     {
         var result = await _service.CreateSpecialty(specialty);
 
-        var created = new SpecialtyDTO
-        {
-          Id = result.Id,
-          Name = result.Name  
-        };
-
-        return CreatedAtAction(nameof(Get), new { id = created.Id}, created);
+        return CreatedAtAction(nameof(Get), new { id = result.Id}, result);
     }
 
     /// <summary>Update a specialty</summary>

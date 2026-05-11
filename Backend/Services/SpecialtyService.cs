@@ -44,7 +44,7 @@ public class SpecialtyService
         return doctors;
     }
 
-    public async Task<Specialty> CreateSpecialty(CreateSpecialtyDTO dto)
+    public async Task<SpecialtyDTO> CreateSpecialty(CreateSpecialtyDTO dto)
     {
         var newSpecialty = dto.ToSpecialty();
 
@@ -52,7 +52,7 @@ public class SpecialtyService
 
         await _ctx.SaveChangesAsync();
 
-        return newSpecialty;
+        return newSpecialty.ToSpecialtyDTO();
     }
 
     public async Task<SpecialtyDTO?> UpdateSpecialty(int id, UpdateSpecialtyDTO dto)
