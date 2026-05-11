@@ -46,26 +46,87 @@ public class PatientsController : ControllerBase
     }
 
     [HttpGet("{id}/appointments")]
-    public async Task<ActionResult<string>> GetAppointments(int id)
+    public async Task<ActionResult<IEnumerable<AppointmentDTO>>> GetAppointments(int id)
     {
-        return $"A list of appointments for patient with id {id}";
+        var appointments = await _service.GetAppointments(id);
+
+        return Ok(appointments);
     }
 
+    /// <summary> Create a new patient </summary>
+    /// <remarks>
+    /// Sample request:
+    /// 
+    ///     {
+    ///       "firstName": "Carina",
+    ///       "lastName": "Bebek",
+    ///       "phone": "24242424",
+    ///       "email": "cb@mail.com",
+    ///       "dateOfBirth": "1984-03-22",
+    ///       "nationalIdentityNumber": 66666666,
+    ///       "passwordHash": "FAKEHASH",
+    ///       "isRegistered": true
+    ///     }
+    /// 
+    /// </remarks>
+    /// <param name="dto"></param>
+    /// <response code="201">Resource created</response>
     [HttpPost]
-    public async Task<ActionResult<string>> Create()
+    [ProducesResponseType(typeof(PatientDTO), StatusCodes.Status201Created)]
+    public async Task<ActionResult<PatientDTO>> Create(CreatePatientDTO dto)
     {
-        return "Patient created";
+        var result = await _service.CreatePatient(dto);
+
+        return CreatedAtAction(nameof(Get), new { id = result.Id }, result);
     }
 
+    /// <summary>
+    /// Update an existing patient
+    /// </summary>
+    /// <remarks>
+    /// Sample request:
+    /// 
+    ///     {
+    ///       "firstName": "Carina",
+    ///       "lastName": "Bebek",
+    ///       "phone": "24242424",
+    ///       "email": "cb@mail.com",
+    ///       "dateOfBirth": "1984-03-22",
+    ///       "nationalIdentityNumber": 66666666,
+    ///       "passwordHash": "FAKEHASH",
+    ///       "isRegistered": true
+    ///     }
+    /// 
+    /// </remarks>
+    /// <param name="id"></param>
+    /// <param name="dto"></param>
+    /// <response code="204">Update successful, no content returned</response>
+    /// <response code="404">Resource not found</response>
     [HttpPut("{id}")]
-    public async Task<ActionResult<string>> Update(int id)
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> Update(int id, UpdatePatientDTO dto)
     {
-        return $"Patient with id {id} updated";
+        var updated = await _service.UpdatePatient(id, dto);
+        if (updated == null) return NotFound();
+
+        return NoContent();
     }
 
+    /// <summary>
+    /// Delete a patient
+    /// </summary>
+    /// <param name="id"></param>
+    /// <response code="204">Resource deleted</response>
+    /// <response code="404">Resource not found</response>
     [HttpDelete("{id}")]
-    public async Task<ActionResult<string>> Delete(int id)
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> Delete(int id)
     {
-        return $"Patient with id {id} deleted";
+        var deleted = await _service.DeletePatient(id);
+        if (!deleted) return NotFound();
+
+        return NoContent();
     }
 }

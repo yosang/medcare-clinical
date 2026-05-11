@@ -32,4 +32,55 @@ public class PatientService
                                         .FirstOrDefaultAsync();
         return patient;
     }
+
+    public async Task<IEnumerable<AppointmentDTO>> GetAppointments(int id)
+    {
+        var appointments = await _ctx.Appointments.AsNoTracking()
+                                                    .Where(ap => ap.PatientId == id)
+                                                    .Select(ap => ap.ToAppointmentDTO())
+                                                    .ToListAsync();
+        return appointments;
+    }
+
+    public async Task<PatientDTO> CreatePatient(CreatePatientDTO dto)
+    {
+        var newP = dto.ToPatient();
+
+        _ctx.Patients.Add(newP);
+
+        await _ctx.SaveChangesAsync();
+
+        return newP.ToPatientDTO();
+    }
+
+    public async Task<PatientDTO?> UpdatePatient(int id, UpdatePatientDTO dto)
+    {
+        var existing = await _ctx.Patients.FindAsync(id);
+        if (existing == null) return null;
+
+        existing.FirstName = dto.FirstName;
+        existing.LastName = dto.LastName;
+        existing.Phone = dto.Phone;
+        existing.Email = dto.Email;
+        existing.DateOfBirth = dto.DateOfBirth;
+        existing.NationalIdentityNumber = dto.NationalIdentityNumber;
+        existing.PasswordHash = dto.PasswordHash;
+        existing.IsRegistered = dto.IsRegistered;
+
+        await _ctx.SaveChangesAsync();
+
+        return existing.ToPatientDTO();
+    }
+
+    public async Task<bool> DeletePatient(int id)
+    {
+        var existing = await _ctx.Patients.FindAsync(id);
+        if (existing == null) return false;
+
+        _ctx.Patients.Remove(existing);
+
+        await _ctx.SaveChangesAsync();
+
+        return true;
+    }
 }

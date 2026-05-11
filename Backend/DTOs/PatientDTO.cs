@@ -9,6 +9,7 @@ public class PatientDTO
     public string? Email { get; set; }
     public DateTime? DateOfBirth { get; set; }
     public int? NationalIdentityNumber { get; set; }
+    public string? PasswordHash { get; set; }
     public bool IsRegistered { get; set; }
 }
 
@@ -21,6 +22,7 @@ public class PatientWithDetailsDTO
     public string? Email { get; set; }
     public DateTime? DateOfBirth { get; set; }
     public int? NationalIdentityNumber { get; set; }
+    public string? PasswordHash { get; set; }
     public bool IsRegistered { get; set; }
 
     public IEnumerable<AppointmentDTO>? Appointments { get; set; }
@@ -34,6 +36,7 @@ public class CreatePatientDTO
     public string? Email { get; set; }
     public DateTime? DateOfBirth { get; set; }
     public int? NationalIdentityNumber { get; set; }
+    public string? PasswordHash { get; set; }
     public bool IsRegistered { get; set; }
 }
 
@@ -45,5 +48,6 @@ public class UpdatePatientDTO
     public string? Email { get; set; }
     public DateTime? DateOfBirth { get; set; }
     public int? NationalIdentityNumber { get; set; }
+    public string? PasswordHash { get; set; }
     public bool IsRegistered { get; set; }
 }
