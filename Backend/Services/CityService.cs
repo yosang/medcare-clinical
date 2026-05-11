@@ -1,5 +1,6 @@
 using Context;
 using DTOS;
+using Extensions.Mappers;
 using Microsoft.EntityFrameworkCore;
 using Models;
 
@@ -17,20 +18,9 @@ public class CityService
     {
 
         var cities = await _ctx.Cities.AsNoTracking()
-                                      .Select(city => new CityWithDetailsDTO
-                                      {
-                                          Id = city.Id,
-                                          Name = city.Name,
-                                          Clinics = city.Clinics!.Select(clinic => new ClinicDTO
-                                          {
-                                              Id = clinic.Id,
-                                              Name = clinic.Name,
-                                              Phone = clinic.Phone,
-                                              Email = clinic.Email,
-                                              Address = clinic.Address,
-                                              PostalCode = clinic.PostalCode,
-                                          })
-                                      }).ToListAsync();
+                                      .Include(c => c.Clinics)
+                                      .Select(city => city.ToCityWithDetailsDTO())
+                                      .ToListAsync();
 
         return cities;
     }
@@ -39,20 +29,9 @@ public class CityService
     {
         var city = await _ctx.Cities.AsNoTracking()
                                     .Where(city => city.Id == id)
-                                    .Select(city => new CityWithDetailsDTO
-                                    {
-                                        Id = city.Id,
-                                        Name = city.Name,
-                                        Clinics = city.Clinics!.Select(clinic => new ClinicDTO
-                                        {
-                                            Id = clinic.Id,
-                                            Name = clinic.Name,
-                                            Phone = clinic.Phone,
-                                            Email = clinic.Email,
-                                            Address = clinic.Address,
-                                            PostalCode = clinic.PostalCode,
-                                        })
-                                    }).FirstOrDefaultAsync();
+                                    .Include(c => c.Clinics)
+                                    .Select(city => city.ToCityWithDetailsDTO())
+                                    .FirstOrDefaultAsync();
         return city;
     }
 
@@ -60,54 +39,39 @@ public class CityService
     {
         var clinics = await _ctx.Clinics.AsNoTracking()
                                         .Where(clinic => clinic.CityId == id)
-                                        .Select(clinic => new ClinicDTO
-                                        {
-                                            Id = clinic.Id,
-                                            Name = clinic.Name,
-                                            Phone = clinic.Phone,
-                                            Email = clinic.Email,
-                                            Address = clinic.Address,
-                                            PostalCode = clinic.PostalCode,
-                                        })
+                                        .Select(clinic => clinic.ToClinicDTO())
                                         .ToListAsync();
         return clinics;
     }
 
-    public async Task<City> CreateCity(CreateCityDTO city)
+    public async Task<CityDTO> CreateCity(CreateCityDTO dto)
     {
-        var newCity = new City
-        {
-            Name = city.Name
-        };
+        var newCity = dto.ToCity();
 
         _ctx.Cities.Add(newCity);
 
         await _ctx.SaveChangesAsync();
-        return newCity;
+        return newCity.ToCityDTO();;
     }
 
-    public async Task<CityDTO?> UpdateCity(int id, UpdateCityDTO city)
+    public async Task<CityDTO?> UpdateCity(int id, UpdateCityDTO dto)
     {
-        var existingCity = await _ctx.Cities.FindAsync(id);
-        if(existingCity == null) return null;
+        var existing = await _ctx.Cities.FindAsync(id);
+        if(existing == null) return null;
 
-        existingCity.Name = city.Name;
+        existing.Name = dto.Name;
 
         await _ctx.SaveChangesAsync();
 
-        return new CityDTO
-        {
-            Id = existingCity.Id,
-            Name = existingCity.Name
-        };
+        return existing.ToCityDTO();
     }
 
     public async Task<bool> DeleteCity(int id)
     {
-        var city = await _ctx.Cities.FindAsync(id);
-        if(city == null) return false;
+        var existing = await _ctx.Cities.FindAsync(id);
+        if(existing == null) return false;
 
-        _ctx.Remove(city);
+        _ctx.Remove(existing);
 
         await _ctx.SaveChangesAsync();
         

@@ -64,25 +64,19 @@ public class CitiesController : ControllerBase
     /// Sample request:
     ///
     ///     {
-    ///         "Name": "Trondheim",
+    ///         "Name": "Trondheim"
     ///     }
     ///
     /// </remarks>
-    /// <param name="city"></param>
+    /// <param name="dto"></param>
     /// <response code="201">Resource created</response>
     [HttpPost]
     [ProducesResponseType(typeof(CityDTO), StatusCodes.Status201Created)]
-    public async Task<ActionResult<CityDTO>> Create(CreateCityDTO city)
+    public async Task<ActionResult<CityDTO>> Create(CreateCityDTO dto)
     {
-        var result = await _service.CreateCity(city);
+        var result = await _service.CreateCity(dto);
 
-        var cityDTO = new CityDTO
-        {
-            Id = result.Id,
-            Name = result.Name
-        };
-
-        return CreatedAtAction(nameof(Get), new { id = cityDTO.Id }, cityDTO);
+        return CreatedAtAction(nameof(Get), new { id = result.Id }, result);
     }
 
     /// <summary>Update a city</summary>
@@ -90,20 +84,20 @@ public class CitiesController : ControllerBase
     /// Sample request:
     ///
     ///     {
-    ///         "Name": "Kristiansand",
+    ///         "Name": "Kristiansand"
     ///     }
     ///
     /// </remarks>
     /// <param name="id"></param>
-    /// <param name="city"></param>
+    /// <param name="dto"></param>
     /// <response code="204">Update successful, no content returned</response>
     /// <response code="404">Resource not found by id</response>
     [HttpPut("{id}")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> Update(int id, UpdateCityDTO city)
+    public async Task<IActionResult> Update(int id, UpdateCityDTO dto)
     {
-        var updated = await _service.UpdateCity(id, city);
+        var updated = await _service.UpdateCity(id, dto);
         if(updated == null) return NotFound();
 
         return NoContent();
