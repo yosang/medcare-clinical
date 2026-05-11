@@ -33,7 +33,6 @@ public static class AppointmentMapper
     {
         return new Appointment
         {
-            Id = createAppointmentDTO.Id,
             AppointmentDate = createAppointmentDTO.AppointmentDate,
             Note = createAppointmentDTO.Note,
             DoctorId = createAppointmentDTO.DoctorId,

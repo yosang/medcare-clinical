@@ -24,9 +24,8 @@ public class AppointmentWithDetailsDTO
 
 public class CreateAppointmentDTO
 {
-    public int Id { get; set; }
-    
     [Required]
+    [DataType(DataType.DateTime)]
     public DateTime AppointmentDate { get; set; }
     public string? Note { get; set; }
     
@@ -39,9 +38,8 @@ public class CreateAppointmentDTO
 
 public class UpdateAppointmentDTO
 {
-    public int Id { get; set; }
-
     [Required]
+    [DataType(DataType.DateTime)]
     public DateTime AppointmentDate { get; set; }
     public string? Note { get; set; }
     

@@ -51,7 +51,7 @@ public class AppointmentsController : ControllerBase
     /// Sample request:
     ///
     ///     {
-    ///        "AppointmentDate":"2026-05-24",
+    ///        "AppointmentDate":"2026-05-24T08:30",
     ///        "Note":"Renewal of asthma medicine",
     ///        "PatientId": 1,
     ///        "DoctorId": 1,
@@ -78,7 +78,7 @@ public class AppointmentsController : ControllerBase
     /// Sample request:
     ///
     ///     {
-    ///        "AppointmentDate":"2026-05-24",
+    ///        "AppointmentDate":"2026-05-24T09:00",
     ///        "Note":"Specialist referral",
     ///        "PatientId": 1,
     ///        "DoctorId": 1,
