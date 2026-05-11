@@ -22,7 +22,7 @@ public class AppointmentWithDetailsDTO
     public ClinicDTO? Clinic { get; set; }
 }
 
-public class CreateAppointDTO
+public class CreateAppointmentDTO
 {
     public int Id { get; set; }
     
@@ -37,7 +37,7 @@ public class CreateAppointDTO
     public int StatusId { get; set; }    
 }
 
-public class UpdateAppointDTO
+public class UpdateAppointmentDTO
 {
     public int Id { get; set; }
 

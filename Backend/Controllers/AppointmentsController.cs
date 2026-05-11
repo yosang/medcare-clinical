@@ -27,16 +27,30 @@ public class AppointmentsController : ControllerBase
         return Ok(appointments);
     }
 
+    /// <summary>
+    /// Get a single appointment
+    /// </summary>
+    /// <param name="id"></param>
+    /// <response code="200">Resouruce returned</response>
+    /// <response code="404">Resource not found</response>
     [HttpGet("{id}")]
-    public async Task<ActionResult<string>> Get(int id)
+    [ProducesResponseType(typeof(AppointmentWithDetailsDTO), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<ActionResult<AppointmentWithDetailsDTO?>> Get(int id)
     {
-        return $"A single appointment with id {id}";
+        var appointment = await _service.GetAppointment(id);
+
+        if(appointment == null) return NotFound();
+
+        return Ok(appointment);
     }
 
     [HttpPost]
-    public async Task<ActionResult<string>> Create()
+    public async Task<ActionResult<AppointmentDTO>> Create(CreateAppointmentDTO dto)
     {
-        return "Appointment created";
+        var result = await _service.CreateAppointment(dto);
+
+        return CreatedAtAction(nameof(Get), new { id = result.Id}, result);
     }
 
     [HttpPut("{id}")]
