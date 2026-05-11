@@ -17,6 +17,19 @@ public static class DoctorMapper
           ClinicId = doctor.ClinicId  
         };
     }
+    public static DoctorWithDetailsDTO ToDoctorWithDetailsDTO(this Doctor doctor)
+    {
+        return new DoctorWithDetailsDTO
+        {
+          Id = doctor.Id,
+          FirstName = doctor.FirstName,
+          LastName = doctor.LastName,
+          Email = doctor.Email,
+          Specialty = doctor.Specialty?.ToSpecialtyDTO(),
+          Clinic = doctor.Clinic?.ToClinicDTO(),
+          Appointments = doctor.Appointments?.Select(appointment => appointment.ToAppointmentDTO())
+        };
+    }
 
     public static Doctor ToDoctor(this CreateDoctorDTO dto)
     {
@@ -25,6 +38,8 @@ public static class DoctorMapper
             FirstName = dto.FirstName,
             LastName = dto.LastName,
             Email = dto.Email,
+            SpecialtyId = dto.SpecialtyId,
+            ClinicId = dto.ClinicId
         };
     }
 }

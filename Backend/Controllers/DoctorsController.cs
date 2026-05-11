@@ -78,9 +78,9 @@ public class DoctorsController : ControllerBase
     [ProducesResponseType(typeof(DoctorDTO), StatusCodes.Status201Created)]
     public async Task<ActionResult<DoctorDTO>> Create(CreateDoctorDTO doctor)
     {
-        var created = await _service.CreateDoctor(doctor);
+        var result = await _service.CreateDoctor(doctor);
 
-        return CreatedAtAction(nameof(Get), new { id = created.Id}, created);
+        return CreatedAtAction(nameof(Get), new { id = result.Id}, result);
     }
 
     /// <summary>Update a doctor</summary>
@@ -91,7 +91,7 @@ public class DoctorsController : ControllerBase
     ///       "firstName": "Edward",
     ///       "lastName": "Hyde",
     ///       "email": "mrhyde@mail.com",
-    ///       "specialtyId": 1,
+    ///       "specialtyId": 2,
     ///       "clinicId": 1
     ///     }
     ///

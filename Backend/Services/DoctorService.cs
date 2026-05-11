@@ -1,5 +1,6 @@
 using Context;
 using DTOS;
+using Extensions.Mappers;
 using Microsoft.EntityFrameworkCore;
 using Models;
 
@@ -16,28 +17,11 @@ public class DoctorService
     public async Task<IEnumerable<DoctorWithDetailsDTO>> GetDoctors()
     {
         var doctors = await _ctx.Doctors.AsNoTracking()
-                                        .Select(doctor => new DoctorWithDetailsDTO
-                                        {
-                                            Id = doctor.Id,
-                                            FirstName = doctor.FirstName,
-                                            LastName = doctor.LastName,
-                                            Email = doctor.Email,
-                                            Specialty = new SpecialtyDTO { Id = doctor.SpecialtyId, Name = doctor.Specialty!.Name},
-                                            Clinic = new ClinicDTO { 
-                                                Id = doctor.ClinicId, 
-                                                Name = doctor.Clinic!.Name,
-                                                Phone = doctor.Clinic.Phone,
-                                                Email = doctor.Clinic.Email,
-                                                Address = doctor.Clinic.Address,
-                                                PostalCode = doctor.Clinic.PostalCode
-                                            },
-                                            Appointments = doctor.Appointments!.Select(appointment => new AppointmentDTO
-                                            {
-                                                Id = appointment.Id,
-                                                AppointmentDate = appointment.AppointmentDate,
-                                                Note = appointment.Note
-                                            })
-                                        }).ToListAsync();
+                                        .Include(d => d.Specialty)
+                                        .Include(d => d.Clinic)
+                                        .Include(d => d.Appointments)
+                                        .Select(doctor => doctor.ToDoctorWithDetailsDTO())
+                                        .ToListAsync();
 
         return doctors;
     }
@@ -46,28 +30,11 @@ public class DoctorService
     {
         var doctor = await _ctx.Doctors.AsNoTracking()
                                         .Where(doctor => doctor.Id == id)
-                                        .Select(doctor => new DoctorWithDetailsDTO
-                                        {
-                                            Id = doctor.Id,
-                                            FirstName = doctor.FirstName,
-                                            LastName = doctor.LastName,
-                                            Email = doctor.Email,
-                                            Specialty = new SpecialtyDTO { Id = doctor.SpecialtyId, Name = doctor.Specialty!.Name},
-                                            Clinic = new ClinicDTO { 
-                                                Id = doctor.ClinicId, 
-                                                Name = doctor.Clinic!.Name,
-                                                Phone = doctor.Clinic.Phone,
-                                                Email = doctor.Clinic.Email,
-                                                Address = doctor.Clinic.Address,
-                                                PostalCode = doctor.Clinic.PostalCode
-                                            },
-                                            Appointments = doctor.Appointments!.Select(appointment => new AppointmentDTO
-                                            {
-                                                Id = appointment.Id,
-                                                AppointmentDate = appointment.AppointmentDate,
-                                                Note = appointment.Note
-                                            })                                            
-                                        }).FirstOrDefaultAsync();
+                                        .Include(d => d.Specialty)
+                                        .Include(d => d.Clinic)
+                                        .Include(d => d.Appointments)
+                                        .Select(doctor => doctor.ToDoctorWithDetailsDTO())                                        
+                                        .FirstOrDefaultAsync();
         return doctor;
     }
 
@@ -75,64 +42,36 @@ public class DoctorService
     {
         var appointments = await _ctx.Appointments.AsNoTracking()
                                                   .Where(appointment => appointment.DoctorId == id)
-                                                  .Select(appointment => new AppointmentDTO
-                                                  {
-                                                      Id = appointment.Id,
-                                                      AppointmentDate = appointment.AppointmentDate,
-                                                      Note = appointment.Note
-                                                  })
+                                                  .Select(appointment => appointment.ToAppointmentDTO())
                                                   .ToListAsync();
         return appointments;
     }
 
-    public async Task<DoctorDTO> CreateDoctor(CreateDoctorDTO doctor)
+    public async Task<DoctorDTO> CreateDoctor(CreateDoctorDTO dto)
     {
-        var newDoctor = new Doctor
-        {
-            FirstName = doctor.FirstName,
-            LastName = doctor.LastName,
-            Email = doctor.Email,
-            SpecialtyId = doctor.SpecialtyId,
-            ClinicId = doctor.ClinicId   
-        };
+        var newDoctor = dto.ToDoctor();
 
         _ctx.Doctors.Add(newDoctor);
 
         await _ctx.SaveChangesAsync();
         
-        return new DoctorDTO
-        {
-            Id = newDoctor.Id,
-            FirstName = newDoctor.FirstName,
-            LastName = newDoctor.LastName,
-            Email = newDoctor.Email,
-            SpecialtyId = newDoctor.SpecialtyId,
-            ClinicId = newDoctor.ClinicId   
-        };
+        return newDoctor.ToDoctorDTO();
     }
 
-    public async Task<DoctorDTO?> UpdateDoctor(int id, UpdateDoctorDTO doctor)
+    public async Task<DoctorDTO?> UpdateDoctor(int id, UpdateDoctorDTO dto)
     {
-        var existingDoctor = await _ctx.Doctors.FindAsync(id);
-        if(existingDoctor == null) return null;
+        var existing = await _ctx.Doctors.FindAsync(id);
+        if(existing == null) return null;
 
-        existingDoctor.FirstName = doctor.FirstName;
-        existingDoctor.LastName = doctor.LastName;
-        existingDoctor.Email = doctor.Email;
-        existingDoctor.SpecialtyId = doctor.SpecialtyId;
-        existingDoctor.ClinicId = doctor.ClinicId;
+        existing.FirstName = dto.FirstName;
+        existing.LastName = dto.LastName;
+        existing.Email = dto.Email;
+        existing.SpecialtyId = dto.SpecialtyId;
+        existing.ClinicId = dto.ClinicId;
 
         await _ctx.SaveChangesAsync();
 
-        return new DoctorDTO
-        {
-            Id = existingDoctor.Id,
-            FirstName = existingDoctor.FirstName,
-            LastName = existingDoctor.LastName,
-            Email = existingDoctor.Email,
-            SpecialtyId = existingDoctor.SpecialtyId,
-            ClinicId = existingDoctor.ClinicId
-        };
+        return existing.ToDoctorDTO();
     }
 
     public async Task<bool> DeleteDoctor(int id)
