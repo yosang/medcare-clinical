@@ -27,6 +27,38 @@ If you need help with any instructions for the course assignment, contact your t
 
 ### ENDPOINTS
 
+#### Doctors
+- GET `api/doctors` - Returns a list of doctors.
+- GET `api/doctors/:id` - Returns a single doctor.
+- GET `api/doctors/:id/appointments` - Returns a list of appointments for doctor id.
+- POST `api/doctors` - Creates a new doctor.
+- PUT `api/doctors/:id` - Updates an existing doctor.
+- DELETE `api/doctors/:id` - Deletes an existing doctor.
+
+#### Statuses
+- GET `api/statuses` - Returns a list of statuses.
+- GET `api/statuses/:id` - Returns a single status.
+- GET `api/statuses/:id/appointments` - Returns a list of appointments for status id.
+- POST `api/statuses` - Creates a new status.
+- PUT `api/statuses/:id` - Updates an existing status.
+- DELETE `api/statuses/:id` - Deletes an existing status.
+
+#### Specialties
+- GET `api/specialties` - Returns a list of specialties.
+- GET `api/specialties/:id` - Returns a single specialty.
+- GET `api/specialties/:id/doctors` - Returns a list of doctors for specialty id.
+- POST `api/specialties` - Creates a new specialty.
+- PUT `api/specialties/:id` - Updates an existing specialty.
+- DELETE `api/specialties/:id` - Deletes an existing specialty.
+
+#### Categories
+- GET `api/categories` - Returns a list of categories.
+- GET `api/categories/:id` - Returns a single category.
+- GET `api/categories/:id/appointments` - Returns a list of appointments for category id.
+- POST `api/categories` - Creates a new category.
+- PUT `api/categories/:id` - Updates an existing category.
+- DELETE `api/categories/:id` - Deletes an existing category.
+
 #### Cities
 - GET `api/cities` - Returns a list of cities.
 - GET `api/cities/:id` - Returns a single city.
@@ -65,3 +97,7 @@ If you need help with any instructions for the course assignment, contact your t
 - [Version Control](https://github.com/) - Git + Github
 - [Notes on Feature branches workflow](https://gist.github.com/yosang/ff9fba77bc317562aa955b76a2c54c3a) - Github feature branches workflow
 - [AI for sample seed generation and questions around specific assumptions and implementation feedback](https://grok.com/) - Grok
+
+#### Articles and Posts
+- [Using AsNoTracking for read-only queries](https://learn.microsoft.com/en-us/ef/core/querying/tracking)
+- [Using .include when projecting with .select is redundant](https://stackoverflow.com/questions/38083735/when-to-use-include-in-ef-not-needed-in-projection)
