@@ -1,5 +1,6 @@
 using Context;
 using DTOS;
+using Extensions.Mappers;
 using Microsoft.EntityFrameworkCore;
 using Models;
 
@@ -17,17 +18,9 @@ public class CategoryService
     {
 
         var categories = await _ctx.Categories.AsNoTracking()
-                                            .Select(category => new CategoryWithDetailsDTO
-                                            {
-                                                Id = category.Id,
-                                                Name = category.Name,
-                                                Appointments = category.Appointments!.Select(appointment => new AppointmentDTO
-                                                {
-                                                    Id = appointment.Id,
-                                                    AppointmentDate = appointment.AppointmentDate,
-                                                    Note = appointment.Note
-                                                })
-                                            }).ToListAsync();
+                                              .Include(c => c.Appointments)
+                                              .Select(category => category.ToCategoryWithDetailsDTO())
+                                              .ToListAsync();
 
         return categories;
     }
@@ -35,70 +28,50 @@ public class CategoryService
     public async Task<CategoryWithDetailsDTO?> GetCategory(int id)
     {
         var category = await _ctx.Categories.AsNoTracking()
-                                        .Where(category => category.Id == id)
-                                        .Select(category => new CategoryWithDetailsDTO
-                                        {
-                                            Id = category.Id,
-                                            Name = category.Name,
-                                            Appointments = category.Appointments!.Select(appointment => new AppointmentDTO
-                                            {
-                                                Id = appointment.Id,
-                                                AppointmentDate = appointment.AppointmentDate,
-                                                Note = appointment.Note
-                                            })
-                                        }).FirstOrDefaultAsync();
+                                            .Where(category => category.Id == id)
+                                            .Include(c => c.Appointments)
+                                            .Select(category => category.ToCategoryWithDetailsDTO())
+                                            .FirstOrDefaultAsync();
         return category;
     }
 
     public async Task<IEnumerable<AppointmentDTO>> GetAppointments(int id)
     {
         var appointments = await _ctx.Appointments.AsNoTracking()
-                                        .Where(appointment => appointment.CategoryId == id)
-                                        .Select(appointment => new AppointmentDTO
-                                        {
-                                            Id = appointment.Id,
-                                            AppointmentDate = appointment.AppointmentDate,
-                                            Note = appointment.Note
-                                        })
-                                        .ToListAsync();
+                                                  .Where(appointment => appointment.CategoryId == id)
+                                                  .Select(appointment => appointment.ToAppointmentDTO())
+                                                  .ToListAsync();
         return appointments;
     }
 
-    public async Task<Category> CreateCategory(CreateCategoryDTO category)
+    public async Task<CategoryDTO> CreateCategory(CreateCategoryDTO dto)
     {
-        var newCategory = new Category
-        {
-            Name = category.Name
-        };
+        var newCategory = dto.ToCategory();
 
         _ctx.Categories.Add(newCategory);
 
         await _ctx.SaveChangesAsync();
-        return newCategory;
+        return newCategory.ToCategoryDTO();
     }
 
-    public async Task<CategoryDTO?> UpdateCategory(int id, UpdateCategoryDTO category)
+    public async Task<CategoryDTO?> UpdateCategory(int id, UpdateCategoryDTO dto)
     {
-        var existingCategory = await _ctx.Categories.FindAsync(id);
-        if(existingCategory == null) return null;
+        var existing = await _ctx.Categories.FindAsync(id);
+        if(existing == null) return null;
 
-        existingCategory.Name = category.Name;
+        existing.Name = dto.Name;
 
         await _ctx.SaveChangesAsync();
 
-        return new CategoryDTO
-        {
-            Id = existingCategory.Id,
-            Name = existingCategory.Name
-        };
+        return existing.ToCategoryDTO();
     }
 
     public async Task<bool> DeleteCategory(int id)
     {
-        var category = await _ctx.Categories.FindAsync(id);
-        if(category == null) return false;
+        var existing = await _ctx.Categories.FindAsync(id);
+        if(existing == null) return false;
 
-        _ctx.Remove(category);
+        _ctx.Categories.Remove(existing);
 
         await _ctx.SaveChangesAsync();
         

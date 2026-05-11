@@ -71,7 +71,7 @@ public class CityService
         var existing = await _ctx.Cities.FindAsync(id);
         if(existing == null) return false;
 
-        _ctx.Remove(existing);
+        _ctx.Cities.Remove(existing);
 
         await _ctx.SaveChangesAsync();
         

@@ -12,5 +12,23 @@ public static class CategoryMapper
             Id = category.Id,
             Name = category.Name
         };
-    }   
+    }
+
+    public static CategoryWithDetailsDTO ToCategoryWithDetailsDTO(this Category category)
+    {
+        return new CategoryWithDetailsDTO
+        {
+            Id = category.Id,
+            Name = category.Name,
+            Appointments = category.Appointments?.Select(appointments => appointments.ToAppointmentDTO())
+        };
+    }    
+
+    public static Category ToCategory(this CreateCategoryDTO dto)
+    {
+        return new Category
+        {
+            Name = dto.Name,
+        };
+    }
 }

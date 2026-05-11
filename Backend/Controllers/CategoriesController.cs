@@ -72,14 +72,8 @@ public class CategoryController : ControllerBase
     public async Task<ActionResult<CategoryDTO>> Create(CreateCategoryDTO category)
     {
         var result = await _service.CreateCategory(category);
-        
-        var created = new CategoryDTO
-        {
-            Id = result.Id,
-            Name = result.Name
-        };
 
-        return CreatedAtAction(nameof(Get), new { id = created.Id}, created);
+        return CreatedAtAction(nameof(Get), new { id = result.Id}, result);
     }
 
     /// <summary>Update a category</summary>
