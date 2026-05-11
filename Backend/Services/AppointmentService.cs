@@ -52,4 +52,34 @@ public class AppointmentService
 
         return newAp.ToAppointmentDTO();
     }
+
+    public async Task<AppointmentDTO?> UpdateAppointment(int id, UpdateAppointmentDTO dto)
+    {
+        var existing = await _ctx.Appointments.FindAsync(id);
+        if(existing == null) return null;
+
+        existing.AppointmentDate = dto.AppointmentDate;
+        existing.Note = dto.Note;
+        existing.PatientId = dto.PatientId;
+        existing.DoctorId = dto.DoctorId;
+        existing.ClinicId = dto.DoctorId;
+        existing.CategoryId = dto.CategoryId;
+        existing.StatusId = dto.StatusId;
+
+        await _ctx.SaveChangesAsync();
+
+        return existing.ToAppointmentDTO();
+    }
+
+    public async Task<bool> DeleteAppointment(int id)
+    {
+        var existing = await _ctx.Appointments.FindAsync(id);
+        if(existing == null) return false;
+
+        _ctx.Appointments.Remove(existing);
+
+        await _ctx.SaveChangesAsync();
+
+        return true;
+    }
 }

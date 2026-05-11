@@ -1,5 +1,6 @@
 using DTOS;
 using Microsoft.AspNetCore.Mvc;
+using Mysqlx.Crud;
 using Services;
 
 [ApiController]
@@ -45,6 +46,25 @@ public class AppointmentsController : ControllerBase
         return Ok(appointment);
     }
 
+    /// <summary>Create a new appointment</summary>
+    /// <remarks>
+    /// Sample request:
+    ///
+    ///     {
+    ///        "AppointmentDate":"2026-05-24",
+    ///        "Note":"Renewal of asthma medicine",
+    ///        "PatientId": 1,
+    ///        "DoctorId": 1,
+    ///        "ClinicId": 1,
+    ///        "CategoryId": 1,
+    ///        "StatusId": 1
+    ///    }
+    ///
+    /// </remarks>
+    /// <param name="dto"></param>
+    /// <response code="201">Resource created</response>
+    [HttpPost]
+    [ProducesResponseType(typeof(AppointmentDTO), StatusCodes.Status201Created)]
     [HttpPost]
     public async Task<ActionResult<AppointmentDTO>> Create(CreateAppointmentDTO dto)
     {
@@ -53,15 +73,48 @@ public class AppointmentsController : ControllerBase
         return CreatedAtAction(nameof(Get), new { id = result.Id}, result);
     }
 
+    /// <summary>Update an appointment</summary>
+    /// <remarks>
+    /// Sample request:
+    ///
+    ///     {
+    ///        "AppointmentDate":"2026-05-24",
+    ///        "Note":"Specialist referral",
+    ///        "PatientId": 1,
+    ///        "DoctorId": 1,
+    ///        "ClinicId": 1,
+    ///        "CategoryId": 1,
+    ///        "StatusId": 1
+    ///    }
+    ///
+    /// </remarks>
+    /// <param name="id"></param>
+    /// <param name="dto"></param>
+    /// <response code="204">Update successful, no content returned</response>
+    /// <response code="404">Resource not found by id</response>
     [HttpPut("{id}")]
-    public async Task<ActionResult<string>> Update(int id)
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> Update(int id, UpdateAppointmentDTO dto)
     {
-        return $"Appointment with id {id} updated";
+        var updated = await _service.UpdateAppointment(id, dto);
+        if(updated == null) return NotFound();
+
+        return NoContent();
     }
 
+    /// <summary>Delete an appointment</summary>
+    /// <param name="id"></param>
+    /// <response code="204">Deletion successful, no content returned</response>
+    /// <response code="404">Resource not found by id</response>
     [HttpDelete("{id}")]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<ActionResult<string>> Delete(int id)
     {
-        return $"Appointment with id {id} deleted";
+        var deleted = await _service.DeleteAppointment(id);
+        if(!deleted) return NotFound();
+
+        return NoContent();
     }
 }
