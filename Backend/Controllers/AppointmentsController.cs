@@ -1,15 +1,30 @@
+using DTOS;
 using Microsoft.AspNetCore.Mvc;
+using Services;
 
 [ApiController]
 [Route("api/[Controller]")]
 [Produces("application/json")]
 public class AppointmentsController : ControllerBase
 {
+    private readonly AppointmentService _service;
 
-    [HttpGet]
-    public async Task<ActionResult<string>> Get()
+    public AppointmentsController(AppointmentService service)
     {
-        return "List of appointments";
+        _service = service;
+    }
+
+    /// <summary>
+    /// Returns a list of appointments
+    /// </summary>
+    /// <response code="200">Resources returned</response>
+    [HttpGet]
+    [ProducesResponseType(typeof(IEnumerable<AppointmentWithDetailsDTO>), StatusCodes.Status200OK)]
+    public async Task<ActionResult<IEnumerable<AppointmentWithDetailsDTO>>> Get()
+    {
+        var appointments = await _service.GetAppointments();
+        
+        return Ok(appointments);
     }
 
     [HttpGet("{id}")]

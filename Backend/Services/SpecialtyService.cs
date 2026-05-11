@@ -6,7 +6,7 @@ using Models;
 namespace Services;
 public class SpecialtyService
 {
-    public readonly DatabaseContext _ctx;
+    private readonly DatabaseContext _ctx;
 
     public SpecialtyService(DatabaseContext context)
     {

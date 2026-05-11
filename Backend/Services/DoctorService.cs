@@ -6,7 +6,7 @@ using Models;
 namespace Services;
 public class DoctorService
 {
-    public readonly DatabaseContext _ctx;
+    private readonly DatabaseContext _ctx;
 
     public DoctorService(DatabaseContext context)
     {

@@ -8,7 +8,8 @@ public static class ServiceExtension
                 .AddScoped<SpecialtyService>()
                 .AddScoped<StatusService>()
                 .AddScoped<CategoryService>()
-                .AddScoped<DoctorService>();
+                .AddScoped<DoctorService>()
+                .AddScoped<AppointmentService>();
 
         return service;
     }
