@@ -83,6 +83,7 @@ If you need help with any instructions for the course assignment, contact your t
 - [.NET Dependency Injection](https://learn.microsoft.com/en-us/dotnet/core/extensions/dependency-injection/overview) - Microsoft Docs
 - [.NET Service Registration](https://learn.microsoft.com/en-us/dotnet/core/extensions/dependency-injection/service-registration) - Microsoft Docs
 - [ASP.NET Core Error Handling](https://learn.microsoft.com/en-us/aspnet/core/fundamentals/error-handling?view=aspnetcore-10.0) - Microsoft 
+- [Extension Members/Methods](https://learn.microsoft.com/en-us/dotnet/csharp/programming-guide/classes-and-structs/extension-methods)
 
 #### Tutorials and Learning resources
 - [Normalization](https://www.youtube.com/watch?v=ABwD8IYByfk) - YouTube tutorial

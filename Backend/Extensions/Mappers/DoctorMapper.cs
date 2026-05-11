@@ -1,7 +1,7 @@
 using DTOS;
 using Models;
 
-namespace Services.Mappers;
+namespace Extensions.Mappers;
 
 public static class DoctorMapper
 {
