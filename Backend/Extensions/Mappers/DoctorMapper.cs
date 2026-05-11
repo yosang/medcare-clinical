@@ -17,4 +17,14 @@ public static class DoctorMapper
           ClinicId = doctor.ClinicId  
         };
     }
+
+    public static Doctor ToDoctor(this CreateDoctorDTO dto)
+    {
+        return new Doctor
+        {
+            FirstName = dto.FirstName,
+            LastName = dto.LastName,
+            Email = dto.Email,
+        };
+    }
 }

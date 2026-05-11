@@ -44,7 +44,7 @@ public class StatusService
         return appointments;
     }
 
-    public async Task<Status> CreateStatus(CreateStatusDTO dto)
+    public async Task<StatusDTO> CreateStatus(CreateStatusDTO dto)
     {
         var newStatus = dto.ToStatus();
 
@@ -52,7 +52,7 @@ public class StatusService
 
         await _ctx.SaveChangesAsync();
 
-        return newStatus;
+        return newStatus.ToStatusDTO();
     }
 
     public async Task<StatusDTO?> UpdateStatus(int id, UpdateStatusDTO dto)
@@ -72,7 +72,7 @@ public class StatusService
         var existing = await _ctx.Statuses.FindAsync(id);
         if(existing == null) return false;
 
-        _ctx.Remove(existing);
+        _ctx.Statuses.Remove(existing);
 
         await _ctx.SaveChangesAsync();
         

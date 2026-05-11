@@ -1,5 +1,6 @@
 using Context;
 using DTOS;
+using Extensions.Mappers;
 using Microsoft.EntityFrameworkCore;
 using Models;
 
@@ -17,18 +18,9 @@ public class SpecialtyService
     {
 
         var specialties = await _ctx.Specialties.AsNoTracking()
-                                                .Select(specialty => new SpecialtyWithDetailsDTO
-                                                {
-                                                    Id = specialty.Id,
-                                                    Name = specialty.Name,
-                                                    Doctors = specialty.Doctors!.Select(doctor => new DoctorDTO
-                                                    {
-                                                        Id = doctor.Id,
-                                                        FirstName = doctor.FirstName,
-                                                        LastName = doctor.LastName,
-                                                        Email = doctor.Email,
-                                                    })
-                                                }).ToListAsync();
+                                                .Include(s => s.Doctors)
+                                                .Select(specialty => specialty.ToSpecialtyWithDetailsDTO())
+                                                .ToListAsync();
 
         return specialties;
     }
@@ -37,18 +29,9 @@ public class SpecialtyService
     {
         var specialty = await _ctx.Specialties.AsNoTracking()
                                               .Where(specialty => specialty.Id == id)
-                                              .Select(specialty => new SpecialtyWithDetailsDTO
-                                              {
-                                                  Id = specialty.Id,
-                                                  Name = specialty.Name,
-                                                  Doctors = specialty.Doctors!.Select(doctor => new DoctorDTO
-                                                  {
-                                                      Id = doctor.Id,
-                                                      FirstName = doctor.FirstName,
-                                                      LastName = doctor.LastName,
-                                                      Email = doctor.Email,
-                                                  })
-                                              }).FirstOrDefaultAsync();
+                                              .Include(s => s.Doctors)
+                                              .Select(specialty => specialty.ToSpecialtyWithDetailsDTO())
+                                              .FirstOrDefaultAsync();
         return specialty;
     }
 
@@ -56,52 +39,40 @@ public class SpecialtyService
     {
         var doctors = await _ctx.Doctors.AsNoTracking()
                                         .Where(doctor => doctor.SpecialtyId == id)
-                                        .Select(doctor => new DoctorDTO
-                                        {
-                                            Id = doctor.Id,
-                                            FirstName = doctor.FirstName,
-                                            LastName = doctor.LastName,
-                                            Email = doctor.Email,
-                                        })
+                                        .Select(doctor => doctor.ToDoctorDTO())
                                         .ToListAsync();
         return doctors;
     }
 
-    public async Task<Specialty> CreateSpecialty(CreateSpecialtyDTO specialty)
+    public async Task<Specialty> CreateSpecialty(CreateSpecialtyDTO dto)
     {
-        var newSpecialty = new Specialty
-        {
-            Name = specialty.Name
-        };
+        var newSpecialty = dto.ToSpecialty();
 
         _ctx.Specialties.Add(newSpecialty);
 
         await _ctx.SaveChangesAsync();
+
         return newSpecialty;
     }
 
-    public async Task<SpecialtyDTO?> UpdateSpecialty(int id, UpdateSpecialtyDTO specialty)
+    public async Task<SpecialtyDTO?> UpdateSpecialty(int id, UpdateSpecialtyDTO dto)
     {
-        var existingSpecialty = await _ctx.Specialties.FindAsync(id);
-        if(existingSpecialty == null) return null;
+        var existing = await _ctx.Specialties.FindAsync(id);
+        if(existing == null) return null;
 
-        existingSpecialty.Name = specialty.Name;
+        existing.Name = dto.Name;
 
         await _ctx.SaveChangesAsync();
 
-        return new SpecialtyDTO
-        {
-            Id = existingSpecialty.Id,
-            Name = existingSpecialty.Name
-        };
+        return existing.ToSpecialtyDTO();
     }
 
     public async Task<bool> DeleteSpecialty(int id)
     {
-        var specialty = await _ctx.Specialties.FindAsync(id);
-        if(specialty == null) return false;
+        var existing = await _ctx.Specialties.FindAsync(id);
+        if(existing == null) return false;
 
-        _ctx.Remove(specialty);
+        _ctx.Specialties.Remove(existing);
 
         await _ctx.SaveChangesAsync();
         

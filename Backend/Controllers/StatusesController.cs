@@ -72,14 +72,8 @@ public class StatusController : ControllerBase
     public async Task<ActionResult<StatusDTO>> Create(CreateStatusDTO status)
     {
         var result = await _service.CreateStatus(status);
-        
-        var created = new StatusDTO
-        {
-            Id = result.Id,
-            Name = result.Name
-        };
 
-        return CreatedAtAction(nameof(Get), new { id = created.Id}, created);
+        return CreatedAtAction(nameof(Get), new { id = result.Id}, result);
     }
 
     /// <summary>Update a status</summary>
