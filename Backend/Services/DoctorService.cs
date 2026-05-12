@@ -63,11 +63,7 @@ public class DoctorService
         var existing = await _ctx.Doctors.FindAsync(id);
         if(existing == null) return null;
 
-        existing.FirstName = dto.FirstName;
-        existing.LastName = dto.LastName;
-        existing.Email = dto.Email;
-        existing.SpecialtyId = dto.SpecialtyId;
-        existing.ClinicId = dto.ClinicId;
+        existing.UpdateWith(dto);
 
         await _ctx.SaveChangesAsync();
 

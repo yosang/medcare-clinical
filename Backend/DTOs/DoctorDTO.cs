@@ -1,3 +1,4 @@
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
 namespace DTOS;
@@ -41,26 +42,32 @@ public class CreateDoctorDTO {
     [MaxLength(100)]
     public string? Email { get; set; }
 
+    [DefaultValue(1)]
+    [Range(1, int.MaxValue)]
     public int SpecialtyId { get; set; }
+    [DefaultValue(1)]
+    [Range(1, int.MaxValue)]
     public int ClinicId { get; set; }
 }
 
 public class UpdateDoctorDTO
 {
-    [Required]
     [MinLength(2)]
     [MaxLength(100)]
-    public string FirstName { get; set;} = null!;
+    public string? FirstName { get; set;}
     
-    [Required]
     [MinLength(2)]
     [MaxLength(100)]
-    public string LastName { get; set;} = null!;
+    public string? LastName { get; set;}
 
     [EmailAddress]
     [MinLength(2)]
     [MaxLength(100)]
     public string? Email { get; set;}
-    public int SpecialtyId { get; set; }
-    public int ClinicId { get; set; }
+    [DefaultValue(1)]
+    [Range(1, int.MaxValue)]
+    public int? SpecialtyId { get; set; }
+    [DefaultValue(1)]
+    [Range(1, int.MaxValue)]
+    public int? ClinicId { get; set; }
 }

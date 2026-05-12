@@ -30,4 +30,9 @@ public static class CityMapper
             Name = dto.Name
         };
     }
+
+    public static void UpdateWith(this City existing, UpdateCityDTO dto)
+    {
+        if(!string.IsNullOrWhiteSpace(dto.Name)) existing.Name = dto.Name;
+    }
 }

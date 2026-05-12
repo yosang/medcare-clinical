@@ -31,4 +31,9 @@ public static class CategoryMapper
             Name = dto.Name,
         };
     }
+
+    public static void UpdateWith(this Category existing, UpdateCategoryDTO dto)
+    {
+        if(!string.IsNullOrWhiteSpace(dto.Name)) existing.Name = dto.Name;
+    }
 }

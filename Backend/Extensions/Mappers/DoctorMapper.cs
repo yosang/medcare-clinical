@@ -42,4 +42,13 @@ public static class DoctorMapper
             ClinicId = dto.ClinicId
         };
     }
+
+    public static void UpdateWith(this Doctor existing, UpdateDoctorDTO dto)
+    {
+        if(!string.IsNullOrWhiteSpace(dto.FirstName)) existing.FirstName = dto.FirstName; 
+        if(!string.IsNullOrWhiteSpace(dto.LastName)) existing.LastName = dto.LastName; 
+        if(!string.IsNullOrWhiteSpace(dto.Email)) existing.Email = dto.Email; 
+        if(dto.SpecialtyId.HasValue) existing.SpecialtyId = dto.SpecialtyId.Value;
+        if(dto.ClinicId.HasValue) existing.ClinicId = dto.ClinicId.Value;
+    }
 }

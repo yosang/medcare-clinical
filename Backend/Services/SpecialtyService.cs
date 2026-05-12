@@ -60,7 +60,7 @@ public class SpecialtyService
         var existing = await _ctx.Specialties.FindAsync(id);
         if(existing == null) return null;
 
-        existing.Name = dto.Name;
+        existing.UpdateWith(dto);
 
         await _ctx.SaveChangesAsync();
 

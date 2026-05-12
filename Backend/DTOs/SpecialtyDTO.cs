@@ -25,8 +25,7 @@ public class CreateSpecialtyDTO {
 
 public class UpdateSpecialtyDTO
 {
-    [Required]
     [MinLength(2)]
     [MaxLength(100)]
-    public string Name { get; set;} = null!;
+    public string? Name { get; set;}
 }

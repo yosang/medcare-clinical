@@ -29,4 +29,9 @@ public static class SpecialtyMapper
             Name = dto.Name
         };
     }
+
+    public static void UpdateWith(this Specialty existing, UpdateSpecialtyDTO dto)
+    {
+        if(!string.IsNullOrWhiteSpace(dto.Name)) existing.Name = dto.Name;
+    }
 }

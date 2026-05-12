@@ -59,7 +59,7 @@ public class CityService
         var existing = await _ctx.Cities.FindAsync(id);
         if(existing == null) return null;
 
-        existing.Name = dto.Name;
+        existing.UpdateWith(dto);
 
         await _ctx.SaveChangesAsync();
 
