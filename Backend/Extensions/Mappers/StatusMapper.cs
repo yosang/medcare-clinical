@@ -31,4 +31,9 @@ public static class StatusMapper
             Appointments = status.Appointments?.Select(appointment => appointment.ToAppointmentDTO())
         };
     }
+
+    public static void UpdateWith(this Status existing, UpdateStatusDTO dto)
+    {
+        if(!string.IsNullOrWhiteSpace(dto.Name)) existing.Name = dto.Name;
+    }
 }

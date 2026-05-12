@@ -25,8 +25,7 @@ public class CreateStatusDTO {
 
 public class UpdateStatusDTO
 {
-    [Required]
     [MinLength(2)]
     [MaxLength(100)]
-    public string Name { get; set;} = null!;
+    public string? Name { get; set;}
 }

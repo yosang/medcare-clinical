@@ -60,7 +60,7 @@ public class StatusService
         var existing = await _ctx.Statuses.FindAsync(id);
         if(existing == null) return null;
 
-        existing.Name = dto.Name;
+        existing.UpdateWith(dto);
 
         await _ctx.SaveChangesAsync();
 
