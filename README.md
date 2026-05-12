@@ -89,6 +89,7 @@ If you need help with any instructions for the course assignment, contact your t
 - [Normalization](https://www.youtube.com/watch?v=ABwD8IYByfk) - YouTube tutorial
 - [Notes on Normalization](https://gist.github.com/yosang/1754a374cf3c52b89b10bbe99af9db78) - Github Gists
 - [REST API Design Rulebok](https://www.oreilly.com/library/view/rest-api-design/9781449317904/) - Physical book
+- [C# 12 Pocket Reference](https://www.oreilly.com/library/view/c-12-pocket/9781098147532/) - Physical book
 
 #### Tools and additional resources
 - [DBMS Online Tool for reverse engineering a SQL schema](https://dbdiagram.io/d) - dbdiagram.io
