@@ -44,4 +44,14 @@ public static class ClinicMapper
             CityId = dto.CityId
         };
     }   
+
+    public static void UpdateWith(this Clinic clinic, UpdateClinicDTO dto)
+    {
+        if(!string.IsNullOrWhiteSpace(dto.Name)) clinic.Name = dto.Name;
+        if(!string.IsNullOrWhiteSpace(dto.Phone)) clinic.Phone = dto.Phone;
+        if(!string.IsNullOrWhiteSpace(dto.Email)) clinic.Email = dto.Email;
+        if(!string.IsNullOrWhiteSpace(dto.Address)) clinic.Address = dto.Address;
+        if(!string.IsNullOrWhiteSpace(dto.PostalCode)) clinic.PostalCode = dto.PostalCode;
+        if(dto.CityId > 0) clinic.CityId = dto.CityId;
+    }
 }

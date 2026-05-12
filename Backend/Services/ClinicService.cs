@@ -68,12 +68,7 @@ public class ClinicService
         var existing = await _ctx.Clinics.FindAsync(id);
         if(existing == null) return null;
 
-        existing.Name = dto.Name;
-        existing.Phone = dto.Phone;
-        existing.Email = dto.Email;
-        existing.Address = dto.Address;
-        existing.PostalCode = dto.PostalCode;
-        existing.CityId = dto.CityId;
+        existing.UpdateWith(dto);
 
         await _ctx.SaveChangesAsync();
 
