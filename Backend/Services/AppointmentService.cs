@@ -58,13 +58,7 @@ public class AppointmentService
         var existing = await _ctx.Appointments.FindAsync(id);
         if(existing == null) return null;
 
-        existing.AppointmentDate = dto.AppointmentDate;
-        existing.Note = dto.Note;
-        existing.PatientId = dto.PatientId;
-        existing.DoctorId = dto.DoctorId;
-        existing.ClinicId = dto.DoctorId;
-        existing.CategoryId = dto.CategoryId;
-        existing.StatusId = dto.StatusId;
+        existing.UpdateWith(dto);
 
         await _ctx.SaveChangesAsync();
 

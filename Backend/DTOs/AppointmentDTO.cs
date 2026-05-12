@@ -1,3 +1,4 @@
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
 namespace DTOS;
@@ -29,23 +30,42 @@ public class CreateAppointmentDTO
     public DateTime AppointmentDate { get; set; }
     public string? Note { get; set; }
 
+    [DefaultValue(1)]
+    [Range(1, int.MaxValue)]
     public int PatientId { get; set; }
+    [DefaultValue(1)]
+    [Range(1, int.MaxValue)]
     public int DoctorId { get; set; }
+    [DefaultValue(1)]
+    [Range(1, int.MaxValue)]
     public int ClinicId { get; set; }
+    [DefaultValue(1)]
+    [Range(1, int.MaxValue)]
     public int CategoryId { get; set; }
+    [DefaultValue(1)]
+    [Range(1, int.MaxValue)]
     public int StatusId { get; set; }
 }
 
 public class UpdateAppointmentDTO
 {
-    [Required]
     [DataType(DataType.DateTime)]
-    public DateTime AppointmentDate { get; set; }
+    public DateTime? AppointmentDate { get; set; }
     public string? Note { get; set; }
 
-    public int PatientId { get; set; }
-    public int DoctorId { get; set; }
-    public int ClinicId { get; set; }
-    public int CategoryId { get; set; }
-    public int StatusId { get; set; }
+    [DefaultValue(1)]
+    [Range(1, int.MaxValue)]
+    public int? PatientId { get; set; }
+    [DefaultValue(1)]
+    [Range(1, int.MaxValue)]
+    public int? DoctorId { get; set; }
+    [DefaultValue(1)]
+    [Range(1, int.MaxValue)]
+    public int? ClinicId { get; set; }
+    [DefaultValue(1)]
+    [Range(1, int.MaxValue)]
+    public int? CategoryId { get; set; }
+    [DefaultValue(1)]
+    [Range(1, int.MaxValue)]
+    public int? StatusId { get; set; }
 }
