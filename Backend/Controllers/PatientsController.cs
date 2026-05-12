@@ -63,7 +63,7 @@ public class PatientsController : ControllerBase
     ///       "phone": "24242424",
     ///       "email": "cb@mail.com",
     ///       "dateOfBirth": "1984-03-22",
-    ///       "nationalIdentityNumber": 66666666,
+    ///       "nationalIdentityNumber": "66666666666",
     ///       "passwordHash": "FAKEHASH",
     ///       "isRegistered": true
     ///     }
@@ -87,12 +87,12 @@ public class PatientsController : ControllerBase
     /// Sample request:
     /// 
     ///     {
-    ///       "firstName": "Carina",
-    ///       "lastName": "Bebek",
+    ///       "firstName": "Markus",
+    ///       "lastName": "Hakon",
     ///       "phone": "24242424",
-    ///       "email": "cb@mail.com",
+    ///       "email": "mh@mail.com",
     ///       "dateOfBirth": "1984-03-22",
-    ///       "nationalIdentityNumber": 66666666,
+    ///       "nationalIdentityNumber": "22222222222",
     ///       "passwordHash": "FAKEHASH",
     ///       "isRegistered": true
     ///     }

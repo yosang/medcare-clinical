@@ -58,14 +58,7 @@ public class PatientService
         var existing = await _ctx.Patients.FindAsync(id);
         if (existing == null) return null;
 
-        existing.FirstName = dto.FirstName;
-        existing.LastName = dto.LastName;
-        existing.Phone = dto.Phone;
-        existing.Email = dto.Email;
-        existing.DateOfBirth = dto.DateOfBirth;
-        existing.NationalIdentityNumber = dto.NationalIdentityNumber;
-        existing.PasswordHash = dto.PasswordHash;
-        existing.IsRegistered = dto.IsRegistered;
+        existing.UpdateWith(dto);
 
         await _ctx.SaveChangesAsync();
 

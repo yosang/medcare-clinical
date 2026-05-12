@@ -9,7 +9,7 @@ using MySql.EntityFrameworkCore.Metadata;
 namespace booking_rest_api.Migrations
 {
     /// <inheritdoc />
-    public partial class newMigration : Migration
+    public partial class freshMigration : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -56,7 +56,7 @@ namespace booking_rest_api.Migrations
                     Phone = table.Column<string>(type: "longtext", nullable: true),
                     Email = table.Column<string>(type: "longtext", nullable: true),
                     DateOfBirth = table.Column<DateTime>(type: "datetime(6)", nullable: true),
-                    NationalIdentityNumber = table.Column<int>(type: "int", nullable: true),
+                    NationalIdentityNumber = table.Column<string>(type: "longtext", nullable: true),
                     PasswordHash = table.Column<string>(type: "longtext", nullable: true),
                     IsRegistered = table.Column<bool>(type: "tinyint(1)", nullable: false)
                 },
@@ -226,9 +226,9 @@ namespace booking_rest_api.Migrations
                 columns: new[] { "Id", "DateOfBirth", "Email", "FirstName", "IsRegistered", "LastName", "NationalIdentityNumber", "PasswordHash", "Phone" },
                 values: new object[,]
                 {
-                    { 1, new DateTime(1992, 5, 24, 0, 0, 0, 0, DateTimeKind.Unspecified), "mark.j@mail.com", "Mark", true, "Johanson", 524231231, "FAKEHASH", "24242424" },
-                    { 2, new DateTime(1991, 2, 13, 0, 0, 0, 0, DateTimeKind.Unspecified), "tobben@mail.com", "Tobias", true, "Karevik", 66666666, "FAKEHASH", "555555" },
-                    { 3, new DateTime(1982, 8, 4, 0, 0, 0, 0, DateTimeKind.Unspecified), "danny@mail.com", "Daniela", true, "Thomson", 878787878, "FAKEHASH", "333222333" },
+                    { 1, new DateTime(1992, 5, 24, 0, 0, 0, 0, DateTimeKind.Unspecified), "mark.j@mail.com", "Mark", true, "Johanson", "524231231", "FAKEHASH", "24242424" },
+                    { 2, new DateTime(1991, 2, 13, 0, 0, 0, 0, DateTimeKind.Unspecified), "tobben@mail.com", "Tobias", true, "Karevik", "66666666", "FAKEHASH", "555555" },
+                    { 3, new DateTime(1982, 8, 4, 0, 0, 0, 0, DateTimeKind.Unspecified), "danny@mail.com", "Daniela", true, "Thomson", "878787878", "FAKEHASH", "333222333" },
                     { 4, new DateTime(1986, 10, 7, 0, 0, 0, 0, DateTimeKind.Unspecified), "carlos@mail.com", "Carlos", false, "Rodriguez", null, null, "777788877" },
                     { 5, new DateTime(1984, 3, 22, 0, 0, 0, 0, DateTimeKind.Unspecified), "jandan@mail.com", "Jan", false, "Dan", null, null, "222777722" }
                 });

@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace booking_rest_api.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20260512055446_newMigration")]
-    partial class newMigration
+    [Migration("20260512164028_freshMigration")]
+    partial class freshMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -331,8 +331,8 @@ namespace booking_rest_api.Migrations
                         .IsRequired()
                         .HasColumnType("varchar(255)");
 
-                    b.Property<int?>("NationalIdentityNumber")
-                        .HasColumnType("int");
+                    b.Property<string>("NationalIdentityNumber")
+                        .HasColumnType("longtext");
 
                     b.Property<string>("PasswordHash")
                         .HasColumnType("longtext");
@@ -356,7 +356,7 @@ namespace booking_rest_api.Migrations
                             FirstName = "Mark",
                             IsRegistered = true,
                             LastName = "Johanson",
-                            NationalIdentityNumber = 524231231,
+                            NationalIdentityNumber = "524231231",
                             PasswordHash = "FAKEHASH",
                             Phone = "24242424"
                         },
@@ -368,7 +368,7 @@ namespace booking_rest_api.Migrations
                             FirstName = "Tobias",
                             IsRegistered = true,
                             LastName = "Karevik",
-                            NationalIdentityNumber = 66666666,
+                            NationalIdentityNumber = "66666666",
                             PasswordHash = "FAKEHASH",
                             Phone = "555555"
                         },
@@ -380,7 +380,7 @@ namespace booking_rest_api.Migrations
                             FirstName = "Daniela",
                             IsRegistered = true,
                             LastName = "Thomson",
-                            NationalIdentityNumber = 878787878,
+                            NationalIdentityNumber = "878787878",
                             PasswordHash = "FAKEHASH",
                             Phone = "333222333"
                         },

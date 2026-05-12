@@ -11,7 +11,7 @@ public class Patient
     public string? Phone { get; set; }
     public string? Email { get; set; }
     public DateTime? DateOfBirth { get; set; }
-    public int? NationalIdentityNumber { get; set; }
+    public string? NationalIdentityNumber { get; set; }
     public string? PasswordHash { get; set; }
     public bool IsRegistered { get; set; } = false;
 

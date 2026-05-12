@@ -84,6 +84,7 @@ If you need help with any instructions for the course assignment, contact your t
 - [.NET Service Registration](https://learn.microsoft.com/en-us/dotnet/core/extensions/dependency-injection/service-registration) - Microsoft Docs
 - [ASP.NET Core Error Handling](https://learn.microsoft.com/en-us/aspnet/core/fundamentals/error-handling?view=aspnetcore-10.0) - Microsoft 
 - [Extension Members/Methods](https://learn.microsoft.com/en-us/dotnet/csharp/programming-guide/classes-and-structs/extension-methods)
+- [Nullable ints, DateTime and using .HasValue](https://learn.microsoft.com/en-us/dotnet/api/system.nullable-1.hasvalue?view=netframework-4.8.1&viewFallbackFrom=net-10.0)
 
 #### Tutorials and Learning resources
 - [Normalization](https://www.youtube.com/watch?v=ABwD8IYByfk) - YouTube tutorial

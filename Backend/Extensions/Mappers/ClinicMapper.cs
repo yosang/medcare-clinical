@@ -52,6 +52,6 @@ public static class ClinicMapper
         if(!string.IsNullOrWhiteSpace(dto.Email)) clinic.Email = dto.Email;
         if(!string.IsNullOrWhiteSpace(dto.Address)) clinic.Address = dto.Address;
         if(!string.IsNullOrWhiteSpace(dto.PostalCode)) clinic.PostalCode = dto.PostalCode;
-        if(dto.CityId > 0) clinic.CityId = dto.CityId;
+        if(dto.CityId.HasValue) clinic.CityId = dto.CityId.Value;
     }
 }

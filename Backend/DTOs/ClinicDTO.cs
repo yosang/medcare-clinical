@@ -1,3 +1,4 @@
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
 namespace DTOS;
@@ -42,15 +43,16 @@ public class CreateClinicDTO
     public string? Address { get; set; }
     public string? PostalCode { get; set; }
 
-    public int CityId { get; set; }
+    [DefaultValue(1)]
+    [Range(1, int.MaxValue)]
+    public int CityId { get; set; }
 }
 
 public class UpdateClinicDTO
 {
-    [Required]
     [MinLength(2)]
     [MaxLength(100)]
-    public string Name { get; set; } = null!;
+    public string? Name { get; set; }
     
     [Phone]
     public string? Phone { get; set; }
@@ -60,5 +62,5 @@ public class UpdateClinicDTO
     public string? Address { get; set; }
     public string? PostalCode { get; set; }
 
-    public int CityId { get; set; }
+    public int? CityId { get; set; }
 }
