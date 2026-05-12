@@ -27,6 +27,21 @@ If you need help with any instructions for the course assignment, contact your t
 
 ### ENDPOINTS
 
+#### Appointments
+- GET `api/appointments` - Returns a list of appointments.
+- GET `api/appointments/:id` - Returns a single appointment.
+- POST `api/appointments` - Creates a new appointment.
+- PUT `api/appointments/:id` - Updates an existing appointment.
+- DELETE `api/appointments/:id` - Deletes an existing appointment.
+
+#### Patients
+- GET `api/patients` - Returns a list of patients.
+- GET `api/patients/:id` - Returns a single patient.
+- GET `api/patients/:id/appointments` - Returns a list of appointments for patient id.
+- POST `api/patients` - Creates a new patient.
+- PUT `api/patients/:id` - Updates an existing patient.
+- DELETE `api/patients/:id` - Deletes an existing patient.
+
 #### Doctors
 - GET `api/doctors` - Returns a list of doctors.
 - GET `api/doctors/:id` - Returns a single doctor.
@@ -36,12 +51,12 @@ If you need help with any instructions for the course assignment, contact your t
 - DELETE `api/doctors/:id` - Deletes an existing doctor.
 
 #### Statuses
-- GET `api/statuses` - Returns a list of statuses.
-- GET `api/statuses/:id` - Returns a single status.
-- GET `api/statuses/:id/appointments` - Returns a list of appointments for status id.
-- POST `api/statuses` - Creates a new status.
-- PUT `api/statuses/:id` - Updates an existing status.
-- DELETE `api/statuses/:id` - Deletes an existing status.
+- GET `api/status` - Returns a list of statuses.
+- GET `api/status/:id` - Returns a single status.
+- GET `api/status/:id/appointments` - Returns a list of appointments for status id.
+- POST `api/status` - Creates a new status.
+- PUT `api/status/:id` - Updates an existing status.
+- DELETE `api/status/:id` - Deletes an existing status.
 
 #### Specialties
 - GET `api/specialties` - Returns a list of specialties.
@@ -66,6 +81,15 @@ If you need help with any instructions for the course assignment, contact your t
 - POST `api/cities` - Creates a new city.
 - PUT `api/cities/:id` - Updates an existing city.
 - DELETE `api/cities/:id` - Deletes an existing city.
+
+#### Clinics
+- GET `api/clinics` - Returns a list of clinics.
+- GET `api/clinics/:id` - Returns a single clinic.
+- GET `api/clinics/:id/doctors` - Returns a list of doctors for clinic id.
+- GET `api/clinics/:id/appointments` - Returns a list of appointments for clinic id.
+- POST `api/clinics` - Creates a new clinic.
+- PUT `api/clinics/:id` - Updates an existing clinic.
+- DELETE `api/clinics/:id` - Deletes an existing clinic.
 
 ### REFERENCES
 
