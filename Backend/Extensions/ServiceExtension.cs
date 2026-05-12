@@ -10,7 +10,8 @@ public static class ServiceExtension
                 .AddScoped<CategoryService>()
                 .AddScoped<DoctorService>()
                 .AddScoped<AppointmentService>()
-                .AddScoped<PatientService>();
+                .AddScoped<PatientService>()
+                .AddScoped<ClinicService>();
 
         return service;
     }

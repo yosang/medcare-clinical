@@ -7,7 +7,7 @@ builder.Services.AddDatabaseConfig(builder.Configuration)
                 .AddServices()
                 .AddSwagger()
                 .AddExceptionHandler<GlobalExceptionHandler>()
-                .AddProblemDetails()
+                .AddProblemDetails() // We dont need this, its not being used
                 .AddControllers();
 
 var app = builder.Build();

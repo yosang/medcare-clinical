@@ -1,7 +1,7 @@
 using DTOS;
-using Extensions.Mappers;
 using Models;
 
+namespace Extensions.Mappers;
 public static class SpecialtyMapper
 {
     public static SpecialtyDTO ToSpecialtyDTO(this Specialty specialty)

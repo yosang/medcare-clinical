@@ -1,21 +1,34 @@
+using DTOS;
 using Microsoft.AspNetCore.Mvc;
+using Services;
 
 [ApiController]
 [Route("api/[Controller]")]
 [Produces("application/json")]
 public class ClinicsController : ControllerBase
 {
+    private readonly ClinicService _service;
+
+    public ClinicsController(ClinicService service)
+    {
+        _service = service;
+    }
 
     [HttpGet]
-    public async Task<ActionResult<string>> Get()
+    public async Task<ActionResult<IEnumerable<ClinicWithDetailsDTO>>> Get()
     {
-        return "List of clinics";
+        var clinics = await _service.GetClinics();
+
+        return Ok(clinics);
     }
 
     [HttpGet("{id}")]
-    public async Task<ActionResult<string>> Get(int id)
+    public async Task<ActionResult<ClinicWithDetailsDTO>> Get(int id)
     {
-        return $"A single clinic with id {id}";
+        var clinic = await _service.GetClinic(id);
+        if(clinic == null) return NotFound();
+
+        return Ok(clinic);
     }
 
     [HttpGet("{id}/doctors")]
@@ -25,20 +38,27 @@ public class ClinicsController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<ActionResult<string>> Create()
+    public async Task<ActionResult<ClinicDTO>> Create(CreateClinicDTO dto)
     {
-        return "Clinic created";
+        var result = await _service.CreateClinic(dto);
+
+        return CreatedAtAction(nameof(Get), new { id = result.Id}, result);
     }
 
     [HttpPut("{id}")]
-    public async Task<ActionResult<string>> Update(int id)
+    public async Task<IActionResult> Update(int id, UpdateClinicDTO dto)
     {
-        return $"Clinic with id {id} updated";
+        var updated = await _service.UpdateClinic(id, dto);
+        if(updated == null) return NotFound();
+        
+        return NoContent();
     }
 
     [HttpDelete("{id}")]
     public async Task<ActionResult<string>> Delete(int id)
     {
-        return $"Clinic with id {id} deleted";
+        var deleted = await _service.DeleteClinic(id);
+        if(!deleted) return NotFound();
+        return NoContent();
     }
 }

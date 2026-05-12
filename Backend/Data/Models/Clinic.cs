@@ -18,4 +18,5 @@ public class Clinic
     // Navigation props
     public City? City { get; set; }
     public IEnumerable<Doctor>? Doctors { get; set; }
+    public IEnumerable<Appointment>? Appointments { get; set; }
 }

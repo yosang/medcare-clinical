@@ -4,10 +4,12 @@ using MySql.EntityFrameworkCore.Metadata;
 
 #nullable disable
 
+#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
+
 namespace booking_rest_api.Migrations
 {
     /// <inheritdoc />
-    public partial class ConfigureRelationships : Migration
+    public partial class newMigration : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -21,7 +23,7 @@ namespace booking_rest_api.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
-                    Name = table.Column<string>(type: "longtext", nullable: false)
+                    Name = table.Column<string>(type: "varchar(255)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -35,7 +37,7 @@ namespace booking_rest_api.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
-                    Name = table.Column<string>(type: "longtext", nullable: false)
+                    Name = table.Column<string>(type: "varchar(255)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -49,11 +51,11 @@ namespace booking_rest_api.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
-                    FirstName = table.Column<string>(type: "longtext", nullable: false),
-                    LastName = table.Column<string>(type: "longtext", nullable: false),
+                    FirstName = table.Column<string>(type: "varchar(255)", nullable: false),
+                    LastName = table.Column<string>(type: "varchar(255)", nullable: false),
                     Phone = table.Column<string>(type: "longtext", nullable: true),
                     Email = table.Column<string>(type: "longtext", nullable: true),
-                    DateOfBirth = table.Column<DateOnly>(type: "date", nullable: true),
+                    DateOfBirth = table.Column<DateTime>(type: "datetime(6)", nullable: true),
                     NationalIdentityNumber = table.Column<int>(type: "int", nullable: true),
                     PasswordHash = table.Column<string>(type: "longtext", nullable: true),
                     IsRegistered = table.Column<bool>(type: "tinyint(1)", nullable: false)
@@ -70,7 +72,7 @@ namespace booking_rest_api.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
-                    Name = table.Column<string>(type: "longtext", nullable: false)
+                    Name = table.Column<string>(type: "varchar(255)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -84,7 +86,7 @@ namespace booking_rest_api.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
-                    Name = table.Column<string>(type: "longtext", nullable: false)
+                    Name = table.Column<string>(type: "varchar(255)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -98,7 +100,7 @@ namespace booking_rest_api.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
-                    Name = table.Column<string>(type: "longtext", nullable: false),
+                    Name = table.Column<string>(type: "varchar(255)", nullable: false),
                     Phone = table.Column<string>(type: "longtext", nullable: true),
                     Email = table.Column<string>(type: "longtext", nullable: true),
                     Address = table.Column<string>(type: "longtext", nullable: true),
@@ -123,8 +125,8 @@ namespace booking_rest_api.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
-                    FirstName = table.Column<string>(type: "longtext", nullable: false),
-                    LastName = table.Column<string>(type: "longtext", nullable: false),
+                    FirstName = table.Column<string>(type: "varchar(255)", nullable: false),
+                    LastName = table.Column<string>(type: "varchar(255)", nullable: false),
                     Email = table.Column<string>(type: "longtext", nullable: true),
                     SpecialtyId = table.Column<int>(type: "int", nullable: false),
                     ClinicId = table.Column<int>(type: "int", nullable: false)
@@ -175,7 +177,7 @@ namespace booking_rest_api.Migrations
                         column: x => x.ClinicId,
                         principalTable: "Clinics",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Appointments_Doctors_DoctorId",
                         column: x => x.DoctorId,
@@ -197,6 +199,91 @@ namespace booking_rest_api.Migrations
                 })
                 .Annotation("MySQL:Charset", "utf8mb4");
 
+            migrationBuilder.InsertData(
+                table: "Categories",
+                columns: new[] { "Id", "Name" },
+                values: new object[,]
+                {
+                    { 1, "General Health Consultation" },
+                    { 2, "Follow-up Consultation" },
+                    { 3, "Vaccination" },
+                    { 4, "Medicine Prescription" },
+                    { 5, "Emergency" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Cities",
+                columns: new[] { "Id", "Name" },
+                values: new object[,]
+                {
+                    { 1, "Oslo" },
+                    { 2, "Stavanger" },
+                    { 3, "Bergen" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Patients",
+                columns: new[] { "Id", "DateOfBirth", "Email", "FirstName", "IsRegistered", "LastName", "NationalIdentityNumber", "PasswordHash", "Phone" },
+                values: new object[,]
+                {
+                    { 1, new DateTime(1992, 5, 24, 0, 0, 0, 0, DateTimeKind.Unspecified), "mark.j@mail.com", "Mark", true, "Johanson", 524231231, "FAKEHASH", "24242424" },
+                    { 2, new DateTime(1991, 2, 13, 0, 0, 0, 0, DateTimeKind.Unspecified), "tobben@mail.com", "Tobias", true, "Karevik", 66666666, "FAKEHASH", "555555" },
+                    { 3, new DateTime(1982, 8, 4, 0, 0, 0, 0, DateTimeKind.Unspecified), "danny@mail.com", "Daniela", true, "Thomson", 878787878, "FAKEHASH", "333222333" },
+                    { 4, new DateTime(1986, 10, 7, 0, 0, 0, 0, DateTimeKind.Unspecified), "carlos@mail.com", "Carlos", false, "Rodriguez", null, null, "777788877" },
+                    { 5, new DateTime(1984, 3, 22, 0, 0, 0, 0, DateTimeKind.Unspecified), "jandan@mail.com", "Jan", false, "Dan", null, null, "222777722" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Specialties",
+                columns: new[] { "Id", "Name" },
+                values: new object[,]
+                {
+                    { 1, "General Health" },
+                    { 2, "Cardiologist" },
+                    { 3, "Dermatologist" },
+                    { 4, "Peditrician" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Statuses",
+                columns: new[] { "Id", "Name" },
+                values: new object[,]
+                {
+                    { 1, "Pending" },
+                    { 2, "Completed" },
+                    { 3, "Cancelled" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Clinics",
+                columns: new[] { "Id", "Address", "CityId", "Email", "Name", "Phone", "PostalCode" },
+                values: new object[,]
+                {
+                    { 1, "Karl Johans gate 8", 1, "oslo@klinikken.no", "Oslo Sentrum Klinikk", "222522222", "2232" },
+                    { 2, "Maruksens gate 32", 2, "stavanger@klinikken.no", "Stavanger Medisinske", "522223233", "5223" },
+                    { 3, "Brygga 9", 3, "bergen@klinikken.no", "Bergen Bryggen Klinikk", "22525252", "3232" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Doctors",
+                columns: new[] { "Id", "ClinicId", "Email", "FirstName", "LastName", "SpecialtyId" },
+                values: new object[,]
+                {
+                    { 1, 1, "mb@klinikken.no", "Mathias", "Bekkemellem", 1 },
+                    { 2, 2, "cj@klinikken.no", "Carina", "Johansen", 2 },
+                    { 3, 3, "jc@klinikken.no", "John", "Carlsen", 1 }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Appointments",
+                columns: new[] { "Id", "AppointmentDate", "CategoryId", "ClinicId", "DoctorId", "Note", "PatientId", "StatusId" },
+                values: new object[,]
+                {
+                    { 1, new DateTime(2026, 5, 24, 8, 15, 0, 0, DateTimeKind.Unspecified), 1, 1, 1, null, 1, 1 },
+                    { 2, new DateTime(2026, 5, 24, 10, 30, 0, 0, DateTimeKind.Unspecified), 1, 1, 1, null, 2, 1 },
+                    { 3, new DateTime(2026, 5, 24, 12, 30, 0, 0, DateTimeKind.Unspecified), 1, 1, 1, null, 3, 1 }
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_Appointments_CategoryId",
                 table: "Appointments",
@@ -213,9 +300,10 @@ namespace booking_rest_api.Migrations
                 column: "DoctorId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Appointments_PatientId",
+                name: "IX_Appointments_PatientId_AppointmentDate",
                 table: "Appointments",
-                column: "PatientId");
+                columns: new[] { "PatientId", "AppointmentDate" },
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Appointments_StatusId",
@@ -223,9 +311,27 @@ namespace booking_rest_api.Migrations
                 column: "StatusId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Categories_Name",
+                table: "Categories",
+                column: "Name",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Cities_Name",
+                table: "Cities",
+                column: "Name",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Clinics_CityId",
                 table: "Clinics",
                 column: "CityId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Clinics_Name",
+                table: "Clinics",
+                column: "Name",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Doctors_ClinicId",
@@ -233,9 +339,33 @@ namespace booking_rest_api.Migrations
                 column: "ClinicId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Doctors_FirstName_LastName",
+                table: "Doctors",
+                columns: new[] { "FirstName", "LastName" },
+                unique: true);
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Doctors_SpecialtyId",
                 table: "Doctors",
                 column: "SpecialtyId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Patients_FirstName_LastName",
+                table: "Patients",
+                columns: new[] { "FirstName", "LastName" },
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Specialties_Name",
+                table: "Specialties",
+                column: "Name",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Statuses_Name",
+                table: "Statuses",
+                column: "Name",
+                unique: true);
         }
 
         /// <inheritdoc />

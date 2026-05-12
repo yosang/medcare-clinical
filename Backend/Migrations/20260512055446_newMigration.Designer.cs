@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace booking_rest_api.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20260508180355_UniqueIndexContraints")]
-    partial class UniqueIndexContraints
+    [Migration("20260512055446_newMigration")]
+    partial class newMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -51,18 +51,16 @@ namespace booking_rest_api.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AppointmentDate")
-                        .IsUnique();
-
                     b.HasIndex("CategoryId");
 
                     b.HasIndex("ClinicId");
 
                     b.HasIndex("DoctorId");
 
-                    b.HasIndex("PatientId");
-
                     b.HasIndex("StatusId");
+
+                    b.HasIndex("PatientId", "AppointmentDate")
+                        .IsUnique();
 
                     b.ToTable("Appointments");
 
@@ -316,8 +314,8 @@ namespace booking_rest_api.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<DateOnly?>("DateOfBirth")
-                        .HasColumnType("date");
+                    b.Property<DateTime?>("DateOfBirth")
+                        .HasColumnType("datetime(6)");
 
                     b.Property<string>("Email")
                         .HasColumnType("longtext");
@@ -353,7 +351,7 @@ namespace booking_rest_api.Migrations
                         new
                         {
                             Id = 1,
-                            DateOfBirth = new DateOnly(1992, 5, 24),
+                            DateOfBirth = new DateTime(1992, 5, 24, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "mark.j@mail.com",
                             FirstName = "Mark",
                             IsRegistered = true,
@@ -365,7 +363,7 @@ namespace booking_rest_api.Migrations
                         new
                         {
                             Id = 2,
-                            DateOfBirth = new DateOnly(1991, 2, 13),
+                            DateOfBirth = new DateTime(1991, 2, 13, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "tobben@mail.com",
                             FirstName = "Tobias",
                             IsRegistered = true,
@@ -377,7 +375,7 @@ namespace booking_rest_api.Migrations
                         new
                         {
                             Id = 3,
-                            DateOfBirth = new DateOnly(1982, 8, 4),
+                            DateOfBirth = new DateTime(1982, 8, 4, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "danny@mail.com",
                             FirstName = "Daniela",
                             IsRegistered = true,
@@ -389,7 +387,7 @@ namespace booking_rest_api.Migrations
                         new
                         {
                             Id = 4,
-                            DateOfBirth = new DateOnly(1986, 10, 7),
+                            DateOfBirth = new DateTime(1986, 10, 7, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "carlos@mail.com",
                             FirstName = "Carlos",
                             IsRegistered = false,
@@ -399,7 +397,7 @@ namespace booking_rest_api.Migrations
                         new
                         {
                             Id = 5,
-                            DateOfBirth = new DateOnly(1984, 3, 22),
+                            DateOfBirth = new DateTime(1984, 3, 22, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "jandan@mail.com",
                             FirstName = "Jan",
                             IsRegistered = false,
@@ -492,9 +490,9 @@ namespace booking_rest_api.Migrations
                         .IsRequired();
 
                     b.HasOne("Models.Clinic", "Clinic")
-                        .WithMany()
+                        .WithMany("Appointments")
                         .HasForeignKey("ClinicId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("Models.Doctor", "Doctor")
@@ -568,6 +566,8 @@ namespace booking_rest_api.Migrations
 
             modelBuilder.Entity("Models.Clinic", b =>
                 {
+                    b.Navigation("Appointments");
+
                     b.Navigation("Doctors");
                 });
 

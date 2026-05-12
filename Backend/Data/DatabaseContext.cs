@@ -31,7 +31,9 @@ public class DatabaseContext : DbContext
 
         modelBuilder.Entity<Category>().HasIndex(c => c.Name).IsUnique();
         modelBuilder.Entity<Status>().HasIndex(c => c.Name).IsUnique();
-        modelBuilder.Entity<Appointment>().HasIndex(c => c.AppointmentDate).IsUnique();
+
+        // We want to prevent Patients from having appointments at the same time.
+        modelBuilder.Entity<Appointment>().HasIndex(c => new { c.PatientId, c.AppointmentDate}).IsUnique();
 
         modelBuilder.Entity<Patient>().HasIndex(c => new { c.FirstName, c.LastName}).IsUnique();
 
@@ -76,6 +78,12 @@ public class DatabaseContext : DbContext
                     .HasOne<Patient>(p => p.Patient)
                     .WithMany(ap => ap.Appointments)
                     .HasForeignKey(ap => ap.PatientId)
+                    .OnDelete(DeleteBehavior.Restrict);
+
+        modelBuilder.Entity<Appointment>()
+                    .HasOne<Clinic>(p => p.Clinic)
+                    .WithMany(ap => ap.Appointments)
+                    .HasForeignKey(ap => ap.ClinicId)
                     .OnDelete(DeleteBehavior.Restrict);
 
         // Seeds

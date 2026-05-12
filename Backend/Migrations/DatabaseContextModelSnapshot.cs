@@ -48,18 +48,16 @@ namespace booking_rest_api.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AppointmentDate")
-                        .IsUnique();
-
                     b.HasIndex("CategoryId");
 
                     b.HasIndex("ClinicId");
 
                     b.HasIndex("DoctorId");
 
-                    b.HasIndex("PatientId");
-
                     b.HasIndex("StatusId");
+
+                    b.HasIndex("PatientId", "AppointmentDate")
+                        .IsUnique();
 
                     b.ToTable("Appointments");
 
@@ -489,9 +487,9 @@ namespace booking_rest_api.Migrations
                         .IsRequired();
 
                     b.HasOne("Models.Clinic", "Clinic")
-                        .WithMany()
+                        .WithMany("Appointments")
                         .HasForeignKey("ClinicId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("Models.Doctor", "Doctor")
@@ -565,6 +563,8 @@ namespace booking_rest_api.Migrations
 
             modelBuilder.Entity("Models.Clinic", b =>
                 {
+                    b.Navigation("Appointments");
+
                     b.Navigation("Doctors");
                 });
 
