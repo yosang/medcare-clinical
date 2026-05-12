@@ -87,7 +87,7 @@ public class ClinicsController : ControllerBase
     /// 
     /// </remarks>
     /// <param name="dto"></param>
-    /// <response code="201">Rosource updated successfully, created resource returned</response>
+    /// <response code="201">Resource updated successfully, created resource returned</response>
     [HttpPost]
     [ProducesResponseType(typeof(ClinicDTO), StatusCodes.Status201Created)]
     public async Task<ActionResult<ClinicDTO>> Create(CreateClinicDTO dto)
@@ -115,7 +115,7 @@ public class ClinicsController : ControllerBase
     /// </remarks>
     /// <param name="id"></param>
     /// <param name="dto"></param>
-    /// <response code="204">Rosource updated successfully, no content returned</response>
+    /// <response code="204">Resource updated successfully, no content returned</response>
     [HttpPut("{id}")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     public async Task<IActionResult> Update(int id, UpdateClinicDTO dto)
@@ -130,7 +130,7 @@ public class ClinicsController : ControllerBase
     /// Removes a clinic
     /// </summary>
     /// <param name="id"></param>
-    /// <response code="204">Rosource deleted successfully, no content returned</response>
+    /// <response code="204">Resource deleted successfully, no content returned</response>
     [HttpDelete("{id}")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     public async Task<IActionResult> Delete(int id)
