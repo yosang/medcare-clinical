@@ -4,6 +4,7 @@ using Extensions;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddDatabaseConfig(builder.Configuration)
+                .AddCorsConfig()
                 .AddServices()
                 .AddSwagger()
                 .AddExceptionHandler<GlobalExceptionHandler>()
@@ -13,6 +14,7 @@ builder.Services.AddDatabaseConfig(builder.Configuration)
 var app = builder.Build();
 
 app.UseExceptionHandler();
+app.UseCorsMiddleware();
 app.UseSwaggerMiddlewares();
 app.MapControllers();
 
