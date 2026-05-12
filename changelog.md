@@ -26,117 +26,169 @@
 
 [0.Overview.pdf](https://uploads.linear.app/ed5668e0-e380-4530-a14e-97ba82128a49/682188d9-5602-4aae-a5e4-5bcae7b3c5a8/6f3c0099-cffa-4b4d-a508-f25a047391be)
 
-Gather project files on brief, description and requirements
-
-- **Status**: Backlog
-- **Target date** set to Jun 6th
-- **Start date** set to May 4th
-
-*Progress since May 4*:
-- **Database Design** added:  0%  ·  May 9
-- **Backend Design** added:  0%  ·  May 16
-- **Frontend** added:  0%  ·  May 23
-- **Submission** added:  0%  ·  May 30
+The goal today is to just gather project files on brief, description and requirements and focus on what we are going to develop.
 
 --- 
 
 🟢 On track | Yosmel Chiang posted an update on May 5
 
-Today we have worked on repetition, refreshing specifically on normalization. Since the project requires 3rd normal form. We made sure we fully got normalization covered before diving in to the database design.
-
-*Progress since May 4*:
-- **Database**:  May 9 → May 16
-- **Backend**:  May 16 → May 23
-- **Frontend**:  May 23 → May 30
-- **Polish og refaktor**:  May 30 → Jun 6
-- **Forberedelser** added:  25%  ·  May 9
-- **Integrasjons tester, unit tester og Dokumentasjon** added:  0%  ·  Jun 5
+Today I have worked on repetition, refreshing specifically on normalization. Since the project requires 3rd normal form. I made sure I fully got normalization covered before diving in to the database design.
 
 ---
 
 🟢 On track | Yosmel Chiang posted an update on May 6
 
-Today we finished the ERD, I added a status attribute to the appointments, and a city attribute to the clinic. Everything is in 3rd normal form
-
-*Progress since May 5*:
-- **Forberedelser**:  25% → 4%
-- **Database**:  0% → 73%
+Today I finished the ERD, I added a status attribute to the appointments, and a city attribute to the clinic. Everything is in 3rd normal form.
 
 ---
 
 🟢 On track | Yosmel Chiang posted an update on May 7
 
-I dag skal vi sette opp modellene i .NET Ef Core.
+Today Im setting up the models in .NET Entity Framework Core.
 
 Oppgaver
 
-*Progress since May 6*:
-—  **Forberedelser**:  4% → 100%
-—  **Database**:  73% → 100%
-
 ---
 
 🟢 On track | Yosmel Chiang posted an update on May 7
 
-I dag har vi:
+Today I have:
 
-* Vi har satt opp ASP.NET Core Controller API templaten i .NET
-* Vi har satt opp controllene med boilerplate kode
-* Vi har satt opp requests i Postman for testing og testet de ulike endpointsa
-
-*Progress since May 7*:
--  **Database**:  100% → 94%
+* Configured ASP.NET Core Controllers with placeholder code.
+* Im starting off by setting up a Postman collection, I havent configured Swagger yet, I just want to test my memory of setting up controllers and test each endpoint.
 
 ---
 
 🟢 On track | Yosmel Chiang posted an update on May 8
 
-Vi har satt opp modellene i EF core med:
+I have configured the models in EF Core with:
 
-* Null constraints konfigurert
-* Relationships konfigurert
-* Brukte mysqldump og dbdiafram.io for reverse engineer
+* Constraints.
+* Relationships.
+* I used `mysqldump` and `dbdiagram.io` to reverse engineer implementation and ensure everything fits according to the ERD.
 
 Challenges:
 - If an attribute is previously set to nullable, we couldn't add a migration to change them to `NN`.
-    - To solve this we had to drop the database and create a fresh migration, resulting in a loss of migration history.
-
-- **Database**:  94% → 88%
+    - To solve this we had to drop the database and create a fresh migration, resulting in a loss of migration history. This is probably an issue that I will keep having while developing, so I wont bother caring about migration history for now.
 
 ---
 
 🟢 On track | Yosmel Chiang posted an update on May 9
 
-Vi har implementert:
+Today I have implemented:
 
-* **Seed:** Seed data for alle modellene
-* **Services:** CityServices som snakker med databasen og sender data til CityController
+* **Seeds:** Seed data for all models to work with during development.
+* **Services:** CityServices that talks to the database and sends data to the CityController.
 * **DTO:** DTO's for reading, creating and updating cities.
-* **Extensions:** ServiceExtension for registrering services in the DI container
-* **Controllers:** endpoints for each service method
-* **Contraints:** Unique contraints to prevent duplicates in the database
-* **ErrorHandler:** A global error handler to avoid writing try catches in every service
-
-*Progress since May 8*:
-- **Database**:  88% → 38%
-- **Backend**:  0% → 7%
+* **Extensions:** ServiceExtension for adding services to the DI container.
+* **Controllers:** endpoints for each service method.
+* **Contraints:** Unique contraints to prevent duplicates in the database.
+* **ErrorHandler:** A global error handler to avoid writing try catches in every service.
 
 ---
 
 🟢 On track | Yosmel Chiang posted an update on May 10
 
-I dag har vi:
+Today I have:
 
-* **Swagger:** Satt opp API dokumentasjon med Swagger med egen endpoint /doc
-* **XML Comments:** Configurert XML comments med Swagger
-* **Continuous Integration:** Satt oppgjennom Github Actions, for å sikre kontinuerlig utvikling
-* **Laget nye features:** Specialties, Status, Categories and Doctor
+* **Swagger:** API documentation with `doc` as base endpoint.
+* **XML Comments:** Configured XML comments with Swagger so we can add JSON examples and response codes.
+* **Continuous Integration:** A simple GitHub action that builds the application on each push, this is to give me assurance that no commit has broken anything.
+* **New features:** Specialties, Status, Categories and Doctor
 
-*Progress since May 9*:
-- **Database**:  38% → 100%
-- **Backend**:  7% → 73%
 
 # Week 2
+
+🟢 On track | Yosmel Chiang posted an update on May 11
+
+Today we have:
+
+* **Implemented mappers:** We have come to the point where it getting messy with all these manual mapping from entity to DTO and DTO to entity. After some researching, I found a few options, one of them is using a package like AutoMapper, and the other is to implement extension methods. I have concluded not to go for another package such as Mapperly or Automapper, instead im going the "extension methods" route to abstract the mapping away from the services, this provides reusability and we have control of whats being used/mapped from the entity. I've already created Extensions for infrastructure dependency injection, so for now Im just going to collocate these mappings in the Extensions namespace. I might look into refactoring the project structure later on.
+  * By outsourcing the work to mappers, we now encountered a new problem, my previous strategy of relying on`.Select` projection to load related data doesn't work unless its all in the same expression. For example, this works perfectly without having to add an `.Include `because its all in the same expression, EF core is smart enough to bring in the **Doctor** model for us since we are referring to it in the `.Select` projection.
+  * 
+    ```typescript
+    .Select(a => new AppointmentWithDetailsDTO
+    {
+        Id = a.Id,
+        Doctor = new DoctorDTO
+        {
+            Id = a.Doctor.Id,
+            Name = a.Doctor.Name
+        }
+    })
+    ```
+  * However, when we instead refactored to this
+
+    ```typescript
+    .Select(appointment => appointment.ToAppointmentWithDetailsDTO())
+    ```
+  * It threw errors, because it wasn't able load related data, required by the DTO mapper, so to fix this we have to use `.Includes`.
+
+* **Implemented the following features:** Appointment and Patient, with corresponding Services, Controllers, DTOS and finally Mappers
+
+---
+
+
+🟢 On track | Yosmel Chiang posted an update on May 12
+
+Today I have:
+
+* **Added new Features**: Clinic feature with services, controller, DTOS, mappers and swagger documentation:
+* **Update mapper:** So far Ive been doing a lot of manual operation for updates, like this:
+
+  ```
+      public async Task<ClinicDTO?> UpdateClinic(int id, UpdateClinicDTO dto)
+      {
+          var existing = await _ctx.Clinics.FindAsync(id);
+          if(existing == null) return null;
+  
+          existing.Name = dto.Name;
+          existing.Phone = dto.Phone;
+          existing.Email = dto.Email;
+          existing.Address = dto.Address;
+          existing.PostalCode = dto.PostalCode;
+          existing.CityId = dto.CityId;
+  
+          await _ctx.SaveChangesAsync();
+  
+          return existing.ToClinicDTO();
+      }
+  ```
+
+  This can be moved into a mapper, to keep the service clean and with less noise, also supporting partial updates, like so:
+
+  ```
+      public static void UpdateWith(this Clinic clinic, UpdateClinicDTO dto)
+      {
+          if(!string.IsNullOrWhiteSpace(dto.Name)) clinic.Name = dto.Name;
+          if(!string.IsNullOrWhiteSpace(dto.Phone)) clinic.Phone = dto.Phone;
+          if(!string.IsNullOrWhiteSpace(dto.Email)) clinic.Email = dto.Email;
+          if(!string.IsNullOrWhiteSpace(dto.Address)) clinic.Address = dto.Address;
+          if(!string.IsNullOrWhiteSpace(dto.PostalCode)) clinic.PostalCode = dto.PostalCode;
+          if(dto.CityId > 0) clinic.CityId = dto.CityId;
+      }
+  ```
+
+  Now the services becomes easier to read, and there is an abstraction:
+
+  ```
+      public async Task<ClinicDTO?> UpdateClinic(int id, UpdateClinicDTO dto)
+      {
+          var existing = await _ctx.Clinics.FindAsync(id);
+          if(existing == null) return null;
+
+          existing.UpdateWith(dto);
+
+          await _ctx.SaveChangesAsync();
+
+          return existing.ToClinicDTO();
+      }
+  ```
+  Since this approach is cleaner, Im updating the rest of the services with this method.
+
+* **Domain:** We changed the attribute data type of NationalIdentityNumber for Patients to string instead of int due to the fact that we want to mimic a norwegian identity number, which consists of at min/max 11 character long. Since we are not doing calculations with this value, we concluded by going with a string data type.
+* **CORS:** We have implemented CORS configuration to allow AnyHeaders, AnyMethods and AnyOrigins, since this is for a school project, Im setting it as a default policy to keep things simple.
+
 # Week 3
 # Week 4
 # Week 5
