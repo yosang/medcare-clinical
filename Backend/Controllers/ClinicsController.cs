@@ -32,9 +32,17 @@ public class ClinicsController : ControllerBase
     }
 
     [HttpGet("{id}/doctors")]
-    public async Task<ActionResult<string>> GetDoctors(int id)
+    public async Task<ActionResult<IEnumerable<DoctorDTO>>> GetDoctors(int id)
     {
-        return $"A list of doctors for clinic with id {id}";
+        var doctors = await _service.GetDoctors(id);
+        return Ok(doctors);
+    }
+    
+    [HttpGet("{id}/appointments")]
+    public async Task<ActionResult<string>> GetAppointments(int id)
+    {
+        var appointments = await _service.GetAppointments(id);
+        return Ok(appointments);
     }
 
     [HttpPost]
