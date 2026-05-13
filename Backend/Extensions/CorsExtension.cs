@@ -1,5 +1,4 @@
 namespace Extensions;
-
 public static class CorsConfigExtension
 {
     public static IServiceCollection AddCorsConfig(this IServiceCollection service)

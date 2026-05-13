@@ -1,8 +1,8 @@
 using Microsoft.EntityFrameworkCore;
 using Models;
-using Seeds;
+using Data.Seeds;
 
-namespace Context;
+namespace Data.Context;
 
 public class DatabaseContext : DbContext
 {

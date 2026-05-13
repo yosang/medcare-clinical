@@ -1,6 +1,6 @@
 using Models;
 
-namespace Seeds;
+namespace Data.Seeds;
 
 public static class SeedsData
 {

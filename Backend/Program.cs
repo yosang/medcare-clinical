@@ -4,11 +4,12 @@ using Extensions;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddDatabaseConfig(builder.Configuration)
+                .AddJWTConfig(builder.Configuration)
                 .AddCorsConfig()
                 .AddServices()
                 .AddSwagger()
                 .AddExceptionHandler<GlobalExceptionHandler>()
-                .AddProblemDetails() // We dont need this, its not being used
+                .AddProblemDetails()
                 .AddControllers();
 
 var app = builder.Build();
