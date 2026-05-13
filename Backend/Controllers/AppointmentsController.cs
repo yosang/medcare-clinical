@@ -65,7 +65,6 @@ public class AppointmentsController : ControllerBase
     /// <response code="201">Resource created</response>
     [HttpPost]
     [ProducesResponseType(typeof(AppointmentDTO), StatusCodes.Status201Created)]
-    [HttpPost]
     public async Task<ActionResult<AppointmentDTO>> Create(CreateAppointmentDTO dto)
     {
         var result = await _service.CreateAppointment(dto);
