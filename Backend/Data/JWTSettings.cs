@@ -1,5 +1,4 @@
 namespace Data.JWT;
-
 public class JWTSettings
 {
     public string Issuer { get; init; } = string.Empty;

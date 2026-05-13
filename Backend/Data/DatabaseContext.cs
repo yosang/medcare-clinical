@@ -32,10 +32,14 @@ public class DatabaseContext : DbContext
         modelBuilder.Entity<Category>().HasIndex(c => c.Name).IsUnique();
         modelBuilder.Entity<Status>().HasIndex(c => c.Name).IsUnique();
 
-        // We want to prevent Patients from having appointments at the same time.
+        // This contraints prevents Appointments to be created at the same time by the same Patient
         modelBuilder.Entity<Appointment>().HasIndex(c => new { c.PatientId, c.AppointmentDate}).IsUnique();
 
-        modelBuilder.Entity<Patient>().HasIndex(c => new { c.FirstName, c.LastName}).IsUnique();
+        // Since we are using Email as an auth identifier, it must be unique
+        modelBuilder.Entity<Patient>().HasIndex(c => c.Email).IsUnique();
+        
+        // In most systems, a personal Id is also unique
+        modelBuilder.Entity<Patient>().HasIndex(c => c.NationalIdentityNumber).IsUnique();
 
         // Relationships
         modelBuilder.Entity<Clinic>()

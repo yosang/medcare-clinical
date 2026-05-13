@@ -3,6 +3,7 @@ using System;
 using Data.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace booking_rest_api.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20260513165757_FixUniquenessContraints")]
+    partial class FixUniquenessContraints
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -319,14 +322,14 @@ namespace booking_rest_api.Migrations
 
                     b.Property<string>("FirstName")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasColumnType("varchar(255)");
 
                     b.Property<bool>("IsRegistered")
                         .HasColumnType("tinyint(1)");
 
                     b.Property<string>("LastName")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasColumnType("varchar(255)");
 
                     b.Property<string>("NationalIdentityNumber")
                         .HasColumnType("varchar(255)");
@@ -343,6 +346,9 @@ namespace booking_rest_api.Migrations
                         .IsUnique();
 
                     b.HasIndex("NationalIdentityNumber")
+                        .IsUnique();
+
+                    b.HasIndex("FirstName", "LastName")
                         .IsUnique();
 
                     b.ToTable("Patients");

@@ -2,6 +2,8 @@ using System.Text;
 using Data.JWT;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
+
+namespace Extensions;
 public static class JWTExtension
 {
     public static IServiceCollection AddJWTConfig(this IServiceCollection service, IConfiguration configuration)

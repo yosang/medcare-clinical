@@ -66,12 +66,11 @@ public class AppointmentsController : ControllerBase
     [ProducesResponseType(typeof(AppointmentDTO), StatusCodes.Status201Created)]
     public async Task<ActionResult<AppointmentDTO>> Create(CreateAppointmentDTO dto)
     {
-        var AuthType = User.Identity!.AuthenticationType;
-        var IsAuthenticated = User.Identity.IsAuthenticated;
+        var IsAuthenticated = User.Identity!.IsAuthenticated;
 
         if(IsAuthenticated)
         {
-            Console.WriteLine($"Authentication was used type: {AuthType}");
+            Console.WriteLine("Authentication detected");
         } else
         {
             Console.WriteLine("No authentication detected");

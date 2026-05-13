@@ -11,7 +11,6 @@ public class PatientDTO
     public string? Email { get; set; }
     public DateTime? DateOfBirth { get; set; }
     public string? NationalIdentityNumber { get; set; }
-    public string? PasswordHash { get; set; }
     public bool IsRegistered { get; set; }
 }
 
@@ -45,6 +44,7 @@ public class CreatePatientDTO
     [Phone]
     public string? Phone { get; set; }
 
+    [Required]
     [EmailAddress]
     public string? Email { get; set; }
 
@@ -81,4 +81,37 @@ public class UpdatePatientDTO
     public string? NationalIdentityNumber { get; set; }
     public string? PasswordHash { get; set; }
     public bool? IsRegistered { get; set; }
+}
+
+public class RegisterPatientDTO
+{
+    [Required]
+    [MinLength(2)]
+    [MaxLength(100)]
+    public string FirstName { get; set; } = null!;
+
+    [Required]
+    [MinLength(2)]
+    [MaxLength(100)]
+    public string LastName { get; set; } = null!;
+
+    [Phone]
+    public string? Phone { get; set; }
+
+    [Required]
+    [EmailAddress]
+    public string? Email { get; set; }
+
+    [Required]
+    [DataType(DataType.Date)]
+    public DateTime? DateOfBirth { get; set; }
+
+    [Required]
+    [MinLength(11)]
+    [MaxLength(11)]
+    public string? NationalIdentityNumber { get; set; }
+    
+    [Required]
+    public string? Password { get; set; }
+    public bool IsRegistered { get; set; }
 }
