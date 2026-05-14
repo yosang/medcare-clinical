@@ -1,4 +1,5 @@
 using DTOS;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Services;
 
@@ -95,6 +96,7 @@ public class AppointmentsController : ControllerBase
                Status = StatusCodes.Status400BadRequest 
             });
             
+            // We use the patientId retrieved from the claim to register the apppointment under its authenticated patient.
             dto.PatientId = patientId;
 
             result = await _service.CreateAppointment(dto); 
@@ -129,6 +131,7 @@ public class AppointmentsController : ControllerBase
     /// <response code="204">Update successful, no content returned</response>
     /// <response code="404">Resource not found by id</response>
     [HttpPut("{id}")]
+    [Authorize]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> Update(int id, UpdateAppointmentDTO dto)
@@ -144,6 +147,7 @@ public class AppointmentsController : ControllerBase
     /// <response code="204">Deletion successful, no content returned</response>
     /// <response code="404">Resource not found by id</response>
     [HttpDelete("{id}")]
+    [Authorize]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<ActionResult<string>> Delete(int id)

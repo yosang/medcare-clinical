@@ -1,4 +1,5 @@
 using DTOS;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Services;
 
@@ -44,7 +45,14 @@ public class PatientsController : ControllerBase
         return Ok(patient);
     }
 
+    /// <summary>
+    /// Retrieves appointments for a patient
+    /// </summary>
+    /// <param name="id"></param>
+    /// <response code="200">Resource returned</response>
     [HttpGet("{id}/appointments")]
+    [ProducesResponseType(typeof(AppointmentDTO), StatusCodes.Status200OK)]
+    [Authorize]
     public async Task<ActionResult<IEnumerable<AppointmentDTO>>> GetAppointments(int id)
     {
         var appointments = await _service.GetAppointments(id);

@@ -20,6 +20,23 @@ public static class AddSwaggerExtension
             });
 
             options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, $"{Assembly.GetExecutingAssembly().GetName().Name}.xml"));
+
+            const string SecuritySchemeName = "Bearer";
+
+            options.AddSecurityDefinition(SecuritySchemeName, new OpenApiSecurityScheme
+            {
+                Name = "Authorization",
+                Description = "Please enter a valid token",
+                In = ParameterLocation.Header,
+                Type = SecuritySchemeType.Http,
+                Scheme = "Bearer",
+                BearerFormat = "JWT"
+            });
+
+            options.AddSecurityRequirement(document => new OpenApiSecurityRequirement
+            {
+                [new OpenApiSecuritySchemeReference(SecuritySchemeName, document)] = []
+            });
         });
 
         return service;
