@@ -16,6 +16,23 @@ public class AuthService
         _ts = tokenService;
     }
 
+    public async Task<TokenDTO?> Login(LoginPatientDTO dto)
+    {
+        var existing = await _ctx.Patients.AsNoTracking()
+                                    .Where(p => p.Email == dto.Email)
+                                    .FirstOrDefaultAsync();
+
+        if(existing == null) return null;
+
+        var isPasswordValid = _passwordHasher.VerifyHashedPassword(null!, existing.PasswordHash!, dto.Password);
+        
+        Console.WriteLine("Checking if password validation goes well");
+        Console.WriteLine(isPasswordValid);
+        
+        if(isPasswordValid == PasswordVerificationResult.Failed) return null;
+
+        return new TokenDTO { Token = _ts.GenerateToken(existing)};
+    }
     public async Task<TokenDTO?> Register(RegisterPatientDTO dto)
     {
         var existing = await _ctx.Patients.AsNoTracking()

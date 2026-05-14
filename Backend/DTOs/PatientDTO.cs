@@ -115,3 +115,12 @@ public class RegisterPatientDTO
     public string? Password { get; set; }
     public bool IsRegistered { get; set; }
 }
+
+public class LoginPatientDTO
+{
+    [Required]
+    public string Email { get; set; } = null!;
+    
+    [Required]
+    public string Password { get; set; } = null!;
+}
