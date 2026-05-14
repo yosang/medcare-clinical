@@ -19,19 +19,24 @@ public static class PatientMapper
             IsRegistered = patient.IsRegistered
         };
     }
+    public static GuestPatientDTO ToGuestPatientDTO(this Patient patient)
+    {
+        return new GuestPatientDTO
+        {
+            Id = patient.Id,
+            FirstName = patient.FirstName,
+            LastName = patient.LastName,
+            Phone = patient.Phone
+        };
+    }
 
-    public static Patient ToPatient(this CreatePatientDTO dto)
+    public static Patient ToPatient(this CreateGuestPatientDTO dto)
     {
         return new Patient
         {
             FirstName = dto.FirstName,
             LastName = dto.LastName,
-            Phone = dto.Phone,
-            Email = dto.Email,
-            DateOfBirth = dto.DateOfBirth,
-            NationalIdentityNumber = dto.NationalIdentityNumber,
-            PasswordHash = dto.PasswordHash,
-            IsRegistered = dto.IsRegistered
+            Phone = dto.Phone
         };
     }
     public static Patient ToPatient(this RegisterPatientDTO dto)

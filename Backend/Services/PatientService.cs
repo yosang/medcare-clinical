@@ -42,15 +42,25 @@ public class PatientService
         return appointments;
     }
 
-    public async Task<PatientDTO> CreatePatient(CreatePatientDTO dto)
+    public async Task<GuestPatientDTO> CreatePatient(CreateGuestPatientDTO dto)
     {
+        var existing = await _ctx.Patients.AsNoTracking()
+                                            .Where(p => p.FirstName == dto.FirstName)
+                                            .Where(p => p.LastName == dto.LastName)
+                                            .FirstOrDefaultAsync();
+
+        if(existing != null)
+        {
+            return existing.ToGuestPatientDTO();
+        }
+
         var newP = dto.ToPatient();
 
         _ctx.Patients.Add(newP);
 
         await _ctx.SaveChangesAsync();
 
-        return newP.ToPatientDTO();
+        return newP.ToGuestPatientDTO();
     }
 
     public async Task<PatientDTO?> UpdatePatient(int id, UpdatePatientDTO dto)

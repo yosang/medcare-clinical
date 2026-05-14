@@ -13,6 +13,13 @@ public class PatientDTO
     public string? NationalIdentityNumber { get; set; }
     public bool IsRegistered { get; set; }
 }
+public class GuestPatientDTO
+{
+    public int Id { get; set; }
+    public string FirstName { get; set; } = null!;
+    public string LastName { get; set; } = null!;
+    public string? Phone { get; set; }
+}
 
 public class PatientWithDetailsDTO
 {
@@ -29,7 +36,7 @@ public class PatientWithDetailsDTO
     public IEnumerable<AppointmentDTO>? Appointments { get; set; }
 }
 
-public class CreatePatientDTO
+public class CreateGuestPatientDTO
 {
     [Required]
     [MinLength(2)]
@@ -42,20 +49,7 @@ public class CreatePatientDTO
     public string LastName { get; set; } = null!;
 
     [Phone]
-    public string? Phone { get; set; }
-
-    [Required]
-    [EmailAddress]
-    public string? Email { get; set; }
-
-    [DataType(DataType.Date)]
-    public DateTime? DateOfBirth { get; set; }
-
-    [MinLength(11)]
-    [MaxLength(11)]
-    public string? NationalIdentityNumber { get; set; }
-    public string? PasswordHash { get; set; }
-    public bool IsRegistered { get; set; }
+    public string? Phone { get; set; }  = null!;
 }
 
 public class UpdatePatientDTO

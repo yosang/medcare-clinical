@@ -67,16 +67,44 @@ public class AppointmentsController : ControllerBase
     public async Task<ActionResult<AppointmentDTO>> Create(CreateAppointmentDTO dto)
     {
         var IsAuthenticated = User.Identity!.IsAuthenticated;
+        AppointmentDTO result;
 
         if(IsAuthenticated)
         {
             Console.WriteLine("Authentication detected");
+
+            // We first validate the token, this must be a token that is not expired or ionvalid - This is handled by the JWT package
+            // If validation passes, we retrieve the patient ID
+            // We have to make sure the patientId claim is valid
+            // If validation passes, we create the appointment
+            // Then we create an appointment with the PatientId from the token
+
+            var patiendIdClaim = User.FindFirst("PatientId");
+            
+            if(patiendIdClaim == null) return BadRequest(new ProblemDetails()
+            {
+               Title = "Invalid token",
+               Detail = "PatientID claim is missing",
+               Status = StatusCodes.Status400BadRequest 
+            });
+
+            if(!int.TryParse(patiendIdClaim.Value, out int patientId)) return BadRequest(new ProblemDetails()
+            {
+                Title = "Invalid token",
+               Detail = "Invalid PatientID claim value",
+               Status = StatusCodes.Status400BadRequest 
+            });
+            
+            dto.PatientId = patientId;
+
+            result = await _service.CreateAppointment(dto); 
         } else
         {
             Console.WriteLine("No authentication detected");
-        }
 
-        var result = await _service.CreateAppointment(dto);
+            // Proceed to create an appoint, the frontend must provide the PatientId, which they create from Patient Controller
+            result = await _service.CreateAppointment(dto); 
+        }
 
         return CreatedAtAction(nameof(Get), new { id = result.Id}, result);
     }

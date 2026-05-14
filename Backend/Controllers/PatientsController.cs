@@ -52,27 +52,22 @@ public class PatientsController : ControllerBase
         return Ok(appointments);
     }
 
-    /// <summary> Create a new patient </summary>
+    /// <summary> Create a new guest patient </summary>
     /// <remarks>
     /// Sample request:
     /// 
     ///     {
     ///       "firstName": "Carina",
     ///       "lastName": "Bebek",
-    ///       "phone": "24242424",
-    ///       "email": "cb@mail.com",
-    ///       "dateOfBirth": "1984-03-22",
-    ///       "nationalIdentityNumber": "66666666666",
-    ///       "passwordHash": "FAKEHASH",
-    ///       "isRegistered": true
+    ///       "phone": "24242424"
     ///     }
     /// 
     /// </remarks>
     /// <param name="dto"></param>
     /// <response code="201">Resource created</response>
     [HttpPost]
-    [ProducesResponseType(typeof(PatientDTO), StatusCodes.Status201Created)]
-    public async Task<ActionResult<PatientDTO>> Create(CreatePatientDTO dto)
+    [ProducesResponseType(typeof(GuestPatientDTO), StatusCodes.Status201Created)]
+    public async Task<ActionResult<GuestPatientDTO>> Create(CreateGuestPatientDTO dto)
     {
         var result = await _service.CreatePatient(dto);
 

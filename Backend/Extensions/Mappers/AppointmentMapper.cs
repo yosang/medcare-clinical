@@ -36,7 +36,7 @@ public static class AppointmentMapper
             AppointmentDate = createAppointmentDTO.AppointmentDate,
             Note = createAppointmentDTO.Note,
             DoctorId = createAppointmentDTO.DoctorId,
-            PatientId = createAppointmentDTO.PatientId,
+            PatientId = createAppointmentDTO.PatientId!.Value,
             CategoryId = createAppointmentDTO.CategoryId,
             StatusId = createAppointmentDTO.StatusId,
             ClinicId = createAppointmentDTO.ClinicId
