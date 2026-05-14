@@ -11,15 +11,15 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace booking_rest_api.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20260512164028_freshMigration")]
-    partial class freshMigration
+    [Migration("20260513165757_FixUniquenessContraints")]
+    partial class FixUniquenessContraints
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "9.0.15")
+                .HasAnnotation("ProductVersion", "9.0.16")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
             modelBuilder.Entity("Models.Appointment", b =>
@@ -318,7 +318,7 @@ namespace booking_rest_api.Migrations
                         .HasColumnType("datetime(6)");
 
                     b.Property<string>("Email")
-                        .HasColumnType("longtext");
+                        .HasColumnType("varchar(255)");
 
                     b.Property<string>("FirstName")
                         .IsRequired()
@@ -332,7 +332,7 @@ namespace booking_rest_api.Migrations
                         .HasColumnType("varchar(255)");
 
                     b.Property<string>("NationalIdentityNumber")
-                        .HasColumnType("longtext");
+                        .HasColumnType("varchar(255)");
 
                     b.Property<string>("PasswordHash")
                         .HasColumnType("longtext");
@@ -341,6 +341,12 @@ namespace booking_rest_api.Migrations
                         .HasColumnType("longtext");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("Email")
+                        .IsUnique();
+
+                    b.HasIndex("NationalIdentityNumber")
+                        .IsUnique();
 
                     b.HasIndex("FirstName", "LastName")
                         .IsUnique();

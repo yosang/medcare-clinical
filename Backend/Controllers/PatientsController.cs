@@ -1,6 +1,5 @@
 using DTOS;
 using Microsoft.AspNetCore.Mvc;
-using Models;
 using Services;
 
 [ApiController]

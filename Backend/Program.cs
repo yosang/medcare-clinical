@@ -4,6 +4,7 @@ using Extensions;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddDatabaseConfig(builder.Configuration)
+                .AddJWTConfig(builder.Configuration)
                 .AddCorsConfig()
                 .AddServices()
                 .AddSwagger()

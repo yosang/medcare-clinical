@@ -11,15 +11,15 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace booking_rest_api.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20260512164028_freshMigration")]
-    partial class freshMigration
+    [Migration("20260513164101_MakeEmailUniqueOnPatients")]
+    partial class MakeEmailUniqueOnPatients
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "9.0.15")
+                .HasAnnotation("ProductVersion", "9.0.16")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
             modelBuilder.Entity("Models.Appointment", b =>
@@ -318,7 +318,7 @@ namespace booking_rest_api.Migrations
                         .HasColumnType("datetime(6)");
 
                     b.Property<string>("Email")
-                        .HasColumnType("longtext");
+                        .HasColumnType("varchar(255)");
 
                     b.Property<string>("FirstName")
                         .IsRequired()
@@ -342,7 +342,7 @@ namespace booking_rest_api.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("FirstName", "LastName")
+                    b.HasIndex("FirstName", "LastName", "Email")
                         .IsUnique();
 
                     b.ToTable("Patients");

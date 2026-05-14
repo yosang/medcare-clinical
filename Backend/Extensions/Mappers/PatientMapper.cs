@@ -16,7 +16,6 @@ public static class PatientMapper
             Email = patient.Email,
             DateOfBirth = patient.DateOfBirth,
             NationalIdentityNumber = patient.NationalIdentityNumber,
-            PasswordHash = patient.PasswordHash,
             IsRegistered = patient.IsRegistered
         };
     }
@@ -35,6 +34,19 @@ public static class PatientMapper
             IsRegistered = dto.IsRegistered
         };
     }
+    public static Patient ToPatient(this RegisterPatientDTO dto)
+    {
+        return new Patient
+        {
+            FirstName = dto.FirstName,
+            LastName = dto.LastName,
+            Phone = dto.Phone,
+            Email = dto.Email,
+            DateOfBirth = dto.DateOfBirth,
+            NationalIdentityNumber = dto.NationalIdentityNumber,
+            IsRegistered = dto.IsRegistered
+        };
+    }
 
     public static PatientWithDetailsDTO ToPatientWithDetailsDTO(this Patient patient)
     {
@@ -47,7 +59,6 @@ public static class PatientMapper
             Email = patient.Email,
             DateOfBirth = patient.DateOfBirth,
             NationalIdentityNumber = patient.NationalIdentityNumber,
-            PasswordHash = patient.PasswordHash,
             IsRegistered = patient.IsRegistered,
             Appointments = patient.Appointments?.Select(appointment => appointment.ToAppointmentDTO())
         };
