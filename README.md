@@ -27,6 +27,10 @@ If you need help with any instructions for the course assignment, contact your t
 
 ### ENDPOINTS
 
+#### Auth
+- POST `api/Auth/login` - Logs in with an existing account to return a token.
+- POST `api/Auth/register` - Registers a new account, returns a token on success.
+
 #### Appointments
 - GET `api/appointments` - Returns a list of appointments.
 - GET `api/appointments/:id` - Returns a single appointment.
