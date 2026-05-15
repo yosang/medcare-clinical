@@ -1,0 +1,10 @@
+:root {
+    /* background */
+    --bg-light: #f9fafb;
+    --bg-dark: #242424; 
+    
+    /* text */
+    --text-light: #f9fafb;
+    --text-dark: #242424; 
+    --text-muted: #939393; 
+}

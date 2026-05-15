@@ -1,0 +1,14 @@
+@import url(./variables/tokens.css);
+
+*, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html, body {
+    font-family: var(--font);
+    color: var(--color-text);
+    background-color: var(--color-bg);
+    transition: background-color 0.3s ease;
+}

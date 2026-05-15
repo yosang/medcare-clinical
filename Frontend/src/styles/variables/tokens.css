@@ -1,0 +1,52 @@
+@import url(./branding.css);
+@import url(./colors.css);
+@import url(./font.css);
+
+/* Design Tokens */
+:root {
+    /* background */
+    --color-bg: var(--bg-light);
+
+    /* text */
+    --color-text: var(--text-dark);
+    --color-muted: var(--text-muted);
+
+    /* branding */
+    --color-primary: var(--brand-primary);
+    --color-primary-text: var(--text-light);
+    
+    --color-secondary: var(--brand-secondary);
+    --color-secondary-text: var(--text-dark);
+    
+    --color-accent: var(--brand-accent);
+    --color-accent-text: var(--text-light);
+
+    /* radius */
+    --radius: 8px;
+
+    /* Typography */
+    --font: var(--font-main), sans-serif;
+
+    /* Spacing */
+    --spacing-sm: 0.5rem;
+    --spacing-md: 1rem;
+    --spacing-lg: 1.5rem;
+}
+
+/* Dark-Light mode */
+@media (prefers-color-scheme: dark) {
+    :root {
+        --color-bg: var(--bg-dark);
+        --color-text: var(--text-light);
+    }
+}
+
+[data-theme="light"] {
+    --color-bg: var(--bg-light);
+    --color-text: var(--text-dark);
+}
+
+[data-theme="dark"] {
+    --color-bg: var(--bg-dark);
+    --color-text: var(--text-light);
+}

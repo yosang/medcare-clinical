@@ -1,0 +1,11 @@
+.layout {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    padding: var(--spacing-md);
+}
+
+.layout a {
+    color: var(--color-text);
+    text-decoration: none;
+}
