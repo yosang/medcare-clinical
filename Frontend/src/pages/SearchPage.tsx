@@ -1,6 +1,6 @@
 import { useState,  type ChangeEvent,  type SyntheticEvent } from "react"
 import type { Doctor } from "../types/Doctors";
-import { fetchDoctors } from "../services/api";
+import { fetchDoctorsBySearch } from "../services/api";
 import LoadingSpinner from "../components/layout/LoadingSpinner";
 
 export default function SearchPage() {
@@ -15,7 +15,7 @@ export default function SearchPage() {
         
         try {
             setIsLoading(true);
-            const data = await fetchDoctors(term);
+            const data = await fetchDoctorsBySearch(term);
             setDoctors(data);
             setError(false);
             setIsLoading(false);

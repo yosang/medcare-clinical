@@ -32,6 +32,9 @@ public class DatabaseContext : DbContext
         modelBuilder.Entity<Category>().HasIndex(c => c.Name).IsUnique();
         modelBuilder.Entity<Status>().HasIndex(c => c.Name).IsUnique();
 
+        // This contraints prevents Appointments to be created at the same time with the same Doctor
+        modelBuilder.Entity<Appointment>().HasIndex(c => new { c.DoctorId, c.AppointmentDate}).IsUnique();
+        
         // This contraints prevents Appointments to be created at the same time by the same Patient
         modelBuilder.Entity<Appointment>().HasIndex(c => new { c.PatientId, c.AppointmentDate}).IsUnique();
 

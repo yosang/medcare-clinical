@@ -1,7 +1,47 @@
+// import type { Appointment } from "../types/Appointments";
+
+const statusUrl = import.meta.env.VITE_STATUS;
+const categoriesUrl = import.meta.env.VITE_CATEGORIES;
+const doctorsUrl = import.meta.env.VITE_DOCTORS;
 const searchUrl = import.meta.env.VITE_DOCTORS_SEARCH;
 
+export async function fetchStatus() {
+    if(!statusUrl) {
+        throw new Error("VITE_STATUS url is not defined in .env")
+    }
 
-export async function fetchDoctors(name: string ) {
+    const res = await fetch(statusUrl)
+
+    if(!res.ok) throw new Error("Failed to fetch statuses")
+
+    return res.json();
+}
+
+export async function fetchCategories() {
+    if(!categoriesUrl) {
+        throw new Error("VITE_CATEGORIES url is not defined in .env")
+    }
+
+    const res = await fetch(categoriesUrl)
+
+    if(!res.ok) throw new Error("Failed to fetch categories")
+
+    return res.json();
+}
+
+export async function fetchDoctors() {
+    if(!doctorsUrl) {
+        throw new Error("VITE_DOCTORS url is not defined in .env")
+    }
+
+    const res = await fetch(doctorsUrl)
+
+    if(!res.ok) throw new Error("Failed to fetch doctors")
+
+    return res.json();
+}
+
+export async function fetchDoctorsBySearch(name: string ) {
     if(!searchUrl) {
         throw new Error("VITE_DOCTOR_SEARCH url is not defined in .env")
     }
@@ -14,3 +54,7 @@ export async function fetchDoctors(name: string ) {
     
     return res.json();
 }
+
+// export async function createGuestAppointment(data:Appointment) {
+
+// }
