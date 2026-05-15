@@ -27,6 +27,14 @@ public class DoctorsController : ControllerBase
         return Ok(doctors);
     }
 
+    [HttpGet("search")]
+    public async Task<ActionResult<IEnumerable<DoctorWithDetailsDTO>>> Get(string name)
+    {
+        var doctors = await _service.GetDoctors(name);
+
+        return Ok(doctors);
+    }
+
     /// <summary>
     /// Returns a single doctor
     /// </summary>

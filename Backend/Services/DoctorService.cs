@@ -2,6 +2,7 @@ using Data.Context;
 using DTOS;
 using Extensions.Mappers;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion.Internal;
 
 namespace Services;
 public class DoctorService
@@ -37,6 +38,17 @@ public class DoctorService
         return doctor;
     }
 
+    public async Task<IEnumerable<DoctorWithDetailsDTO>> GetDoctors(string name)
+    {
+      var doctors = await _ctx.Doctors.AsNoTracking()
+                                        .Where(d => EF.Functions.Like(d.FirstName, $"%{name}%") || EF.Functions.Like(d.LastName, $"%{name}%" ))
+                                        .Include(d => d.Specialty)
+                                        .Include(d => d.Clinic)
+                                        .Include(d => d.Appointments)
+                                        .Select(doctor => doctor.ToDoctorWithDetailsDTO())
+                                        .ToListAsync();
+        return doctors;
+    } 
     public async Task<IEnumerable<AppointmentDTO>> GetAppointments(int id)
     {
         var appointments = await _ctx.Appointments.AsNoTracking()
