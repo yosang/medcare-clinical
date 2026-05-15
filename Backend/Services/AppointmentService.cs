@@ -2,6 +2,7 @@ using Data.Context;
 using DTOS;
 using Microsoft.EntityFrameworkCore;
 using Extensions.Mappers;
+using Models;
 
 namespace Services;
 public class AppointmentService

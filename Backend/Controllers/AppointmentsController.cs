@@ -118,7 +118,6 @@ public class AppointmentsController : ControllerBase
     ///     {
     ///        "AppointmentDate":"2026-05-24T09:00",
     ///        "Note":"Specialist referral",
-    ///        "PatientId": 1,
     ///        "DoctorId": 1,
     ///        "ClinicId": 1,
     ///        "CategoryId": 1,
@@ -136,6 +135,24 @@ public class AppointmentsController : ControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> Update(int id, UpdateAppointmentDTO dto)
     {
+        var patiendIdClaim = User.FindFirst("PatientId");
+            
+        if(patiendIdClaim == null) return BadRequest(new ProblemDetails()
+        {
+            Title = "Invalid token",
+            Detail = "PatientID claim is missing",
+            Status = StatusCodes.Status400BadRequest 
+        });
+
+        if(!int.TryParse(patiendIdClaim.Value, out int patientId)) return BadRequest(new ProblemDetails()
+        {
+            Title = "Invalid token",
+            Detail = "Invalid PatientID claim value",
+            Status = StatusCodes.Status400BadRequest 
+        });
+
+        dto.PatientId = patientId;
+
         var updated = await _service.UpdateAppointment(id, dto);
         if(updated == null) return NotFound();
 

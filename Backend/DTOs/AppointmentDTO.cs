@@ -52,9 +52,8 @@ public class UpdateAppointmentDTO
     public DateTime? AppointmentDate { get; set; }
     public string? Note { get; set; }
 
-    [DefaultValue(1)]
-    [Range(1, int.MaxValue)]
     public int? PatientId { get; set; }
+
     [DefaultValue(1)]
     [Range(1, int.MaxValue)]
     public int? DoctorId { get; set; }
