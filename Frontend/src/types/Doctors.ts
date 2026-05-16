@@ -19,3 +19,10 @@ export interface Doctor {
     specialty: Specialty,
     clinic: Clinic
 }
+
+export interface DoctorState {
+    doctors: Doctor[] | null,
+    loading: boolean,
+    error: boolean,
+    fetchDoctors: () => Promise<void>;
+}

@@ -1,15 +1,13 @@
-import { useEffect, useState, type ChangeEvent } from "react";
-import type { Doctor } from "../../types/Doctors";
-import { fetchDoctors } from "../../services/api";
+import { useEffect, type ChangeEvent } from "react";
 import LoadingSpinner from "../layout/LoadingSpinner";
+import { useDoctorsStore } from "../../stores/useDoctorsStore";
 
 type DoctorSelectionProps = {
     clinicSetter: (clinicId: number | null) => void;
 };
 
 export default function DoctorSelection( { clinicSetter }:DoctorSelectionProps) {
-        const [doctors, setDoctors] = useState<Doctor[] | null>(null)
-        const [doctorRequestError, setDoctorRequestError] = useState(false);
+        const { doctors, loading, error, fetchDoctors } = useDoctorsStore();
 
         const onHandleOnSelection = (e: ChangeEvent<HTMLSelectElement>) => {
             if(!doctors) return;
@@ -19,20 +17,11 @@ export default function DoctorSelection( { clinicSetter }:DoctorSelectionProps) 
         }
 
         useEffect(() => {
-            async function fetch() {
-                try {
-                    const data = await fetchDoctors();
-                    setDoctors(data)
-                } catch(err) {
-                    setDoctorRequestError(true);
-                    console.error("An error occurred durin fetch:", err )
-                }
-            }
-            fetch();
-        }, [])
+            if(!doctors) fetchDoctors();
+        }, [doctors, fetchDoctors])
 
-        if(doctorRequestError) return <p style={{ color: "red" }}>Unable to load doctors</p>
-        if(!doctors) return <LoadingSpinner />
+        if(error) return <p style={{ color: "red" }}>Unable to load doctors</p>
+        if(!doctors || loading ) return <LoadingSpinner />
 
         return <select name="DoctorId" onChange={onHandleOnSelection}>
                         {doctors.map(d => <option key={d.id} value={d.id}>{d.firstName} {d.lastName}</option>)}

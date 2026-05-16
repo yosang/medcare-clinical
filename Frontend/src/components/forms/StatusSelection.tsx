@@ -1,29 +1,17 @@
-import { useEffect, useState } from "react";
-import type { Status } from "../../types/Appointments";
-import { fetchStatus } from "../../services/api";
+import { useEffect } from "react";
 import LoadingSpinner from "../layout/LoadingSpinner";
+import { useStatusStore } from "../../stores/useStatusStore";
 
 
 export default function StatusSelection() {
-        const [status, setStatus] = useState<Status[] | null>(null)
-        const [statusRequestError, setStatusRequestError] = useState(false);
+        const { status, loading, error, fetchStatus } = useStatusStore();
 
         useEffect(() => {
-            async function fetch() {
-                try {
-                    const data = await fetchStatus();
-                    console.log(data)
-                    setStatus(data)
-                } catch(err) {
-                    setStatusRequestError(true);
-                    console.error("An error occurred during fetch:", err )
-                }
-            }
-            fetch();
-        }, [])
+            if(!status) fetchStatus();
+        }, [status, fetchStatus])
 
-        if(statusRequestError) return <p style={{ color: "red" }}>Unable to load statuses</p>
-        if(!status) return <LoadingSpinner />
+        if(error) return <p style={{ color: "red" }}>Unable to load statuses</p>
+        if(!status || loading) return <LoadingSpinner />
 
         return <input name="StatusId" value={status[0].id} hidden />           
 }

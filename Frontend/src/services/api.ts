@@ -1,5 +1,8 @@
 // import type { Appointment } from "../types/Appointments";
 
+import type { GuestPatientPayload } from "../types/Patients";
+
+const createPatientUrl = import.meta.env.VITE_CREATE_GUEST_PATIENT;
 const statusUrl = import.meta.env.VITE_STATUS;
 const categoriesUrl = import.meta.env.VITE_CATEGORIES;
 const doctorsUrl = import.meta.env.VITE_DOCTORS;
@@ -54,6 +57,24 @@ export async function fetchDoctorsBySearch(name: string ) {
     
     return res.json();
 }
+
+export async function createGuestPatient(payload: GuestPatientPayload) {
+    if(!createPatientUrl) {
+        throw new Error("VITE_CREATE_GUEST_PATIENT url is not defined in .env")
+    }
+
+    const res = await fetch(createPatientUrl, {
+        method: "POST",
+        body: JSON.stringify(payload),
+        headers: { "Content-Type": "application/json" }
+    })
+
+    if(!res.ok) throw new Error("Failed to create guest patient")
+    
+    return res.json();
+
+}
+
 
 // export async function createGuestAppointment(data:Appointment) {
 
