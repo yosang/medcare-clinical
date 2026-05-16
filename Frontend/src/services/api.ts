@@ -1,7 +1,7 @@
-// import type { Appointment } from "../types/Appointments";
-
+import type { Appointment } from "../types/Appointments";
 import type { GuestPatientPayload } from "../types/Patients";
 
+const createAppointmentUrl = import.meta.env.VITE_CREATE_APPOINTMENT;
 const createPatientUrl = import.meta.env.VITE_CREATE_GUEST_PATIENT;
 const statusUrl = import.meta.env.VITE_STATUS;
 const categoriesUrl = import.meta.env.VITE_CATEGORIES;
@@ -76,6 +76,18 @@ export async function createGuestPatient(payload: GuestPatientPayload) {
 }
 
 
-// export async function createGuestAppointment(data:Appointment) {
+export async function createAppointment(payload:Appointment) {
+    if(!createAppointmentUrl) {
+        throw new Error("VITE_CREATE_APPOINTMENT url is not defined in .env")
+    }
 
-// }
+    const res = await fetch(createAppointmentUrl, {
+        method: "POST",
+        body: JSON.stringify(payload),
+        headers: { "Content-Type": "application/json" }
+    })
+
+    if(!res.ok) throw new Error("Failed to create appointment")
+
+    return true;
+}

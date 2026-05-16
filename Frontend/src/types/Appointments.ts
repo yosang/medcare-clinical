@@ -1,11 +1,11 @@
 export interface Appointment {
-    AppointmentDate: Date,
+    AppointmentDate: string,
     Note: string,
-    PatientId: 1,
-    DoctorId: 1,
-    ClinicId: 1,
-    CategoryId: 1,
-    StatusId: 1
+    PatientId: number,
+    DoctorId: number,
+    ClinicId: number,
+    CategoryId: number,
+    StatusId: number
 }
 
 export interface Categories {
@@ -16,6 +16,13 @@ export interface Categories {
 export interface Status {
     id: number,
     name: string
+}
+
+export interface AppointmentsState {
+    success: boolean
+    loading: boolean,
+    error: boolean,
+    createAppointment: (payload: Appointment) => Promise<void>
 }
 
 export interface CategoriesState {

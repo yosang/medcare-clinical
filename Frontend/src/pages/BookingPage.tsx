@@ -4,10 +4,12 @@ import CategorySelection from "../components/forms/CategorySelection";
 import { usePatientStore } from "../stores/usePatientStore";
 import LoadingSpinner from "../components/layout/LoadingSpinner";
 import { useDoctorsStore } from "../stores/useDoctorsStore";
+import { useAppointmentsStore } from "../stores/useAppointmentsStore";
 
 export default function BookingPage() {
     const { getClinicId } = useDoctorsStore();
     
+    const { success, loading: loadingAppointment, error: errorAppointment, createAppointment} = useAppointmentsStore();
     const { loading: loadingPatient, error: errorPatient, createPatient } = usePatientStore();
 
     const [firstname, setFirstname] = useState("");
@@ -27,8 +29,6 @@ export default function BookingPage() {
         const formData = new FormData(e.currentTarget);
 
         const docId = formData.get("DoctorId") as string;
-        formData.append("ClinicId", getClinicId(docId))
-        formData.append("StatusId", "1");
 
         // Replace this with zod validation
         if( !firstname || !lastname || !phone ) {
@@ -36,12 +36,21 @@ export default function BookingPage() {
             return;
         }
 
-        // Create a patient and append the PatientId to formData
+        // Create a patient and appointment
         try {
             const newPatient = await createPatient({ firstname, lastname, phone })
     
-            formData.append("PatientId", String(newPatient.id))
+            const appointmentPayload = {
+                AppointmentDate: appointmentDateAndTime,
+                Note: String(formData.get("Note")),
+                PatientId: Number(newPatient.id),
+                DoctorId: Number(docId),
+                ClinicId: Number(getClinicId(docId)),
+                CategoryId: Number(formData.get("CategoryId")),
+                StatusId: 1
+            }
         
+            await createAppointment(appointmentPayload);
             clearInputs();
         } catch(err)
         {
@@ -91,17 +100,17 @@ export default function BookingPage() {
                 Date
                 <input
                     type="datetime-local"
-                    value={appointmentDateAndTime}
+                    value={appointmentDateAndTime} // We have to validate that the time is available, so we cant just use this blindly
                     onChange={(e) => setAppointmentDateAndTime(e.target.value)}
                     min={new Date().toISOString().slice(0, 16)}
-                    name="AppointmentDate" // We have to validate that the time is available, so we cant just use this blindly
                 />
             </label>
         </div>
         
-        <button type="submit">{loadingPatient ? (<LoadingSpinner />):"Book"}</button>
+        <button type="submit">{loadingPatient || loadingAppointment ? (<LoadingSpinner />):"Book"}</button>
 
-        {errorPatient && <p style={{ color: "red" }}>Failed to create patient</p>}
+        {errorPatient || errorAppointment && <p style={{ color: "red" }}>Failed to create appointment</p>}
+        {success && <p style={{ color: "green" }}>Appointment created</p>}
     </form>
     </>
     )
