@@ -24,5 +24,6 @@ export interface DoctorState {
     doctors: Doctor[] | null,
     loading: boolean,
     error: boolean,
-    fetchDoctors: () => Promise<void>;
+    fetchDoctors: () => Promise<void>,
+    getClinicId: (doctorId:string) => string
 }

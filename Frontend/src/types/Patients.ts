@@ -12,7 +12,6 @@ export interface GuestPatient {
 }
 
 export interface GuestPatientState {
-    patient: GuestPatient | null,
     loading: boolean,
     error: boolean,
     createPatient: (payload: GuestPatientPayload) => Promise<GuestPatient>

@@ -3,14 +3,13 @@ import { type GuestPatientPayload, type GuestPatientState } from "../types/Patie
 import { createGuestPatient } from "../services/api";
 
 export const usePatientStore = create<GuestPatientState>((set) => ({
-    patient: null,
     loading: false,
     error: false,
     createPatient: async(payload:GuestPatientPayload) => {
         set({loading: true})
         try {
             const data = await createGuestPatient(payload);
-            set({ patient: data, loading: false})
+            set({ loading: false})
             return data;
         } catch(err) {
             console.error("An error occurred during fetch:", err )

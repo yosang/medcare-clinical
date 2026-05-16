@@ -2,7 +2,7 @@ import { create } from "zustand";
 import { type DoctorState } from "../types/Doctors";
 import { fetchDoctors } from "../services/api";
 
-export const useDoctorsStore = create<DoctorState>((set) => ({
+export const useDoctorsStore = create<DoctorState>((set, get) => ({
     doctors: null,
     loading: false,
     error: false,
@@ -16,5 +16,12 @@ export const useDoctorsStore = create<DoctorState>((set) => ({
             set({ error: true, loading: false })
             throw err;
         }
+    },
+    getClinicId: (doctorId) => {
+        const doc = get().doctors?.find(d => String(d.id) == doctorId)
+
+        if(!doc) throw new Error("Unable to find doctor")
+
+        return String(doc.clinic.id);
     }
 }))
