@@ -13,5 +13,5 @@ export default function StatusSelection() {
         if(error) return <p style={{ color: "red" }}>Unable to load statuses</p>
         if(!status || loading) return <LoadingSpinner />
 
-        return <input name="StatusId" value={status[0].id} hidden />           
+        return <input name="StatusId" value={status[0].id} type="hidden" />           
 }

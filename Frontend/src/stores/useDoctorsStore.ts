@@ -14,6 +14,7 @@ export const useDoctorsStore = create<DoctorState>((set) => ({
         } catch(err) {
             console.error("An error occurred during fetch:", err )
             set({ error: true, loading: false })
+            throw err;
         }
     }
 }))

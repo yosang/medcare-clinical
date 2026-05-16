@@ -6,13 +6,13 @@ import { usePatientStore } from "../stores/usePatientStore";
 import LoadingSpinner from "../components/layout/LoadingSpinner";
 
 export default function BookingPage() {
-    const [clinic, setClinic] = useState<number | null>(null)
-
     const { patient, loading, error, createPatient } = usePatientStore();
 
     const [firstname, setFirstname] = useState("");
     const [lastname, setLastname] = useState("");
     const [phone, setPhone] = useState("");
+
+    const [appointmentDateAndTime, setAppointmentDateAndTime] = useState("");
 
     const clearInputs = () => {
         setFirstname("");
@@ -33,10 +33,10 @@ export default function BookingPage() {
 
             const newPatient = await createPatient({ firstname, lastname, phone })
     
-            formData.append("ClinicId", String(clinic))
             formData.append("PatientId", String(newPatient.id))
         
             clearInputs();
+            console.log(Object.fromEntries(formData))
         } catch(err)
         {
             console.log("Something went wrong during patient creation", err)
@@ -48,7 +48,7 @@ export default function BookingPage() {
     <>
     <h1>Booking page</h1>
     <form onSubmit={handleSubmit}>
-        <DoctorSelection clinicSetter={setClinic}/>
+        <DoctorSelection/>
         <CategorySelection />
         <StatusSelection />
         <div>
@@ -75,6 +75,22 @@ export default function BookingPage() {
                     value={phone}
                     onChange={(e) => setPhone(e.target.value)}
                     />
+            </label>
+            <label>
+                Note to the doc
+                <textarea 
+                    name="Note"
+                />
+            </label>
+            <label>
+                Date
+                <input
+                    type="datetime-local"
+                    value={appointmentDateAndTime}
+                    onChange={(e) => setAppointmentDateAndTime(e.target.value)}
+                    min={new Date().toISOString().slice(0, 16)}
+                    name="AppointmentDate" // We have to validate that the time is available, so we cant just use this
+                />
             </label>
         </div>
         
