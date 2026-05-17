@@ -32,8 +32,6 @@ public class CreateAppointmentDTO
     public DateTime AppointmentDate { get; set; }
     
     [Required]
-    [DefaultValue(30)]
-    [Range(15, 60)]
     public int Duration { get; set; }
     public string? Note { get; set; }
 
@@ -58,8 +56,6 @@ public class UpdateAppointmentDTO
     [DataType(DataType.DateTime)]
     public DateTime? AppointmentDate { get; set; }
 
-    [DefaultValue(30)]
-    [Range(15, 60)]
     public int? Duration { get; set; }
     public string? Note { get; set; }
 

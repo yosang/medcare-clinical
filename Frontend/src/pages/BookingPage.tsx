@@ -24,8 +24,8 @@ const PatientSchema = z.object({
 export default function BookingPage() {
     const { getClinicId } = useDoctorsStore();
     
-    const { success, loading: loadingAppointment, error: errorAppointment, createAppointment} = useAppointmentsStore();
-    const { loading: loadingPatient, error: errorPatient, createPatient } = usePatientStore();
+    const { success, loading: loadingAppointment, createAppointment} = useAppointmentsStore();
+    const { loading: loadingPatient, createPatient } = usePatientStore();
 
     const [firstname, setFirstname] = useState("");
     const [lastname, setLastname] = useState("");
@@ -34,6 +34,7 @@ export default function BookingPage() {
     const [duration, setDuration] = useState("");
 
     const [validationErrors, setValidationErrors ] = useState<string[] | null>(null);
+    const [backendError, setBackendError] = useState<string | null>(null);
 
     const [appointmentDateAndTime, setAppointmentDateAndTime] = useState("");
 
@@ -43,6 +44,7 @@ export default function BookingPage() {
         setPhone("");
         setNote("");
         setValidationErrors(null)
+        setBackendError(null)
     }
 
     const handleSubmit = async(e: SyntheticEvent<HTMLFormElement>) => {
@@ -80,8 +82,9 @@ export default function BookingPage() {
                     return "Appointment created!"
                 },
                 error: (err) => {
-                    console.log("Somethging went wrong during appointment creation", err)
-                    return "Failed to create appointment";
+                    console.log("Something went wrong during appointment creation", err)
+                    setBackendError(err.message)
+                    return "Appointment creation failed"
                 }
             })
 
@@ -144,18 +147,12 @@ export default function BookingPage() {
             </label>
             <label>
                 Appointment Duration
-                <select value={duration} onChange={(e) => setDuration(e.target.value)} >
+                <select value={duration} defaultValue="15" onChange={(e) => setDuration(e.target.value)} >
                     <option value="15">15 minutes</option>
                     <option value="30">30 minutes</option>
                     <option value="45">45 minutes</option>
                     <option value="60">1 hour</option>
                 </select>
-                <input
-                    type="datetime-local"
-                    value={appointmentDateAndTime} // We have to validate that the time is available, so we cant just use this blindly
-                    onChange={(e) => setAppointmentDateAndTime(e.target.value)}
-                    min={new Date().toISOString().slice(0, 16)}
-                />
             </label>
         </div>
         
@@ -174,7 +171,8 @@ export default function BookingPage() {
             </ul>)
         }
 
-        {(errorPatient || errorAppointment) && <p style={{ color: "red" }}>Failed to create appointment</p>}
+        {backendError && <p style={{ color: "red" }}>{backendError}</p>}
+
         {success && <p style={{ color: "green" }}>Appointment created</p>}
     </form>
     </>

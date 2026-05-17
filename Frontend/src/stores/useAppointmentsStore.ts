@@ -12,7 +12,6 @@ export const useAppointmentsStore = create<AppointmentsState>((set) => ({
             const created = await createAppointment(payload);
             if(created) set({ success: true, loading: false})
         } catch(err) {
-            console.error("An error occurred during fetch:", err )
             set({error: true, loading: false})
             throw err;
         }

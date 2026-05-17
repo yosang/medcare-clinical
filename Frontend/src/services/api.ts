@@ -87,7 +87,12 @@ export async function createAppointment(payload:Appointment) {
         headers: { "Content-Type": "application/json" }
     })
 
-    if(!res.ok) throw new Error("Failed to create appointment")
-
+    if(!res.ok) {
+        
+        const text = await res.text()
+        if(text) throw new Error(text);
+        
+        throw new Error("Failed to create appointment")
+}
     return true;
 }
