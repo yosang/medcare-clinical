@@ -31,6 +31,7 @@ export default function BookingPage() {
     const [lastname, setLastname] = useState("");
     const [phone, setPhone] = useState("");
     const [note, setNote] = useState("");
+    const [duration, setDuration] = useState("");
 
     const [validationErrors, setValidationErrors ] = useState<string[] | null>(null);
 
@@ -132,7 +133,22 @@ export default function BookingPage() {
                 />
             </label>
             <label>
-                Date
+                Appointment Date and time
+                <input
+                    type="datetime-local"
+                    value={appointmentDateAndTime} // We have to validate that the time is available, so we cant just use this blindly
+                    onChange={(e) => setAppointmentDateAndTime(e.target.value)}
+                    min={new Date().toISOString().slice(0, 16)}
+                />
+            </label>
+            <label>
+                Appointment Duration
+                <select value={duration} onChange={(e) => setDuration(e.target.value)} >
+                    <option value="15">15 minutes</option>
+                    <option value="30">30 minutes</option>
+                    <option value="45">45 minutes</option>
+                    <option value="60">1 hour</option>
+                </select>
                 <input
                     type="datetime-local"
                     value={appointmentDateAndTime} // We have to validate that the time is available, so we cant just use this blindly
