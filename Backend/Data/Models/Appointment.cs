@@ -5,6 +5,7 @@ public class Appointment
     // Primary key
     public int Id { get; set; }
     public required DateTime AppointmentDate { get; set; }
+    public required int Duration { get; set; }
     public string? Note { get; set; }
 
     // Foreign Keys

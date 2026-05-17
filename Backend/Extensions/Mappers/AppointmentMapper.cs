@@ -11,6 +11,7 @@ public static class AppointmentMapper
             {
                 Id = appointment.Id,
                 AppointmentDate = appointment.AppointmentDate,
+                Duration = appointment.Duration,
                 Note = appointment.Note,
                 Doctor = appointment.Doctor!.ToDoctorDTO(),
                 Patient = appointment.Patient!.ToPatientDTO(),
@@ -26,6 +27,7 @@ public static class AppointmentMapper
         {
             Id = appointment.Id,
             AppointmentDate = appointment.AppointmentDate,
+            Duration = appointment.Duration,
             Note = appointment.Note
         };
     }
@@ -34,6 +36,7 @@ public static class AppointmentMapper
         return new Appointment
         {
             AppointmentDate = createAppointmentDTO.AppointmentDate,
+            Duration = createAppointmentDTO.Duration,
             Note = createAppointmentDTO.Note,
             DoctorId = createAppointmentDTO.DoctorId,
             PatientId = createAppointmentDTO.PatientId!.Value,
@@ -46,6 +49,7 @@ public static class AppointmentMapper
     public static void UpdateWith(this Appointment existing, UpdateAppointmentDTO dto)
     {
         if(dto.AppointmentDate.HasValue) existing.AppointmentDate = dto.AppointmentDate.Value;
+        if(dto.Duration.HasValue) existing.Duration = dto.Duration.Value;
         if(dto.Note != null) existing.Note = dto.Note;
         if(dto.PatientId.HasValue) existing.PatientId = dto.PatientId.Value;
         if(dto.DoctorId.HasValue) existing.DoctorId = dto.DoctorId.Value;

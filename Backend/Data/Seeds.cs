@@ -61,8 +61,8 @@ public static class SeedsData
 
     public static List<Appointment> Appointments { get; } = new List<Appointment>()
     {
-        new Appointment { Id = 1, AppointmentDate = new DateTime(2026, 05, 24, 08, 15, 0), Note = null, PatientId = 1, DoctorId = 1, ClinicId = 1, CategoryId = 1, StatusId = 1 },
-        new Appointment { Id = 2, AppointmentDate = new DateTime(2026, 05, 24, 10, 30, 0), Note = null, PatientId = 2, DoctorId = 1, ClinicId = 1, CategoryId = 1, StatusId = 1 },
-        new Appointment { Id = 3, AppointmentDate = new DateTime(2026, 05, 24, 12, 30, 0), Note = null, PatientId = 3, DoctorId = 1, ClinicId = 1, CategoryId = 1, StatusId = 1 }
+        new Appointment { Id = 1, AppointmentDate = new DateTime(2026, 05, 24, 08, 15, 0), Duration = 30, Note = null, PatientId = 1, DoctorId = 1, ClinicId = 1, CategoryId = 1, StatusId = 1 },
+        new Appointment { Id = 2, AppointmentDate = new DateTime(2026, 05, 24, 10, 30, 0), Duration = 30, Note = null, PatientId = 2, DoctorId = 1, ClinicId = 1, CategoryId = 1, StatusId = 1 },
+        new Appointment { Id = 3, AppointmentDate = new DateTime(2026, 05, 24, 12, 30, 0), Duration = 30, Note = null, PatientId = 3, DoctorId = 1, ClinicId = 1, CategoryId = 1, StatusId = 1 }
     };
 }
