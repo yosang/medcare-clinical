@@ -1,4 +1,4 @@
-name: .NET CI
+name: CI
 
 on:
   push:
@@ -6,7 +6,7 @@ on:
       - main
 
 jobs:
-  build:
+  backend:
     runs-on: ubuntu-latest
 
     defaults:
@@ -21,3 +21,21 @@ jobs:
           dotnet-version: 9.0.x
       
       - run: dotnet build
+      
+  frontend:
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: Frontend
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - run: npm run lint
+
+      - run: npm run build
