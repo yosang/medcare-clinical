@@ -106,6 +106,7 @@ export default function BookingPage() {
             <label>
                 Enter your firstname
                 <input 
+                    required
                     type="text"
                     value={firstname}
                     onChange={(e) => setFirstname(e.target.value)}
@@ -114,6 +115,7 @@ export default function BookingPage() {
             <label>
                 Enter your lastname
                 <input 
+                    required
                     type="text"
                     value={lastname}
                     onChange={(e) => setLastname(e.target.value)}
@@ -139,6 +141,7 @@ export default function BookingPage() {
             <label>
                 Appointment Date and time
                 <input
+                    required
                     type="datetime-local"
                     value={appointmentDateAndTime} // We have to validate that the time is available, so we cant just use this blindly
                     onChange={(e) => setAppointmentDateAndTime(e.target.value)}
