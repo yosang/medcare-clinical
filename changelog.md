@@ -189,6 +189,46 @@ Today I have:
 * **Domain:** We changed the attribute data type of NationalIdentityNumber for Patients to string instead of int due to the fact that we want to mimic a norwegian identity number, which consists of at min/max 11 character long. Since we are not doing calculations with this value, we concluded by going with a string data type.
 * **CORS:** We have implemented CORS configuration to allow AnyHeaders, AnyMethods and AnyOrigins, since this is for a school project, Im setting it as a default policy to keep things simple.
 
+---
+
+🟢 On track | Yosmel Chiang posted an update on May 15
+
+Caught a flu, so theres been slow progress, but so far I have:
+
+* **Implemented authentication rules for the backend**, using JWT tokens to extract the PatientId claim for creates and updates when authenticated. For non-authenticated users, they must provide the PatientId when creating an appointment. Im thinking the flow goes like this:
+  * The frontend creates a patient user with minimal data, such as Firstname, Lastname and phone number (will probably add birth day aswell, I saw that the requirements ask for it)
+  * The frontend uses the created patientId to create an appointment, providing the rest of the required data, such as doctor id and so on…
+  * Im not sure this approach is solid, but the im sure the end result will surface flaws, which we will assess when they show up.
+* **Doctor search endpoint:** added a search for doctors using Linq
+
+---
+
+🟢 On track | Yosmel Chiang posted an update on May 17
+
+Still on the flu, slow progress, but im moving forward regardless.
+
+Today I have worked on:
+
+* **Started working on the frontend:** Laid out the layout, router infrastructure and basic navigation
+* **Setup the api services:** Implemented API services towards different endpoints, all endpoints are stored in .env variables and retrieved using `import.meta.env.VITE_SOME_API_URL`. On each API service im doing a check against a particular url, to make sure they are present in the .env file.
+* **Zustand**: I decided to work with zustand because of how simple it is to work with. The idea is simple, create a store for specific states, either it is doctors, patients, categories whatever, and provide a fetch function through zustand to get data from the backend through the correct api service.
+* **Search page:** The search page is now fully functional, while it doesnt look super pretty yet, one can easily look up doctors and get results, or no match if no match is found.
+* **BookingPage for guests:** I decided to check this one off first before moving on to authentication. For now im just focused on implementing the logic behind creating an appointment with basic non-sensitive data for anyone that is not registered. The idea is the following, create a patient first (using a zustand store) and use that patient id to create an appointment. On the backend I have implemented logic such that if the patient firstname and lastname already exists, we use that entity instead of creating a new one, to avoid a bunch of records with the same firstname and lastname, I have not bothered going further as of preventing duplicate phone numbers, thatll be too much over-engineering, I mean it is more likely that a returning patient changes their phone number and not their firstname and lastname…
+* **PreventingOverlapping time slots:** This one was tricky to implement, because I did not think of it earlier, however I do have **isUnique** constraints on the backend:
+
+  ```
+   // This contraints prevents Appointments to be created at the same time with the same Doctor
+  modelBuilder.Entity<Appointment>().HasIndex(c => new { c.DoctorId, c.AppointmentDate}).IsUnique();
+          
+  // This contraints prevents Appointments to be created at the same time by the same Patient
+  modelBuilder.Entity<Appointment>().HasIndex(c => new { c.PatientId, c.AppointmentDate}).IsUnique();
+  ```
+
+But these only account for cases where a Doctor cannot have two appointments at the exact same DateTime value, same for a Patient. What it does not account of is wether an existing appointment time on a doctor ends AFTER a new appoitment. Thats an overlap that needs to be addressed. So I did some searching on this and of course stackoverflow had some good answers, but one in particular helped me understand this, this one was linked referenced on stackoverflow: [https://baodad.blogspot.com/2014/06/date-range-overlap.html](<https://baodad.blogspot.com/2014/06/date-range-overlap.html>), Its not much of an explanation post, but a picture of a piece of paper and a drawing with a visualization. I had to draw one version myself to get it 100%. So we implemented this check, tested it on the backend + frontend and works perfectly. Currently its only present for creating appointments, but considering a registered patient will be able to update existing patients, there must be a check of the same sort for appointment updates, Ill adress that when I get to that part.
+
+* **Sonner:** I was satisfied with how simple sonner toasts works in the previous CA, specifically toast.promise. So I installed it for this project and implemented it for visual feedback. Im also using zod for simple validation and showing error messages.
+
+
 # Week 3
 # Week 4
 # Week 5
