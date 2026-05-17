@@ -66,6 +66,7 @@ export default function BookingPage() {
             // Create an appointment with promise based toast the required values, errors are caught in the error method.
             toast.promise(createAppointment({
                 AppointmentDate: appointmentDateAndTime,
+                Duration: Number(duration),
                 Note: note,
                 PatientId: Number(newPatient.id),
                 DoctorId: Number(docId),

@@ -52,6 +52,7 @@ public class AppointmentsController : ControllerBase
     ///
     ///     {
     ///        "AppointmentDate":"2026-05-24T08:30",
+    ///        "Duration": 30,
     ///        "Note":"Renewal of asthma medicine",
     ///        "PatientId": 1,
     ///        "DoctorId": 1,
@@ -68,12 +69,9 @@ public class AppointmentsController : ControllerBase
     public async Task<ActionResult<AppointmentDTO>> Create(CreateAppointmentDTO dto)
     {
         var IsAuthenticated = User.Identity!.IsAuthenticated;
-        AppointmentDTO result;
 
         if(IsAuthenticated)
         {
-            Console.WriteLine("Authentication detected");
-
             // We first validate the token, this must be a token that is not expired or ionvalid - This is handled by the JWT package
             // If validation passes, we retrieve the patient ID
             // We have to make sure the patientId claim is valid
@@ -98,15 +96,11 @@ public class AppointmentsController : ControllerBase
             
             // We use the patientId retrieved from the claim to register the apppointment under its authenticated patient.
             dto.PatientId = patientId;
-
-            result = await _service.CreateAppointment(dto); 
-        } else
-        {
-            Console.WriteLine("No authentication detected");
-
-            // Proceed to create an appoint, the frontend must provide the PatientId, which they create from Patient Controller
-            result = await _service.CreateAppointment(dto); 
         }
+
+        var result = await _service.CreateAppointment(dto); 
+        
+        if(result == null) return BadRequest("The time slot overlaps with an existing appointment, try again");
 
         return CreatedAtAction(nameof(Get), new { id = result.Id}, result);
     }
@@ -117,6 +111,7 @@ public class AppointmentsController : ControllerBase
     ///
     ///     {
     ///        "AppointmentDate":"2026-05-24T09:00",
+    ///        "Duration": 30,,
     ///        "Note":"Specialist referral",
     ///        "DoctorId": 1,
     ///        "ClinicId": 1,

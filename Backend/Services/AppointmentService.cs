@@ -3,6 +3,7 @@ using DTOS;
 using Microsoft.EntityFrameworkCore;
 using Extensions.Mappers;
 using Models;
+using Microsoft.AspNetCore.Http.HttpResults;
 
 namespace Services;
 public class AppointmentService
@@ -42,8 +43,21 @@ public class AppointmentService
         return appointment;
     }
 
-    public async Task<AppointmentDTO> CreateAppointment(CreateAppointmentDTO dto)
+    public async Task<AppointmentDTO?> CreateAppointment(CreateAppointmentDTO dto)
     {
+
+        var overlaps = await _ctx.Appointments.AsNoTracking().AnyAsync(ap => 
+                ap.DoctorId == dto.DoctorId && ap.StatusId != 3 &&
+                // if Existing.End >= New.Start = overlap
+                ap.AppointmentDate.AddMinutes(ap.Duration) >= dto.AppointmentDate &&
+
+                // If existing.Start <= New.End = overlap
+                ap.AppointmentDate <= dto.AppointmentDate.AddMinutes(dto.Duration)
+
+        );
+
+        if(overlaps) return null;
+
         var newAp = dto.ToAppointment();
 
         _ctx.Appointments.Add(newAp);

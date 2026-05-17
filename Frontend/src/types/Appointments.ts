@@ -1,5 +1,6 @@
 export interface Appointment {
     AppointmentDate: string,
+    Duration: number,
     Note: string,
     PatientId: number,
     DoctorId: number,
