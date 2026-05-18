@@ -13,7 +13,10 @@ export default function CategorySelection() {
         if(error) return <p style={{ color: "red" }}>Unable to load categories</p>
         if(!categories || loading ) return <LoadingSpinner />
 
-        return <select name="CategoryId">
+        return <label>
+               What type of appointment is this?
+               <select name="CategoryId">
                         {categories.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
-                    </select>                
+               </select>                
+               </label>
 }

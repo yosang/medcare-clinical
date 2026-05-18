@@ -25,9 +25,12 @@ export default function DoctorSelection() {
 
         return (
             <>
-            <select name="DoctorId" >
-                        {doctors.map(d => <option key={d.id} value={d.id}>{d.firstName} {d.lastName}</option>)}
-            </select>             
+            <label>
+                Select your doctor
+                <select name="DoctorId" >
+                            {doctors.map(d => <option key={d.id} value={d.id}>{d.firstName} {d.lastName}</option>)}
+                </select>             
+            </label>
             </>
         )   
 }

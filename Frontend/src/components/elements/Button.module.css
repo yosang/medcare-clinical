@@ -1,0 +1,14 @@
+.layout {
+    width: 50%;
+    justify-self: center;
+    align-self: center;
+    padding: var(--spacing-sm) var(--spacing-sm);
+    cursor: pointer;
+    background-color: var(--brand-primary);
+    color: var(--color-text);
+    border: none;
+    border-radius: var(--radius);
+}
+.layout:hover {
+    filter: brightness(1.1);
+}

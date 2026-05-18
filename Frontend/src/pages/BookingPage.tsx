@@ -8,6 +8,9 @@ import { useAppointmentsStore } from "../stores/useAppointmentsStore";
 import { z } from "zod";
 import { toast } from "sonner";
 
+import styles from "./BookingPage.module.css"
+import Button from "../components/elements/Button";
+
 const PatientSchema = z.object({
     firstname: z.string()
                 .trim()
@@ -100,83 +103,94 @@ export default function BookingPage() {
     <>
     <h1>Booking page</h1>
     <form onSubmit={handleSubmit}>
-        <DoctorSelection/>
-        <CategorySelection />
-        <div>
-            <label>
-                Enter your firstname
-                <input 
-                    required
-                    type="text"
-                    value={firstname}
-                    onChange={(e) => setFirstname(e.target.value)}
+        <div className={styles.layout}>
+
+            <div className={styles.personalDetails}>
+                <label>
+                    Enter your firstname
+                    <input 
+                        required
+                        type="text"
+                        value={firstname}
+                        onChange={(e) => setFirstname(e.target.value)}
+                        />
+                </label>
+                <label>
+                    Enter your lastname
+                    <input 
+                        required
+                        type="text"
+                        value={lastname}
+                        onChange={(e) => setLastname(e.target.value)}
+                        />
+                </label>
+                <label>
+                    Enter your phone number
+                    <input 
+                        type="tel"
+                        value={phone}
+                        placeholder="+4746200264"
+                        onChange={(e) => setPhone(e.target.value)}
+                        />
+                </label>
+                <label>
+                    Want to leave a note to your doctor?
+                    <textarea 
+                        name="Note"
+                        value={note}
+                        onChange={e => setNote(e.target.value)}
                     />
-            </label>
-            <label>
-                Enter your lastname
-                <input 
-                    required
-                    type="text"
-                    value={lastname}
-                    onChange={(e) => setLastname(e.target.value)}
+                </label>
+            </div>
+
+
+            <div className={styles.selection}>
+                <DoctorSelection/>
+                <CategorySelection />
+            </div>
+
+            <div className={styles.dateTimeDetails}>
+                
+            
+                <label>
+                    Appointment Date and time
+                    <input
+                        required
+                        type="datetime-local"
+                        value={appointmentDateAndTime} // We have to validate that the time is available, so we cant just use this blindly
+                        onChange={(e) => setAppointmentDateAndTime(e.target.value)}
+                        min={new Date().toISOString().slice(0, 16)}
                     />
-            </label>
-            <label>
-                Enter your phone number
-                <input 
-                    type="tel"
-                    value={phone}
-                    placeholder="+4746200264"
-                    onChange={(e) => setPhone(e.target.value)}
-                    />
-            </label>
-            <label>
-                A note to the doctor
-                <textarea 
-                    name="Note"
-                    value={note}
-                    onChange={e => setNote(e.target.value)}
-                />
-            </label>
-            <label>
-                Appointment Date and time
-                <input
-                    required
-                    type="datetime-local"
-                    value={appointmentDateAndTime} // We have to validate that the time is available, so we cant just use this blindly
-                    onChange={(e) => setAppointmentDateAndTime(e.target.value)}
-                    min={new Date().toISOString().slice(0, 16)}
-                />
-            </label>
-            <label>
-                Appointment Duration
-                <select value={duration} defaultValue="15" onChange={(e) => setDuration(e.target.value)} >
-                    <option value="15">15 minutes</option>
-                    <option value="30">30 minutes</option>
-                    <option value="45">45 minutes</option>
-                    <option value="60">1 hour</option>
-                </select>
-            </label>
+                </label>
+                <label>
+                    Appointment Duration
+                    <select value={duration} defaultValue="15" onChange={(e) => setDuration(e.target.value)} >
+                        <option value="15">15 minutes</option>
+                        <option value="30">30 minutes</option>
+                        <option value="45">45 minutes</option>
+                        <option value="60">1 hour</option>
+                    </select>
+                </label>
+
+                <Button type="submit" disabled={loadingAppointment || loadingPatient} >{loadingPatient || loadingAppointment ? (<LoadingSpinner />):"Book appointment"}</Button>
+            
+            </div>
+            
         </div>
         
-        <button type="submit" disabled={loadingAppointment || loadingPatient} >{loadingPatient || loadingAppointment ? (<LoadingSpinner />):"Book"}</button>
-        
+        <div className={styles.messages}>
+
         {validationErrors && validationErrors.length > 0 && (
-            <ul>
-                {validationErrors.map((error, index) => (
-                    <li 
-                        style={{ listStyle: "none", color: "red" }} 
-                        key={index}
-                    >
-                        {error}
-                    </li>
-                ))}
-            </ul>)
+                validationErrors.map((error => (
+                    <p style={{ color: "red" }}>{error}</p>
+                )))
+            )
         }
 
         {backendError && <p style={{ color: "red" }}>{backendError}</p>}
 
         {success && <p style={{ color: "green" }}>Appointment created</p>}
+        </div>
     </form>
     </>
     )
