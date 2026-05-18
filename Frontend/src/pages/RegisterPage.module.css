@@ -1,0 +1,80 @@
+.formLayout {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+.layout {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 20px;
+    width: 100%;
+    padding: var(--spacing-lg) var(--spacing-sm);
+}
+
+.layout label, 
+.layout p, 
+.layout input, 
+.layout textarea, 
+.layout select{
+    display: block;
+    margin: var(--spacing-sm) 0;
+    padding: var(--spacing-sm) var(--spacing-sm);
+    width: 100%;
+    font:inherit;
+}
+
+.layout textarea {
+    height: 5rem;
+    overflow-y: scroll;
+}
+
+.messages {
+    display: flex;
+    padding: var(--spacing-md) 0;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.messages p {
+    background-color: rgba(87, 87, 87, 0.2);
+    backdrop-filter: blur(20px);
+    border: 10px solid var(--accent);
+    border-radius: var(--radius);
+    width: 90%;
+    padding: var(--spacing-md) var(--spacing-md);
+    margin: 5px 0;
+}
+
+.icon {
+    display: flex;
+    justify-content: center;
+}
+
+.personalDetails, .sensitiveDetails {
+    background-color: var(--brand-secondary);
+    color: var(--bg-dark);
+    padding: var(--spacing-lg) var(--spacing-sm);
+    border: 5px solid var(--accent);
+    border-radius: var(--radius);
+}
+
+.formLayout button {
+    width: 10rem;
+}
+
+.errorInput {
+    border: 2px solid red;
+}
+
+@media (min-width: 900px) {
+    .layout{
+        flex-direction: row;
+    }
+    
+    .formLayout {
+        flex-direction: column;
+    }
+}
