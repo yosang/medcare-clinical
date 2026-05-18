@@ -13,6 +13,8 @@ export async function register(payload: Registration) {
         headers: { "Content-Type": "application/json" }
     })
 
+    console.log(res)
+    
     if(!res.ok) throw new Error("Failed to register patient")
     
     return res.json();

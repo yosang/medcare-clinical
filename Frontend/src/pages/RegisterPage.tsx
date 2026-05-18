@@ -1,12 +1,13 @@
-import { useState, type SyntheticEvent } from "react"
+import { useRef, useState, type SyntheticEvent } from "react"
 
 import { BookUser, BookLock } from "lucide-react"
-// import LoadingSpinner from "../components/layout/LoadingSpinner";
+import LoadingSpinner from "../components/layout/LoadingSpinner";
 import { z } from "zod";
-// import { toast } from "sonner";
+import { toast } from "sonner";
 
 import styles from "./RegisterPage.module.css"
 import Button from "../components/elements/Button";
+import { useRegistrationStore } from "../stores/useRegistrationStore";
 
 const RegistrationSchema = z.object({
     firstName: z.string()
@@ -30,19 +31,20 @@ const RegistrationSchema = z.object({
 
 export default function RegisterPage() {
     
+    const formRef = useRef<HTMLFormElement | null>(null);
+    const { loading,  registerPatient} = useRegistrationStore();
     const [validationErrors, setValidationErrors ] = useState<string[] | null>(null);
     const [inputsWithError, setInputsWithError] = useState<string[]>([]);
 
-    // const [backendError, setBackendError] = useState<string | null>(null);
+    const [backendError, setBackendError] = useState<string | null>(null);
 
     const handleSubmit = async(e: SyntheticEvent<HTMLFormElement>) => {
         e.preventDefault();
         setValidationErrors(null)
         setInputsWithError([])
+        setBackendError(null)
         const formData = new FormData(e.currentTarget);
         
-        console.log(Object.fromEntries(formData))
-
         const validation = RegistrationSchema.safeParse(Object.fromEntries(formData));
 
         if(!validation.success) {
@@ -51,36 +53,34 @@ export default function RegisterPage() {
             return
         }
 
-        // Create a patient, errors are caught in the catch block
-    
-        // toast.promise(createAppointment({
-        //     firstName: firstname,
-        //     lastName: lastname,
-        //     phone,
-        //     email,
-        //     dateOfBirth,
-        //     nationalIdentityNumber,
-        //     password,
-        //     isRegistered: true
-        // }), {
-        //     loading: "Registering...",
-        //     success: () => {
-        //         clearInputs();
-        //         return "Registration successful!"
-        //     },
-        //     error: (err) => {
-        //         console.log("Something went wrong during registration", err)
-        //         setBackendError(err.message)
-        //         return "Registration failed"
-        //     }
-        // })
+        toast.promise(registerPatient({
+            firstName: String(formData.get("firstName")),
+            lastName: String(formData.get("lastName")),
+            phone: String(formData.get("phone")),
+            email: String(formData.get("email")),
+            dateOfBirth: String(formData.get("dateOfBirth")),
+            nationalIdentityNumber: String(formData.get("nationalIdentityNumber")),
+            password: String(formData.get("password")),
+            isRegistered: true
+        }), {
+            loading: "Registering...",
+            success: () => {
+                formRef.current?.reset();
+                return "Registration successful!"
+            },
+            error: (err) => {
+                console.log("Something went wrong during registration", err)
+                setBackendError(err.message)
+                return "Registration failed"
+            }
+        })
 
     }
 
     return (
     <>
     <h1>Registration page</h1>
-    <form onSubmit={handleSubmit} className={styles.formLayout}>
+    <form onSubmit={handleSubmit} className={styles.formLayout} ref={formRef}>
         <div className={styles.layout}>
 
             <div className={styles.personalDetails}>
@@ -158,11 +158,10 @@ export default function RegisterPage() {
                         className={inputsWithError.includes("password") ? styles.errorInput : ""}
                         />
                 </label>
-                {/* <Button type="submit" disabled={loadingAppointment || loadingPatient} >{loadingPatient || loadingAppointment ? (<LoadingSpinner />):"Register"}</Button> */}
             
             </div>
         </div>
-        <Button type="submit">Register</Button>
+        <Button type="submit" disabled={loading} >{loading ? (<LoadingSpinner />):"Register"}</Button>
         
         
         <div className={styles.messages}>
@@ -174,9 +173,7 @@ export default function RegisterPage() {
                 )
             }
 
-            {/* {backendError && <p style={{ color: "red" }}>{backendError}</p>} */}
-
-            {/* {success && <p style={{ color: "green" }}>Registration successful</p>} */}
+            {backendError && <p style={{ color: "red" }}>{backendError}</p>}
         </div>
     </form>
     </>
