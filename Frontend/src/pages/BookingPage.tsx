@@ -10,6 +10,7 @@ import { toast } from "sonner";
 
 import styles from "./BookingPage.module.css"
 import Button from "../components/elements/Button";
+import { BookUser, BriefcaseMedical, CalendarFold } from "lucide-react";
 
 const PatientSchema = z.object({
     firstname: z.string()
@@ -106,6 +107,9 @@ export default function BookingPage() {
         <div className={styles.layout}>
 
             <div className={styles.personalDetails}>
+                <div className={styles.icon}>
+                    <BookUser />
+                </div>
                 <label>
                     Enter your firstname
                     <input 
@@ -145,13 +149,17 @@ export default function BookingPage() {
 
 
             <div className={styles.selection}>
+                <div className={styles.icon}>
+                    <BriefcaseMedical />
+                </div>
                 <DoctorSelection/>
                 <CategorySelection />
             </div>
 
             <div className={styles.dateTimeDetails}>
-                
-            
+                <div className={styles.icon}>
+                    <CalendarFold />
+                </div>    
                 <label>
                     Appointment Date and time
                     <input

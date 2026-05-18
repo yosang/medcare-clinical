@@ -159,9 +159,9 @@ export default function RegisterPage() {
                         />
                 </label>
             
+                <Button type="submit" disabled={loading} >{loading ? (<LoadingSpinner />):"Register"}</Button>
             </div>
         </div>
-        <Button type="submit" disabled={loading} >{loading ? (<LoadingSpinner />):"Register"}</Button>
         
         
         <div className={styles.messages}>

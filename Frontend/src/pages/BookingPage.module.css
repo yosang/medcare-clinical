@@ -41,9 +41,22 @@
     padding: var(--spacing-md) 0;
 }
 
+.personalDetails, .selection, .dateTimeDetails {
+    background-color: var(--brand-secondary);
+    color: var(--bg-dark);
+    padding: var(--spacing-lg) var(--spacing-sm);
+    border: 5px solid var(--accent);
+    border-radius: var(--radius);
+}
+
 .dateTimeDetails {
     display: flex;
     flex-direction: column;
+}
+
+.icon {
+    display: flex;
+    justify-content: center;
 }
 
 @media (min-width: 900px) {
