@@ -10,11 +10,11 @@
 .layout p, 
 .layout input, 
 .layout textarea, 
-.layout select{
+.layout select,
+.layout table{
     display: block;
     margin: var(--spacing-sm) 0;
     padding: var(--spacing-sm) var(--spacing-sm);
-    /* width: 100%; */
     font:inherit;
 }
 
@@ -61,8 +61,26 @@
     justify-content: center;
 }
 
+.appointmentHistory {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-items: center;
+    height: 70vh;
+    overflow: auto;
+}
+
 @media (min-width: 900px) {
     .layout{
         flex-direction: row;
+    }
+
+    .layout label, 
+    .layout p, 
+    .layout input, 
+    .layout textarea, 
+    .layout select,
+    .layout table{
+        padding: var(--spacing-md) var(--spacing-lg);
     }
 }

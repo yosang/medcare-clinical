@@ -11,6 +11,8 @@ import { toast } from "sonner";
 import styles from "./BookingPage.module.css"
 import Button from "../components/elements/Button";
 import { BookUser, BriefcaseMedical, CalendarFold } from "lucide-react";
+import { useLoginStore } from "../stores/useLoginStore";
+import AppointmentsTable from "../components/elements/AppointmentsTable";
 
 const PatientSchema = z.object({
     firstname: z.string()
@@ -27,7 +29,8 @@ const PatientSchema = z.object({
 
 export default function BookingPage() {
     const { getClinicId } = useDoctorsStore();
-    
+
+    const { token } = useLoginStore();
     const { success, loading: loadingAppointment, createAppointment} = useAppointmentsStore();
     const { loading: loadingPatient, createPatient } = usePatientStore();
 
@@ -102,10 +105,13 @@ export default function BookingPage() {
 
     return (
     <>
-    <h1>Booking page</h1>
     <form onSubmit={handleSubmit}>
         <div className={styles.layout}>
+            
 
+            
+
+            {!token && (
             <div className={styles.personalDetails}>
                 <div className={styles.icon}>
                     <BookUser />
@@ -137,15 +143,8 @@ export default function BookingPage() {
                         onChange={(e) => setPhone(e.target.value)}
                         />
                 </label>
-                <label>
-                    Want to leave a note to your doctor?
-                    <textarea 
-                        name="Note"
-                        value={note}
-                        onChange={e => setNote(e.target.value)}
-                    />
-                </label>
             </div>
+            )}
 
 
             <div className={styles.selection}>
@@ -154,6 +153,14 @@ export default function BookingPage() {
                 </div>
                 <DoctorSelection/>
                 <CategorySelection />
+                <label>
+                    Want to leave a note to your doctor?
+                    <textarea 
+                        name="Note"
+                        value={note}
+                        onChange={e => setNote(e.target.value)}
+                    />
+                </label>
             </div>
 
             <div className={styles.dateTimeDetails}>
@@ -180,10 +187,19 @@ export default function BookingPage() {
                     </select>
                 </label>
 
-                <Button type="submit" disabled={loadingAppointment || loadingPatient} >{loadingPatient || loadingAppointment ? (<LoadingSpinner />):"Book appointment"}</Button>
+                <Button type="submit" disabled={loadingAppointment || loadingPatient} >{loadingPatient || loadingAppointment ? (<LoadingSpinner />):"Book new appointment"}</Button>
             
             </div>
             
+
+            {token && 
+                <>
+                <div className={styles.appointmentHistory}>
+                <h1>Appointment history</h1>
+                <AppointmentsTable />
+                </div>
+                </>
+            }
         </div>
         
         <div className={styles.messages}>

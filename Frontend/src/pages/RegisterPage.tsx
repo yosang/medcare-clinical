@@ -79,7 +79,6 @@ export default function RegisterPage() {
 
     return (
     <>
-    <h1>Registration page</h1>
     <form onSubmit={handleSubmit} className={styles.formLayout} ref={formRef}>
         <div className={styles.layout}>
 
