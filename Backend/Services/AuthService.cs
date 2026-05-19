@@ -31,7 +31,7 @@ public class AuthService
         
         if(isPasswordValid == PasswordVerificationResult.Failed) return null;
 
-        return new TokenDTO { Token = _ts.GenerateToken(existing)};
+        return new TokenDTO { UserId = existing.Id, Token = _ts.GenerateToken(existing)};
     }
     public async Task<TokenDTO?> Register(RegisterPatientDTO dto)
     {
@@ -50,6 +50,6 @@ public class AuthService
 
         var token = _ts.GenerateToken(newPatient);
 
-        return new TokenDTO { Token = token};
+        return new TokenDTO { UserId = newPatient.Id, Token = token};
     }
 }

@@ -25,6 +25,7 @@ export interface Login {
 }
 
 export interface LoginState {
+    userId: number | null,
     token: string,
     loading: boolean,
     error: boolean,
