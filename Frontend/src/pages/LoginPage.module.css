@@ -33,6 +33,11 @@
     width: 100px;
 }
 
+.icon {
+    display: flex;
+    justify-content: center;
+}
+
 @media (min-width: 900px) {
     .loginCard {
         width: 30vw;

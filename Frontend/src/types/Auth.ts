@@ -18,3 +18,16 @@ export interface RegistrationState {
     error: boolean,
     registerPatient: (payload: Registration) => Promise<Token>
 }
+
+export interface Login {
+    email: string,
+    password: string
+}
+
+export interface LoginState {
+    token: string,
+    loading: boolean,
+    error: boolean,
+    loginPatient: (payload: Login) => Promise<void>
+    logout: () => void
+}

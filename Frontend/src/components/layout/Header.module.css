@@ -19,6 +19,8 @@
 
 .menuITems {
     display: flex;
+    justify-content: center;
+    align-items: center;
     gap: 20px;
 }
 
@@ -34,6 +36,10 @@
     .logo {
        display: block;
     }
+}
+
+.logout {
+    cursor: pointer;
 }
 
 @media (min-width: 900px) {
