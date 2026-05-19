@@ -32,9 +32,6 @@ export default function SearchPage() {
 
     return (
         <>
-        <header>
-            <h1>Search Page</h1>
-        </header>
         <form onSubmit={handleSubmit}>
             <label>
                 Search for a doctor by firstname / lastname

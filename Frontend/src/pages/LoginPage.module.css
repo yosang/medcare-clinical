@@ -1,0 +1,40 @@
+.layout {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    gap: 20px;
+}
+
+.loginCard {
+    width: 80vw;
+    background-color: var(--brand-secondary);
+    color: var(--bg-dark);
+    padding: var(--spacing-lg) var(--spacing-sm);
+    border: 5px solid var(--accent);
+    border-radius: var(--radius);
+}
+
+.loginInputs {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.loginInputs label {
+    display: flex;
+    flex-direction: column;
+}
+
+.loginInputs button {
+    margin-top: 10px;
+    width: 100px;
+}
+
+@media (min-width: 900px) {
+    .loginCard {
+        width: 30vw;
+    }
+}
