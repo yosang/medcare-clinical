@@ -1,4 +1,4 @@
-import { useState, type SyntheticEvent } from "react"
+import { useEffect, useRef, useState, type SyntheticEvent } from "react"
 import DoctorSelection from "../components/forms/DoctorSelection";
 import CategorySelection from "../components/forms/CategorySelection";
 import { usePatientStore } from "../stores/usePatientStore";
@@ -28,6 +28,8 @@ const PatientSchema = z.object({
 })
 
 export default function BookingPage() {
+
+    const inputRef = useRef<HTMLInputElement | null>(null);
     const { getClinicId } = useDoctorsStore();
 
     const { token } = useLoginStore();
@@ -103,6 +105,10 @@ export default function BookingPage() {
 
     }
 
+    useEffect(() => {
+        inputRef.current?.focus();
+    }, [])
+
     return (
     <>
     <form onSubmit={handleSubmit}>
@@ -119,6 +125,7 @@ export default function BookingPage() {
                 <label>
                     Enter your firstname
                     <input 
+                        ref={inputRef}
                         required
                         type="text"
                         value={firstname}
@@ -167,25 +174,27 @@ export default function BookingPage() {
                 <div className={styles.icon}>
                     <CalendarFold />
                 </div>    
-                <label>
-                    Appointment Date and time
-                    <input
-                        required
-                        type="datetime-local"
-                        value={appointmentDateAndTime} // We have to validate that the time is available, so we cant just use this blindly
-                        onChange={(e) => setAppointmentDateAndTime(e.target.value)}
-                        min={new Date().toISOString().slice(0, 16)}
-                    />
-                </label>
-                <label>
-                    Appointment Duration
-                    <select value={duration} defaultValue="15" onChange={(e) => setDuration(e.target.value)} >
-                        <option value="15">15 minutes</option>
-                        <option value="30">30 minutes</option>
-                        <option value="45">45 minutes</option>
-                        <option value="60">1 hour</option>
-                    </select>
-                </label>
+                <div className={styles.dateTimeInputs}>
+                    <label>
+                        Appointment Date and time
+                        <input
+                            required
+                            type="datetime-local"
+                            value={appointmentDateAndTime} // We have to validate that the time is available, so we cant just use this blindly
+                            onChange={(e) => setAppointmentDateAndTime(e.target.value)}
+                            min={new Date().toISOString().slice(0, 16)}
+                        />
+                    </label>
+                    <label>
+                        Appointment Duration
+                        <select value={duration} defaultValue="15" onChange={(e) => setDuration(e.target.value)} >
+                            <option value="15">15 minutes</option>
+                            <option value="30">30 minutes</option>
+                            <option value="45">45 minutes</option>
+                            <option value="60">1 hour</option>
+                        </select>
+                    </label>
+                </div>
 
                 <Button type="submit" disabled={loadingAppointment || loadingPatient} >{loadingPatient || loadingAppointment ? (<LoadingSpinner />):"Book new appointment"}</Button>
             

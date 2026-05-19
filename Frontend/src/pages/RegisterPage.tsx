@@ -1,4 +1,4 @@
-import { useRef, useState, type SyntheticEvent } from "react"
+import { useEffect, useRef, useState, type SyntheticEvent } from "react"
 
 import { BookUser, BookLock } from "lucide-react"
 import LoadingSpinner from "../components/layout/LoadingSpinner";
@@ -31,6 +31,7 @@ const RegistrationSchema = z.object({
 
 export default function RegisterPage() {
     
+    const inputRef = useRef<HTMLInputElement | null>(null);
     const formRef = useRef<HTMLFormElement | null>(null);
     const { loading,  registerPatient} = useRegistrationStore();
     const [validationErrors, setValidationErrors ] = useState<string[] | null>(null);
@@ -77,6 +78,10 @@ export default function RegisterPage() {
 
     }
 
+    useEffect(() => {
+        inputRef.current?.focus();
+    }, [])
+
     return (
     <>
     <form onSubmit={handleSubmit} className={styles.formLayout} ref={formRef}>
@@ -89,6 +94,7 @@ export default function RegisterPage() {
                 <label>
                     Enter your first name
                     <input 
+                        ref={inputRef}
                         required
                         type="text"
                         name="firstName"

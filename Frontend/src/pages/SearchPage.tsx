@@ -1,9 +1,11 @@
-import { useState,  type ChangeEvent,  type SyntheticEvent } from "react"
+import { useEffect, useRef, useState,  type ChangeEvent,  type SyntheticEvent } from "react"
 import type { Doctor } from "../types/Doctors";
 import { fetchDoctorsBySearch } from "../services/api";
 import LoadingSpinner from "../components/layout/LoadingSpinner";
 
 export default function SearchPage() {
+    const inputRef = useRef<HTMLInputElement | null>(null);
+
     const [term, setTerm] = useState("");
         const [doctors, setDoctors] = useState<Doctor[] | null>(null)
         const [error, setError] = useState(false);
@@ -30,12 +32,17 @@ export default function SearchPage() {
         setTerm(e.target.value)
     }
 
+    useEffect(() => {
+        inputRef.current?.focus();
+    }, [])
+
     return (
         <>
         <form onSubmit={handleSubmit}>
             <label>
                 Search for a doctor by firstname / lastname
                 <input 
+                    ref={inputRef}
                     name="name"
                     value={term}
                     onChange={handleChange}

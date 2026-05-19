@@ -56,6 +56,10 @@
     flex-direction: column;
 }
 
+.dateTimeDetails .dateTimeInputs {
+    flex: 1
+}
+
 .icon {
     display: flex;
     justify-content: center;
@@ -67,7 +71,8 @@
     gap: 10px;
     align-items: center;
     height: 70vh;
-    overflow: auto;
+    overflow-y: auto;
+    overflow-x: auto;
 }
 
 @media (min-width: 900px) {

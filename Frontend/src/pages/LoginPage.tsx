@@ -1,4 +1,4 @@
-import type { ChangeEvent } from "react";
+import { useEffect, useRef, type ChangeEvent } from "react";
 import Button from "../components/elements/Button";
 import styles from "./LoginPage.module.css"
 import { ScanFace } from "lucide-react";
@@ -9,6 +9,7 @@ import { useNavigate } from "react-router";
 
 export default function LoginPage() {
 
+    const emailref = useRef<HTMLInputElement | null>(null);
     const navigate = useNavigate();
 
     const { loading, loginPatient } = useLoginStore();
@@ -38,6 +39,10 @@ export default function LoginPage() {
         })
     }
 
+    useEffect(() => {
+        emailref.current?.focus();
+    }, [])
+
     return <form onSubmit={handleSubmit} className={styles.layout}>
             <div className={styles.loginCard}>
                 <div className={styles.loginInputs}>
@@ -47,6 +52,7 @@ export default function LoginPage() {
                     <label>
                         Email
                         <input 
+                            ref={emailref}
                             required
                             name="email"
                             type="email"
