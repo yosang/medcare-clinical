@@ -2,8 +2,9 @@ export interface Clinic {
     id: number,
     name: string,
     phone: string,
-    postalCode: string,
-    address: string
+    email: string,
+    address: string,
+    postalCode: string
 }
 
 export interface Specialty {

@@ -33,7 +33,7 @@ export default function BookingPage() {
     const { getClinicId } = useDoctorsStore();
 
     const { token } = useLoginStore();
-    const { success, loading: loadingAppointment, createAppointment} = useAppointmentsStore();
+    const { loading: loadingAppointment, createAppointment, appointments, getAppointments} = useAppointmentsStore();
     const { loading: loadingPatient, createPatient } = usePatientStore();
 
     const [firstname, setFirstname] = useState("");
@@ -107,51 +107,53 @@ export default function BookingPage() {
 
     useEffect(() => {
         inputRef.current?.focus();
-    }, [])
+
+        if(token) getAppointments(token);
+
+    }, [getAppointments, token])
 
     return (
     <>
     <form onSubmit={handleSubmit}>
         <div className={styles.layout}>
-            
 
-            
-
-            {!token && (
             <div className={styles.personalDetails}>
                 <div className={styles.icon}>
                     <BookUser />
                 </div>
                 <label>
-                    Enter your firstname
+                    Firstname
                     <input 
                         ref={inputRef}
                         required
                         type="text"
                         value={firstname}
+                        disabled={!!token}
                         onChange={(e) => setFirstname(e.target.value)}
                         />
                 </label>
                 <label>
-                    Enter your lastname
+                    Lastname
                     <input 
                         required
                         type="text"
                         value={lastname}
+                        disabled={!!token}
                         onChange={(e) => setLastname(e.target.value)}
                         />
                 </label>
                 <label>
-                    Enter your phone number
+                    Phone number
                     <input 
                         type="tel"
                         value={phone}
                         placeholder="+4746200264"
+                        disabled={!!token}
                         onChange={(e) => setPhone(e.target.value)}
                         />
                 </label>
             </div>
-            )}
+            
 
 
             <div className={styles.selection}>
@@ -200,17 +202,16 @@ export default function BookingPage() {
             
             </div>
             
-
-            {token && 
-                <>
-                <div className={styles.appointmentHistory}>
-                <h1>Appointment history</h1>
-                <AppointmentsTable />
-                </div>
-                </>
-            }
         </div>
         
+        {token && 
+        <>
+        <div className={styles.appointmentHistory}>
+            <h1>Appointment history</h1>
+            <AppointmentsTable data={appointments ? appointments:[]}/>
+        </div>
+        </>
+        }
         <div className={styles.messages}>
 
         {validationErrors && validationErrors.length > 0 && (
@@ -222,7 +223,6 @@ export default function BookingPage() {
 
         {backendError && <p style={{ color: "red" }}>{backendError}</p>}
 
-        {success && <p style={{ color: "green" }}>Appointment created</p>}
         </div>
     </form>
     </>

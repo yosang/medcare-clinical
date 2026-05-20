@@ -66,11 +66,11 @@
 }
 
 .appointmentHistory {
+    padding: var(--spacing-lg) var(--spacing-md);
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 20px;
     align-items: center;
-    height: 70vh;
     overflow-y: auto;
     overflow-x: auto;
 }

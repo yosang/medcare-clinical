@@ -1,12 +1,26 @@
-import type { Appointment } from "../types/Appointments";
+import type { AppointmentPayload } from "../types/Appointments";
 import type { GuestPatientPayload } from "../types/Patients";
 
-const createAppointmentUrl = import.meta.env.VITE_CREATE_APPOINTMENT;
-const createPatientUrl = import.meta.env.VITE_CREATE_GUEST_PATIENT;
+const appointmentsUrl = import.meta.env.VITE_APPOINTMENTS;
+const patientsUrl = import.meta.env.VITE_PATIENTS;
 const statusUrl = import.meta.env.VITE_STATUS;
 const categoriesUrl = import.meta.env.VITE_CATEGORIES;
 const doctorsUrl = import.meta.env.VITE_DOCTORS;
 const searchUrl = import.meta.env.VITE_DOCTORS_SEARCH;
+
+export async function fetchAppointments(token:string) {
+    if(!appointmentsUrl) {
+        throw new Error("VITE_STATUS url is not defined in .env")
+    }
+
+    const res = await fetch(appointmentsUrl, {
+        headers: { "Authorization": `Bearer ${token}`}
+    })
+
+    if(!res.ok) throw new Error("Failed to fetch appointments")
+    
+    return res.json();
+}
 
 export async function fetchStatus() {
     if(!statusUrl) {
@@ -59,11 +73,11 @@ export async function fetchDoctorsBySearch(name: string ) {
 }
 
 export async function createGuestPatient(payload: GuestPatientPayload) {
-    if(!createPatientUrl) {
-        throw new Error("VITE_CREATE_GUEST_PATIENT url is not defined in .env")
+    if(!patientsUrl) {
+        throw new Error("VITE_PATIENTS url is not defined in .env")
     }
 
-    const res = await fetch(createPatientUrl, {
+    const res = await fetch(patientsUrl, {
         method: "POST",
         body: JSON.stringify(payload),
         headers: { "Content-Type": "application/json" }
@@ -76,12 +90,12 @@ export async function createGuestPatient(payload: GuestPatientPayload) {
 }
 
 
-export async function createAppointment(payload:Appointment) {
-    if(!createAppointmentUrl) {
-        throw new Error("VITE_CREATE_APPOINTMENT url is not defined in .env")
+export async function createAppointment(payload:AppointmentPayload) {
+    if(!appointmentsUrl) {
+        throw new Error("VITE_APPOINTMENTS url is not defined in .env")
     }
 
-    const res = await fetch(createAppointmentUrl, {
+    const res = await fetch(appointmentsUrl, {
         method: "POST",
         body: JSON.stringify(payload),
         headers: { "Content-Type": "application/json" }

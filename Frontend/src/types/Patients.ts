@@ -1,3 +1,14 @@
+export interface Patient {
+      id: number,
+      firstName: string,
+      lastName: string,
+      phone: string,
+      email: string,
+      dateOfBirth: string,
+      nationalIdentityNumber: string,
+      isRegistered: boolean
+}
+
 export type GuestPatientPayload = {
     firstname: string,
     lastname: string,

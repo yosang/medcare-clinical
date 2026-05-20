@@ -1,4 +1,7 @@
-export interface Appointment {
+import type { Clinic, Doctor } from "./Doctors"
+import type { Patient } from "./Patients"
+
+export interface AppointmentPayload {
     AppointmentDate: string,
     Duration: number,
     Note: string,
@@ -7,6 +10,19 @@ export interface Appointment {
     ClinicId: number,
     CategoryId: number,
     StatusId: number
+}
+
+export interface Appointment {
+    id: number,
+    appointmentDate: string,
+    duration: number,
+    note: string,
+    doctor: Doctor,
+    patient: Patient,
+    category: Categories,
+    status: Status,
+    clinic: Clinic
+
 }
 
 export interface Categories {
@@ -20,10 +36,12 @@ export interface Status {
 }
 
 export interface AppointmentsState {
+    appointments: Appointment[] | null
     success: boolean
     loading: boolean,
     error: boolean,
-    createAppointment: (payload: Appointment) => Promise<void>
+    createAppointment: (payload: AppointmentPayload) => Promise<void>,
+    getAppointments: (token: string) => Promise<void>
 }
 
 export interface CategoriesState {

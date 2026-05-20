@@ -25,8 +25,7 @@ export interface Login {
 }
 
 export interface LoginState {
-    userId: number | null,
-    token: string,
+    token: string | null,
     loading: boolean,
     error: boolean,
     loginPatient: (payload: Login) => Promise<void>

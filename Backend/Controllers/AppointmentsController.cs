@@ -23,6 +23,30 @@ public class AppointmentsController : ControllerBase
     [ProducesResponseType(typeof(IEnumerable<AppointmentWithDetailsDTO>), StatusCodes.Status200OK)]
     public async Task<ActionResult<IEnumerable<AppointmentWithDetailsDTO>>> Get()
     {
+
+        var IsAuthenticated = User.Identity!.IsAuthenticated;
+
+        if(IsAuthenticated)
+        {
+            var patiendIdClaim = User.FindFirst("PatientId");
+            
+            if(patiendIdClaim == null) return BadRequest(new ProblemDetails()
+            {
+               Title = "Invalid token",
+               Detail = "PatientID claim is missing",
+               Status = StatusCodes.Status400BadRequest 
+            });
+
+            if(!int.TryParse(patiendIdClaim.Value, out int patientId)) return BadRequest(new ProblemDetails()
+            {
+                Title = "Invalid token",
+               Detail = "Invalid PatientID claim value",
+               Status = StatusCodes.Status400BadRequest 
+            });
+
+            return Ok(await _service.GetAppointmentsForPatient(patientId));
+        };
+
         var appointments = await _service.GetAppointments();
         
         return Ok(appointments);

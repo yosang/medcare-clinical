@@ -43,6 +43,19 @@ public class AppointmentService
         return appointment;
     }
 
+    public async Task<IEnumerable<AppointmentWithDetailsDTO>> GetAppointmentsForPatient(int patientId)
+    {
+        var appointments = await _ctx.Appointments.AsNoTracking()
+                                                    .Include(ap => ap.Doctor)
+                                                    .Include(ap => ap.Patient)
+                                                    .Include(ap => ap.Category)
+                                                    .Include(ap => ap.Status)
+                                                    .Include(ap => ap.Clinic)
+                                                    .Where(ap => ap.PatientId == patientId)
+                                                    .Select(appointment => appointment.ToAppointmentWithDetailsDTO())
+                                                    .ToListAsync();
+        return appointments;
+    }
     public async Task<AppointmentDTO?> CreateAppointment(CreateAppointmentDTO dto)
     {
 
