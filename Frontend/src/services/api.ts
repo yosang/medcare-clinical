@@ -1,4 +1,4 @@
-import type { AppointmentPayload } from "../types/Appointments";
+import type { AppointmentPayload, AppointmentUpdatePayload } from "../types/Appointments";
 import type { GuestPatientPayload } from "../types/Patients";
 
 const appointmentsUrl = import.meta.env.VITE_APPOINTMENTS;
@@ -8,19 +8,6 @@ const categoriesUrl = import.meta.env.VITE_CATEGORIES;
 const doctorsUrl = import.meta.env.VITE_DOCTORS;
 const searchUrl = import.meta.env.VITE_DOCTORS_SEARCH;
 
-export async function fetchAppointments(token:string) {
-    if(!appointmentsUrl) {
-        throw new Error("VITE_STATUS url is not defined in .env")
-    }
-
-    const res = await fetch(appointmentsUrl, {
-        headers: { "Authorization": `Bearer ${token}`}
-    })
-
-    if(!res.ok) throw new Error("Failed to fetch appointments")
-    
-    return res.json();
-}
 
 export async function fetchStatus() {
     if(!statusUrl) {
@@ -89,6 +76,19 @@ export async function createGuestPatient(payload: GuestPatientPayload) {
 
 }
 
+export async function fetchAppointments(token:string) {
+    if(!appointmentsUrl) {
+        throw new Error("VITE_APPOINTMENTS url is not defined in .env")
+    }
+
+    const res = await fetch(appointmentsUrl, {
+        headers: { "Authorization": `Bearer ${token}`}
+    })
+
+    if(!res.ok) throw new Error("Failed to fetch appointments")
+    
+    return res.json();
+}
 
 export async function createAppointment(payload:AppointmentPayload) {
     if(!appointmentsUrl) {
@@ -109,4 +109,24 @@ export async function createAppointment(payload:AppointmentPayload) {
         throw new Error("Failed to create appointment")
 }
     return true;
+}
+
+export async function updateAppointment(payload:AppointmentUpdatePayload, token: string, apId: number) {
+    if(!appointmentsUrl) {
+        throw new Error("VITE_APPOINTMENTS url is not defined in .env")
+    }
+
+    const res = await fetch(`${appointmentsUrl}/${apId}`, {
+        method: "PUT",
+        body: JSON.stringify(payload),
+        headers: { "Content-Type":"application/json" ,"Authorization": `Bearer ${token}`}
+    })
+
+    if(!res.ok) {
+        console.log(res)
+        const text = await res.text()
+        if(text) throw new Error(text);
+        
+        throw new Error("Failed to update appointment")
+    }
 }

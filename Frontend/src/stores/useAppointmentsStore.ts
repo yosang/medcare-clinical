@@ -1,6 +1,6 @@
 import { create } from "zustand";
 import type { AppointmentPayload, AppointmentsState } from "../types/Appointments";
-import { createAppointment, fetchAppointments } from "../services/api";
+import { createAppointment, fetchAppointments, updateAppointment } from "../services/api";
 
 export const useAppointmentsStore = create<AppointmentsState>((set) => ({
     appointments: null,
@@ -22,6 +22,15 @@ export const useAppointmentsStore = create<AppointmentsState>((set) => ({
         try {
             const result = await fetchAppointments(token);
             set({loading: false, appointments: result})
+        } catch(err) {
+            set({error: true, loading: false})
+            throw err;
+        }
+    },
+    updateAppointment: async(payload, token, apId) => {
+        set({loading: true})
+        try {
+            await updateAppointment(payload, token, apId)
         } catch(err) {
             set({error: true, loading: false})
             throw err;

@@ -12,6 +12,16 @@ export interface AppointmentPayload {
     StatusId: number
 }
 
+export interface AppointmentUpdatePayload {
+    appointmentDate: string,
+    duration: number,
+    note: string,
+    doctorId: number,
+    clinicId: number,
+    categoryId: number,
+    statusId: number
+}
+
 export interface Appointment {
     id: number,
     appointmentDate: string,
@@ -41,7 +51,8 @@ export interface AppointmentsState {
     loading: boolean,
     error: boolean,
     createAppointment: (payload: AppointmentPayload) => Promise<void>,
-    getAppointments: (token: string) => Promise<void>
+    getAppointments: (token: string) => Promise<void>,
+    updateAppointment: (payload: AppointmentUpdatePayload, token: string, apId: number) => Promise<void>;
 }
 
 export interface CategoriesState {
