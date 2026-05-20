@@ -64,6 +64,7 @@ export default function RegisterPage() {
             password: String(formData.get("password")),
             isRegistered: true
         }), {
+            position: "top-center",
             loading: "Registering...",
             success: () => {
                 formRef.current?.reset();

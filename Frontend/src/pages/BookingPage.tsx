@@ -40,7 +40,7 @@ export default function BookingPage() {
     const [lastname, setLastname] = useState("");
     const [phone, setPhone] = useState("");
     const [note, setNote] = useState("");
-    const [duration, setDuration] = useState("");
+    const [duration, setDuration] = useState("15");
 
     const [validationErrors, setValidationErrors ] = useState<string[] | null>(null);
     const [backendError, setBackendError] = useState<string | null>(null);
@@ -60,10 +60,19 @@ export default function BookingPage() {
         e.preventDefault();
         setValidationErrors(null)
         const formData = new FormData(e.currentTarget);
-
         const docId = formData.get("DoctorId") as string;
 
-        const validation = PatientSchema.safeParse({ firstname, lastname, phone });
+        const patientData = token && appointments ? {
+            firstname: appointments[0].patient.firstName,
+            lastname: appointments[0].patient.lastName,
+            phone: appointments[0].patient.phone,
+        }:{
+            firstname,
+            lastname,
+            phone
+        }
+
+        const validation = PatientSchema.safeParse(patientData);
 
         if(!validation.success) {
             setValidationErrors(validation.error.issues.map(err => err.message))
@@ -72,7 +81,7 @@ export default function BookingPage() {
 
         // Create a patient, errors are caught in the catch block
         try {
-            const newPatient = await createPatient({ firstname, lastname, phone })
+            const newPatient = await createPatient(patientData)
     
             // Create an appointment with promise based toast the required values, errors are caught in the error method.
             toast.promise(createAppointment({
@@ -88,6 +97,7 @@ export default function BookingPage() {
                 loading: "Creating your ppointment...",
                 success: () => {
                     clearInputs();
+                    if(token) getAppointments(token);
                     return "Appointment created!"
                 },
                 error: (err) => {
@@ -114,12 +124,7 @@ export default function BookingPage() {
 
     return (
     <>
-    {token && 
-        <div className={styles.appointmentHistory}>
-            <h1>Appointment history</h1>
-            <AppointmentsTable />
-        </div>
-    }
+
     <form onSubmit={handleSubmit}>
         <div className={styles.layout}>
 
@@ -133,7 +138,7 @@ export default function BookingPage() {
                         ref={inputRef}
                         required
                         type="text"
-                        value={firstname}
+                        value={token && appointments ? appointments[0].patient.firstName : firstname}
                         disabled={!!token}
                         placeholder={token && appointments ? appointments[0].patient.firstName : ""}
                         onChange={(e) => setFirstname(e.target.value)}
@@ -197,7 +202,7 @@ export default function BookingPage() {
                     </label>
                     <label>
                         Appointment Duration
-                        <select value={duration} defaultValue="15" onChange={(e) => setDuration(e.target.value)} >
+                        <select value={duration} onChange={(e) => setDuration(e.target.value)} >
                             <option value="15">15 minutes</option>
                             <option value="30">30 minutes</option>
                             <option value="45">45 minutes</option>
@@ -225,6 +230,12 @@ export default function BookingPage() {
 
         </div>
     </form>
+    {token && 
+        <div className={styles.appointmentHistory}>
+            <h1>Appointment history</h1>
+            <AppointmentsTable />
+        </div>
+    }
     </>
     )
 }

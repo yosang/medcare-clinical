@@ -13,13 +13,22 @@ export interface AppointmentPayload {
 }
 
 export interface AppointmentUpdatePayload {
-    appointmentDate: string,
-    duration: number,
-    note: string,
-    doctorId: number,
-    clinicId: number,
-    categoryId: number,
-    statusId: number
+    appointmentDate?: string,
+    duration?: number,
+    note?: string,
+    doctorId?: number,
+    clinicId?: number,
+    categoryId?: number,
+    statusId?: number
+}
+
+export interface AppointmentUpdateForm {
+    appointmentDate?: string,
+    duration?: number,
+    note?: string,
+    doctorId?: number,
+    clinicId?: number,
+    categoryId?: number,
 }
 
 export interface Appointment {
