@@ -7,13 +7,14 @@ export const useAppointmentsStore = create<AppointmentsState>((set) => ({
     success: false,
     loading: false,
     error: false,
+    errorMessage: null,
     createAppointment: async(payload: AppointmentPayload) => {
         set({loading: true})
         try {
             const created = await createAppointment(payload);
             if(created) set({ success: true, loading: false})
         } catch(err) {
-            set({error: true, loading: false})
+            set({ error: true, errorMessage: err.message, loading: false})
             throw err;
         }
     },
@@ -32,8 +33,9 @@ export const useAppointmentsStore = create<AppointmentsState>((set) => ({
         try {
             await updateAppointment(payload, token, apId)
         } catch(err) {
-            set({error: true, loading: false})
+            set({ error: true, errorMessage: err.message, loading: false})
             throw err;
         }
-    }
+    },
+    clearErrors: () => set({error: false, errorMessage: null})
 }))

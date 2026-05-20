@@ -54,9 +54,9 @@ public class CreateAppointmentDTO
 public class UpdateAppointmentDTO
 {
     [DataType(DataType.DateTime)]
-    public DateTime? AppointmentDate { get; set; }
+    public DateTime AppointmentDate { get; set; }
 
-    public int? Duration { get; set; }
+    public int Duration { get; set; }
     public string? Note { get; set; }
 
     public int? PatientId { get; set; }

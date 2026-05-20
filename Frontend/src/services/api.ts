@@ -103,8 +103,8 @@ export async function createAppointment(payload:AppointmentPayload) {
 
     if(!res.ok) {
         
-        const text = await res.text()
-        if(text) throw new Error(text);
+        const errorObject = await res.json()
+        if(errorObject) throw new Error(errorObject.detail);
         
         throw new Error("Failed to create appointment")
 }
@@ -123,9 +123,8 @@ export async function updateAppointment(payload:AppointmentUpdatePayload, token:
     })
 
     if(!res.ok) {
-        console.log(res)
-        const text = await res.text()
-        if(text) throw new Error(text);
+        const errorObject = await res.json()
+        if(errorObject) throw new Error(errorObject.detail);
         
         throw new Error("Failed to update appointment")
     }

@@ -13,7 +13,7 @@ import { toast } from "sonner";
 
 export default function AppointmentsTable() {
     const {token } = useLoginStore();
-    const { appointments, getAppointments, updateAppointment } = useAppointmentsStore();
+    const { error, errorMessage, clearErrors, appointments, getAppointments, updateAppointment } = useAppointmentsStore();
     const [open, setOpen] = useState(false)
 
     const[apId, setApId] = useState<number | null>(null);
@@ -50,7 +50,7 @@ export default function AppointmentsTable() {
             action: {
                 label: "Yes",
                 onClick: () => {
-                    toast.promise(updateAppointment({ statusId: 3 }, token, apId), {
+                    toast.promise(updateAppointment({ appointmentDate: form?.appointmentDate, duration: form?.duration, statusId: 3 }, token, apId), {
                         position: "top-center",
                         loading: "Cancelling appointment...",
                         success: () => {
@@ -94,6 +94,7 @@ export default function AppointmentsTable() {
     const handleDrawerClose = () => {
         setOpen(false);
         setApId(null);
+        clearErrors();
     }
 
     const isCancelled = (() => {
@@ -134,6 +135,7 @@ export default function AppointmentsTable() {
                     onChange={(e: ChangeEvent<HTMLSelectElement>) => setForm(prev => prev ? {...prev, note: e.target.value}: prev)}
                 />
                 <br />
+                {error && <p style={{ color: "red" }}>{errorMessage}</p>}
             </div>
 
             <div style={{ display: "flex", justifyContent: "center", padding: "var(--spacing-md) 0"}}>
@@ -147,7 +149,7 @@ export default function AppointmentsTable() {
     <table className={styles.layout}>
                 <thead>
                     <tr>
-                        <th>Note</th>
+                        <th>Type</th>
                         <th>Date</th>
                         <th>Time</th>
                         <th>Duration</th>
@@ -158,7 +160,7 @@ export default function AppointmentsTable() {
                 <tbody>
                     {appointments && appointments.map((ap) => (
                         <tr key={ap.id} onClick={() => handleAppointmentClick(ap.id)}>
-                            <td>{ap.note}</td>
+                            <td>{ap.category.name}</td>
                             <td>{new Date(ap.appointmentDate).toLocaleDateString("no-NO")}</td>
                             <td>{new Date(ap.appointmentDate).toLocaleTimeString("no-NO", { hour: "2-digit", minute: "numeric" })}</td>
                             <td>{ap.duration}</td>

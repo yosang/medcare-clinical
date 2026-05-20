@@ -33,7 +33,7 @@ export default function BookingPage() {
     const { getClinicId } = useDoctorsStore();
 
     const { token } = useLoginStore();
-    const { loading: loadingAppointment, createAppointment, appointments, getAppointments} = useAppointmentsStore();
+    const {  error, errorMessage, clearErrors, loading: loadingAppointment, createAppointment, appointments, getAppointments} = useAppointmentsStore();
     const { loading: loadingPatient, createPatient } = usePatientStore();
 
     const [firstname, setFirstname] = useState("");
@@ -43,7 +43,6 @@ export default function BookingPage() {
     const [duration, setDuration] = useState("15");
 
     const [validationErrors, setValidationErrors ] = useState<string[] | null>(null);
-    const [backendError, setBackendError] = useState<string | null>(null);
 
     const [appointmentDateAndTime, setAppointmentDateAndTime] = useState("");
 
@@ -53,7 +52,7 @@ export default function BookingPage() {
         setPhone("");
         setNote("");
         setValidationErrors(null)
-        setBackendError(null)
+        clearErrors();
     }
 
     const handleSubmit = async(e: SyntheticEvent<HTMLFormElement>) => {
@@ -102,7 +101,6 @@ export default function BookingPage() {
                 },
                 error: (err) => {
                     console.log("Something went wrong during appointment creation", err)
-                    setBackendError(err.message)
                     return "Appointment creation failed"
                 }
             })
@@ -226,7 +224,7 @@ export default function BookingPage() {
             )
         }
 
-        {backendError && <p style={{ color: "red" }}>{backendError}</p>}
+        {error && <p style={{ color: "red" }}>{errorMessage}</p>}
 
         </div>
     </form>

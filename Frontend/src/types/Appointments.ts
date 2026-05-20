@@ -59,9 +59,11 @@ export interface AppointmentsState {
     success: boolean
     loading: boolean,
     error: boolean,
+    errorMessage: string | null,
     createAppointment: (payload: AppointmentPayload) => Promise<void>,
     getAppointments: (token: string) => Promise<void>,
-    updateAppointment: (payload: AppointmentUpdatePayload, token: string, apId: number) => Promise<void>;
+    updateAppointment: (payload: AppointmentUpdatePayload, token: string, apId: number) => Promise<void>,
+    clearErrors: () => void
 }
 
 export interface CategoriesState {

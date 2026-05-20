@@ -48,8 +48,9 @@ public static class AppointmentMapper
 
     public static void UpdateWith(this Appointment existing, UpdateAppointmentDTO dto)
     {
-        if(dto.AppointmentDate.HasValue) existing.AppointmentDate = dto.AppointmentDate.Value;
-        if(dto.Duration.HasValue) existing.Duration = dto.Duration.Value;
+        existing.AppointmentDate = dto.AppointmentDate;
+        existing.Duration = dto.Duration;
+        
         if(dto.Note != null) existing.Note = dto.Note;
         if(dto.PatientId.HasValue) existing.PatientId = dto.PatientId.Value;
         if(dto.DoctorId.HasValue) existing.DoctorId = dto.DoctorId.Value;

@@ -82,6 +82,18 @@ public class AppointmentService
 
     public async Task<AppointmentDTO?> UpdateAppointment(int id, UpdateAppointmentDTO dto)
     {
+
+        var overlaps = await _ctx.Appointments.AsNoTracking().AnyAsync(ap => 
+            ap.DoctorId == dto.DoctorId 
+            && ap.StatusId != 3 
+            && ap.Id != id // Since this is an update, we are excluding the current appointment
+            && ap.AppointmentDate.AddMinutes(ap.Duration) >= dto.AppointmentDate // if Existing.End >= New.Start = overlap
+            && ap.AppointmentDate <= dto.AppointmentDate.AddMinutes(dto.Duration) // If existing.Start <= New.End = overlap
+
+        );
+
+        if(overlaps) return null;
+
         var existing = await _ctx.Appointments.FindAsync(id);
         if(existing == null) return null;
 

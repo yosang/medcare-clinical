@@ -124,7 +124,12 @@ public class AppointmentsController : ControllerBase
 
         var result = await _service.CreateAppointment(dto); 
         
-        if(result == null) return BadRequest("The time slot overlaps with an existing appointment, try again");
+        if(result == null) return BadRequest(new ProblemDetails
+        {
+            Title = "Date overlap",
+            Detail = "Provided date and time overlaps with an existing appointment",
+            Status = StatusCodes.Status400BadRequest 
+        });
 
         return CreatedAtAction(nameof(Get), new { id = result.Id}, result);
     }
@@ -173,7 +178,12 @@ public class AppointmentsController : ControllerBase
         dto.PatientId = patientId;
 
         var updated = await _service.UpdateAppointment(id, dto);
-        if(updated == null) return NotFound();
+        if(updated == null) return BadRequest(new ProblemDetails
+        {
+            Title = "Date overlap",
+            Detail = "Provided date and time overlaps with an existing appointment",
+            Status = StatusCodes.Status400BadRequest 
+        });
 
         return NoContent();
     }
