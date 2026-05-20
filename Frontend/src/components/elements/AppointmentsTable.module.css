@@ -6,6 +6,7 @@
 }
 
 .layout thead th {
+    border-radius: var(--radius);
     position: sticky;
     top: 0;
     z-index: 10;
@@ -13,7 +14,6 @@
 }
 
 .layout th, td {
-    /* padding: var(--spacing-sm) var(--spacing-sm); */
     text-align: left;
 }
 

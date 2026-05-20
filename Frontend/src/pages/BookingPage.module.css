@@ -66,26 +66,15 @@
 }
 
 .appointmentHistory {
-    padding: var(--spacing-lg) var(--spacing-md);
     display: flex;
     flex-direction: column;
     gap: 20px;
     align-items: center;
-    overflow-y: auto;
-    overflow-x: auto;
+    height: 500px;
 }
 
 @media (min-width: 900px) {
     .layout{
         flex-direction: row;
-    }
-
-    .layout label, 
-    .layout p, 
-    .layout input, 
-    .layout textarea, 
-    .layout select,
-    .layout table{
-        padding: var(--spacing-md) var(--spacing-lg);
     }
 }

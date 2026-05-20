@@ -114,6 +114,12 @@ export default function BookingPage() {
 
     return (
     <>
+    {token && 
+        <div className={styles.appointmentHistory}>
+            <h1>Appointment history</h1>
+            <AppointmentsTable />
+        </div>
+    }
     <form onSubmit={handleSubmit}>
         <div className={styles.layout}>
 
@@ -129,6 +135,7 @@ export default function BookingPage() {
                         type="text"
                         value={firstname}
                         disabled={!!token}
+                        placeholder={token && appointments ? appointments[0].patient.firstName : ""}
                         onChange={(e) => setFirstname(e.target.value)}
                         />
                 </label>
@@ -139,6 +146,7 @@ export default function BookingPage() {
                         type="text"
                         value={lastname}
                         disabled={!!token}
+                        placeholder={token && appointments ? appointments[0].patient.lastName : ""}
                         onChange={(e) => setLastname(e.target.value)}
                         />
                 </label>
@@ -147,7 +155,7 @@ export default function BookingPage() {
                     <input 
                         type="tel"
                         value={phone}
-                        placeholder="+4746200264"
+                        placeholder={token && appointments ? appointments[0].patient.phone : "+4746200264"}
                         disabled={!!token}
                         onChange={(e) => setPhone(e.target.value)}
                         />
@@ -182,7 +190,7 @@ export default function BookingPage() {
                         <input
                             required
                             type="datetime-local"
-                            value={appointmentDateAndTime} // We have to validate that the time is available, so we cant just use this blindly
+                            value={appointmentDateAndTime}
                             onChange={(e) => setAppointmentDateAndTime(e.target.value)}
                             min={new Date().toISOString().slice(0, 16)}
                         />
@@ -204,14 +212,6 @@ export default function BookingPage() {
             
         </div>
         
-        {token && 
-        <>
-        <div className={styles.appointmentHistory}>
-            <h1>Appointment history</h1>
-            <AppointmentsTable data={appointments ? appointments:[]}/>
-        </div>
-        </>
-        }
         <div className={styles.messages}>
 
         {validationErrors && validationErrors.length > 0 && (
