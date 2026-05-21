@@ -8,7 +8,7 @@ const categoriesUrl = import.meta.env.VITE_CATEGORIES;
 const doctorsUrl = import.meta.env.VITE_DOCTORS;
 const searchUrl = import.meta.env.VITE_DOCTORS_SEARCH;
 
-
+// GET Statuses: Public
 export async function fetchStatus() {
     if(!statusUrl) {
         throw new Error("VITE_STATUS url is not defined in .env")
@@ -21,6 +21,7 @@ export async function fetchStatus() {
     return res.json();
 }
 
+// GET Categories: Public
 export async function fetchCategories() {
     if(!categoriesUrl) {
         throw new Error("VITE_CATEGORIES url is not defined in .env")
@@ -33,6 +34,7 @@ export async function fetchCategories() {
     return res.json();
 }
 
+// GET Doctors: Public
 export async function fetchDoctors() {
     if(!doctorsUrl) {
         throw new Error("VITE_DOCTORS url is not defined in .env")
@@ -45,6 +47,7 @@ export async function fetchDoctors() {
     return res.json();
 }
 
+// Get Doctors search: Public
 export async function fetchDoctorsBySearch(name: string ) {
     if(!searchUrl) {
         throw new Error("VITE_DOCTOR_SEARCH url is not defined in .env")
@@ -59,6 +62,7 @@ export async function fetchDoctorsBySearch(name: string ) {
     return res.json();
 }
 
+// POST: Public
 export async function createGuestPatient(payload: GuestPatientPayload) {
     if(!patientsUrl) {
         throw new Error("VITE_PATIENTS url is not defined in .env")
@@ -76,6 +80,7 @@ export async function createGuestPatient(payload: GuestPatientPayload) {
 
 }
 
+// GET appointments: Public + Private
 export async function fetchAppointments(token:string) {
     if(!appointmentsUrl) {
         throw new Error("VITE_APPOINTMENTS url is not defined in .env")
@@ -90,6 +95,7 @@ export async function fetchAppointments(token:string) {
     return res.json();
 }
 
+// POST appointments: Public + Private
 export async function createAppointment(payload:AppointmentPayload) {
     if(!appointmentsUrl) {
         throw new Error("VITE_APPOINTMENTS url is not defined in .env")
@@ -111,6 +117,7 @@ export async function createAppointment(payload:AppointmentPayload) {
     return true;
 }
 
+// POST appointments: Private
 export async function updateAppointment(payload:AppointmentUpdatePayload, token: string, apId: number) {
     if(!appointmentsUrl) {
         throw new Error("VITE_APPOINTMENTS url is not defined in .env")

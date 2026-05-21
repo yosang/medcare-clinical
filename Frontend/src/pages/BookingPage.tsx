@@ -33,7 +33,7 @@ export default function BookingPage() {
     const { getClinicId } = useDoctorsStore();
 
     const { token } = useLoginStore();
-    const {  error, errorMessage, clearErrors, loading: loadingAppointment, createAppointment, appointments, getAppointments} = useAppointmentsStore();
+    const {  error, errorMessage, clearErrors, loading: loadingAppointment, createAppointment, getAppointments} = useAppointmentsStore();
     const { loading: loadingPatient, createPatient } = usePatientStore();
 
     const [firstname, setFirstname] = useState("");
@@ -61,15 +61,20 @@ export default function BookingPage() {
         const formData = new FormData(e.currentTarget);
         const docId = formData.get("DoctorId") as string;
 
-        const patientData = token && appointments ? {
-            firstname: appointments[0].patient.firstName,
-            lastname: appointments[0].patient.lastName,
-            phone: appointments[0].patient.phone,
-        }:{
+        const patientData = {
             firstname,
             lastname,
             phone
         }
+        // const patientData = token && appointments ? {
+        //     firstname: appointments[0].patient.firstName,
+        //     lastname: appointments[0].patient.lastName,
+        //     phone: appointments[0].patient.phone,
+        // }:{
+        //     firstname,
+        //     lastname,
+        //     phone
+        // }
 
         const validation = PatientSchema.safeParse(patientData);
 
@@ -136,9 +141,8 @@ export default function BookingPage() {
                         ref={inputRef}
                         required
                         type="text"
-                        value={token && appointments && appointments.length > 0 ? appointments[0].patient.firstName : firstname}
+                        value={firstname}
                         disabled={!!token}
-                        placeholder={token && appointments && appointments.length > 0 ? appointments[0].patient.firstName : ""}
                         onChange={(e) => setFirstname(e.target.value)}
                         />
                 </label>
@@ -149,7 +153,6 @@ export default function BookingPage() {
                         type="text"
                         value={lastname}
                         disabled={!!token}
-                        placeholder={token && appointments && appointments.length > 0 ? appointments[0].patient.lastName : ""}
                         onChange={(e) => setLastname(e.target.value)}
                         />
                 </label>
@@ -158,7 +161,6 @@ export default function BookingPage() {
                     <input 
                         type="tel"
                         value={phone}
-                        placeholder={token && appointments && appointments.length > 0 ? appointments[0].patient.phone : "+4746200264"}
                         disabled={!!token}
                         onChange={(e) => setPhone(e.target.value)}
                         />

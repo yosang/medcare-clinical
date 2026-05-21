@@ -1,5 +1,4 @@
 import type { Clinic, Doctor } from "./Doctors"
-import type { Patient } from "./Patients"
 
 export interface AppointmentPayload {
     AppointmentDate: string,
@@ -37,7 +36,6 @@ export interface Appointment {
     duration: number,
     note: string,
     doctor: Doctor,
-    patient: Patient,
     category: Categories,
     status: Status,
     clinic: Clinic

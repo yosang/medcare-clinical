@@ -19,7 +19,6 @@ public class AppointmentWithDetailsDTO
     public string? Note { get; set; }
 
     public DoctorDTO? Doctor { get; set; }
-    public PatientDTO? Patient { get; set; }
     public CategoryDTO? Category { get; set; }
     public StatusDTO? Status { get; set; }
     public ClinicDTO? Clinic { get; set; }

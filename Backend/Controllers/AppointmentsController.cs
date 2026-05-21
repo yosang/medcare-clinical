@@ -1,4 +1,5 @@
 using DTOS;
+using Extensions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Services;
@@ -16,42 +17,61 @@ public class AppointmentsController : ControllerBase
     }
 
     /// <summary>
-    /// Returns a list of appointments
+    /// Returns a list of appointments for a logged in patient
     /// </summary>
     /// <response code="200">Resources returned</response>
     [HttpGet]
+    [Authorize]
     [ProducesResponseType(typeof(IEnumerable<AppointmentWithDetailsDTO>), StatusCodes.Status200OK)]
     public async Task<ActionResult<IEnumerable<AppointmentWithDetailsDTO>>> Get()
     {
+        var patientId = User.GetPatientId();
+        if(patientId == null) return Unauthorized();
 
-        var IsAuthenticated = User.Identity!.IsAuthenticated;
-
-        if (IsAuthenticated)
-        {
-            var patiendIdClaim = User.FindFirst("PatientId");
-
-            if (patiendIdClaim == null) return BadRequest(new ProblemDetails()
-            {
-                Title = "Invalid token",
-                Detail = "PatientID claim is missing",
-                Status = StatusCodes.Status400BadRequest
-            });
-
-            if (!int.TryParse(patiendIdClaim.Value, out int patientId)) return BadRequest(new ProblemDetails()
-            {
-                Title = "Invalid token",
-                Detail = "Invalid PatientID claim value",
-                Status = StatusCodes.Status400BadRequest
-            });
-
-            return Ok(await _service.GetAppointmentsForPatient(patientId));
-        }
-        ;
-
-        var appointments = await _service.GetAppointments();
+        var appointments = await _service.GetAppointmentsForPatient(patientId.Value);
 
         return Ok(appointments);
     }
+
+
+
+    // /// <summary>
+    // /// Returns a list of appointments
+    // /// </summary>
+    // /// <response code="200">Resources returned</response>
+    // [HttpGet]
+    // [ProducesResponseType(typeof(IEnumerable<AppointmentWithDetailsDTO>), StatusCodes.Status200OK)]
+    // public async Task<ActionResult<IEnumerable<AppointmentWithDetailsDTO>>> Get()
+    // {
+
+    //     var IsAuthenticated = User.Identity!.IsAuthenticated;
+
+    //     if (IsAuthenticated)
+    //     {
+    //         var patiendIdClaim = User.FindFirst("PatientId");
+
+    //         if (patiendIdClaim == null) return BadRequest(new ProblemDetails()
+    //         {
+    //             Title = "Invalid token",
+    //             Detail = "PatientID claim is missing",
+    //             Status = StatusCodes.Status400BadRequest
+    //         });
+
+    //         if (!int.TryParse(patiendIdClaim.Value, out int patientId)) return BadRequest(new ProblemDetails()
+    //         {
+    //             Title = "Invalid token",
+    //             Detail = "Invalid PatientID claim value",
+    //             Status = StatusCodes.Status400BadRequest
+    //         });
+
+    //         return Ok(await _service.GetAppointmentsForPatient(patientId));
+    //     }
+    //     ;
+
+    //     var appointments = await _service.GetAppointments();
+
+    //     return Ok(appointments);
+    // }
 
     /// <summary>
     /// Get a single appointment
