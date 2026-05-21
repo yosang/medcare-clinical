@@ -1,0 +1,39 @@
+.layout {
+    display: flex;
+    gap: 20px;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    padding: var(--spacing-md) 0;
+    margin-bottom: 10px;
+}
+
+.layout button {
+    width: 100px;
+}
+
+.layout input {
+    padding: var(--spacing-sm) var(--spacing-sm);
+    border-radius: var(--radius);
+    width: 30vw;
+    transition: width 0.8s ease-in-out;
+}
+
+.layout input:focus  {
+    width: 60vw;
+}
+
+@media (min-width: 900px) {
+    .layout {
+        flex-direction: row;
+    }
+
+    .layout input {
+        width: 10vw;
+    }
+
+    .layout input:focus  {
+        width: 20vw;
+    }
+}

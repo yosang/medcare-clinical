@@ -1,6 +1,6 @@
 import { create } from "zustand";
 import { type DoctorState } from "../types/Doctors";
-import { fetchDoctors } from "../services/api";
+import { fetchDoctors } from "../api/api";
 
 export const useDoctorsStore = create<DoctorState>((set, get) => ({
     doctors: null,

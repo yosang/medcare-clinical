@@ -20,10 +20,11 @@ public class AppointmentsController : ControllerBase
     /// Returns a list of appointments for a logged in patient
     /// </summary>
     /// <response code="200">Resources returned</response>
+    /// <response code="401">Unauthorized</response>
     [HttpGet]
     [Authorize]
     [ProducesResponseType(typeof(IEnumerable<AppointmentWithDetailsDTO>), StatusCodes.Status200OK)]
-    public async Task<ActionResult<IEnumerable<AppointmentWithDetailsDTO>>> Get()
+    public async Task<ActionResult<IEnumerable<AppointmentWithDetailsDTO>>> GetMyAppointments()
     {
         var patientId = User.GetPatientId();
         if(patientId == null) return Unauthorized();
@@ -33,58 +34,22 @@ public class AppointmentsController : ControllerBase
         return Ok(appointments);
     }
 
-
-
-    // /// <summary>
-    // /// Returns a list of appointments
-    // /// </summary>
-    // /// <response code="200">Resources returned</response>
-    // [HttpGet]
-    // [ProducesResponseType(typeof(IEnumerable<AppointmentWithDetailsDTO>), StatusCodes.Status200OK)]
-    // public async Task<ActionResult<IEnumerable<AppointmentWithDetailsDTO>>> Get()
-    // {
-
-    //     var IsAuthenticated = User.Identity!.IsAuthenticated;
-
-    //     if (IsAuthenticated)
-    //     {
-    //         var patiendIdClaim = User.FindFirst("PatientId");
-
-    //         if (patiendIdClaim == null) return BadRequest(new ProblemDetails()
-    //         {
-    //             Title = "Invalid token",
-    //             Detail = "PatientID claim is missing",
-    //             Status = StatusCodes.Status400BadRequest
-    //         });
-
-    //         if (!int.TryParse(patiendIdClaim.Value, out int patientId)) return BadRequest(new ProblemDetails()
-    //         {
-    //             Title = "Invalid token",
-    //             Detail = "Invalid PatientID claim value",
-    //             Status = StatusCodes.Status400BadRequest
-    //         });
-
-    //         return Ok(await _service.GetAppointmentsForPatient(patientId));
-    //     }
-    //     ;
-
-    //     var appointments = await _service.GetAppointments();
-
-    //     return Ok(appointments);
-    // }
-
     /// <summary>
     /// Get a single appointment
     /// </summary>
     /// <param name="id"></param>
     /// <response code="200">Resouruce returned</response>
+    /// <response code="401">Unauthorized</response>
     /// <response code="404">Resource not found</response>
     [HttpGet("{id}")]
     [ProducesResponseType(typeof(AppointmentWithDetailsDTO), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<ActionResult<AppointmentWithDetailsDTO?>> Get(int id)
     {
-        var appointment = await _service.GetAppointment(id);
+        var patientId = User.GetPatientId();
+        if(patientId == null) return Unauthorized();
+
+        var appointment = await _service.GetAppointment(id, patientId.Value);
 
         if (appointment == null) return NotFound();
 
@@ -109,38 +74,18 @@ public class AppointmentsController : ControllerBase
     /// </remarks>
     /// <param name="dto"></param>
     /// <response code="201">Resource created</response>
+    /// <response code="400">Date and time overlaps</response>
+    /// <response code="401">Unauthorized</response>
     [HttpPost]
     [ProducesResponseType(typeof(AppointmentDTO), StatusCodes.Status201Created)]
     public async Task<ActionResult<AppointmentDTO>> Create(CreateAppointmentDTO dto)
     {
-        var IsAuthenticated = User.Identity!.IsAuthenticated;
-
-        if (IsAuthenticated)
+        if (User.Identity!.IsAuthenticated)
         {
-            // We first validate the token, this must be a token that is not expired or ionvalid - This is handled by the JWT package
-            // If validation passes, we retrieve the patient ID
-            // We have to make sure the patientId claim is valid
-            // If validation passes, we create the appointment
-            // Then we create an appointment with the PatientId from the token
+            var patientId = User.GetPatientId();
+             if(patientId == null) return Unauthorized();
 
-            var patiendIdClaim = User.FindFirst("PatientId");
-
-            if (patiendIdClaim == null) return BadRequest(new ProblemDetails()
-            {
-                Title = "Invalid token",
-                Detail = "PatientID claim is missing",
-                Status = StatusCodes.Status400BadRequest
-            });
-
-            if (!int.TryParse(patiendIdClaim.Value, out int patientId)) return BadRequest(new ProblemDetails()
-            {
-                Title = "Invalid token",
-                Detail = "Invalid PatientID claim value",
-                Status = StatusCodes.Status400BadRequest
-            });
-
-            // We use the patientId retrieved from the claim to register the apppointment under its authenticated patient.
-            dto.PatientId = patientId;
+            dto.PatientId = patientId.Value;
         }
 
         var result = await _service.CreateAppointment(dto);
@@ -161,7 +106,7 @@ public class AppointmentsController : ControllerBase
     ///
     ///     {
     ///        "AppointmentDate":"2026-05-24T09:00",
-    ///        "Duration": 30,,
+    ///        "Duration": 30,
     ///        "Note":"Specialist referral",
     ///        "DoctorId": 1,
     ///        "ClinicId": 1,
@@ -173,6 +118,8 @@ public class AppointmentsController : ControllerBase
     /// <param name="id"></param>
     /// <param name="dto"></param>
     /// <response code="204">Update successful, no content returned</response>
+    /// <response code="400">Date and time overlaps</response>
+    /// <response code="401">Unauthorized</response>
     /// <response code="404">Resource not found by id</response>
     [HttpPut("{id}")]
     [Authorize]
@@ -180,26 +127,14 @@ public class AppointmentsController : ControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> Update(int id, UpdateAppointmentDTO dto)
     {
-        var patiendIdClaim = User.FindFirst("PatientId");
+        var patientId = User.GetPatientId();
+        if(patientId == null) return Unauthorized();
 
-        if (patiendIdClaim == null) return BadRequest(new ProblemDetails()
-        {
-            Title = "Invalid token",
-            Detail = "PatientID claim is missing",
-            Status = StatusCodes.Status400BadRequest
-        });
+        var result = await _service.UpdateAppointment(id, patientId.Value, dto);
 
-        if (!int.TryParse(patiendIdClaim.Value, out int patientId)) return BadRequest(new ProblemDetails()
-        {
-            Title = "Invalid token",
-            Detail = "Invalid PatientID claim value",
-            Status = StatusCodes.Status400BadRequest
-        });
+        if(result.notFound) return NotFound();
 
-        dto.PatientId = patientId;
-
-        var updated = await _service.UpdateAppointment(id, dto);
-        if (updated == null) return BadRequest(new ProblemDetails
+        if (result.overlap) return BadRequest(new ProblemDetails
         {
             Title = "Date overlap",
             Detail = "Provided date and time overlaps with an existing appointment",
@@ -209,17 +144,21 @@ public class AppointmentsController : ControllerBase
         return NoContent();
     }
 
-    /// <summary>Delete an appointment</summary>
+    /// <summary>Cancel an appointment</summary>
     /// <param name="id"></param>
-    /// <response code="204">Deletion successful, no content returned</response>
+    /// <response code="204">Cencellation successful, no content returned</response>
+    /// <response code="401">Unauthorized</response>
     /// <response code="404">Resource not found by id</response>
     [HttpDelete("{id}")]
     [Authorize]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<ActionResult<string>> Delete(int id)
+    public async Task<IActionResult> Cancel(int id)
     {
-        var deleted = await _service.DeleteAppointment(id);
+        var patientId = User.GetPatientId();
+        if(patientId == null) return Unauthorized();
+
+        var deleted = await _service.CancelAppointment(id, patientId.Value);
         if (!deleted) return NotFound();
 
         return NoContent();

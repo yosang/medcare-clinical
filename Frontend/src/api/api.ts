@@ -1,7 +1,5 @@
-import type { AppointmentPayload, AppointmentUpdatePayload } from "../types/Appointments";
 import type { GuestPatientPayload } from "../types/Patients";
 
-const appointmentsUrl = import.meta.env.VITE_APPOINTMENTS;
 const patientsUrl = import.meta.env.VITE_PATIENTS;
 const statusUrl = import.meta.env.VITE_STATUS;
 const categoriesUrl = import.meta.env.VITE_CATEGORIES;
@@ -80,59 +78,3 @@ export async function createGuestPatient(payload: GuestPatientPayload) {
 
 }
 
-// GET appointments: Public + Private
-export async function fetchAppointments(token:string) {
-    if(!appointmentsUrl) {
-        throw new Error("VITE_APPOINTMENTS url is not defined in .env")
-    }
-
-    const res = await fetch(appointmentsUrl, {
-        headers: { "Authorization": `Bearer ${token}`}
-    })
-
-    if(!res.ok) throw new Error("Failed to fetch appointments")
-    
-    return res.json();
-}
-
-// POST appointments: Public + Private
-export async function createAppointment(payload:AppointmentPayload) {
-    if(!appointmentsUrl) {
-        throw new Error("VITE_APPOINTMENTS url is not defined in .env")
-    }
-
-    const res = await fetch(appointmentsUrl, {
-        method: "POST",
-        body: JSON.stringify(payload),
-        headers: { "Content-Type": "application/json" }
-    })
-
-    if(!res.ok) {
-        
-        const errorObject = await res.json()
-        if(errorObject) throw new Error(errorObject.detail);
-        
-        throw new Error("Failed to create appointment")
-}
-    return true;
-}
-
-// POST appointments: Private
-export async function updateAppointment(payload:AppointmentUpdatePayload, token: string, apId: number) {
-    if(!appointmentsUrl) {
-        throw new Error("VITE_APPOINTMENTS url is not defined in .env")
-    }
-
-    const res = await fetch(`${appointmentsUrl}/${apId}`, {
-        method: "PUT",
-        body: JSON.stringify(payload),
-        headers: { "Content-Type":"application/json" ,"Authorization": `Bearer ${token}`}
-    })
-
-    if(!res.ok) {
-        const errorObject = await res.json()
-        if(errorObject) throw new Error(errorObject.detail);
-        
-        throw new Error("Failed to update appointment")
-    }
-}

@@ -1,5 +1,5 @@
 :root {
-    --brand-primary: rgb(39, 39, 180);
+    --brand-primary: #00576b;
     --brand-secondary: rgb(217, 217, 255);
-    --brand-accent: rgb(9, 41, 251);
+    --brand-accent: #19aa66;
 }

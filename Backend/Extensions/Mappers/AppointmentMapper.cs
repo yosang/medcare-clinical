@@ -51,7 +51,6 @@ public static class AppointmentMapper
         existing.Duration = dto.Duration;
         
         if(dto.Note != null) existing.Note = dto.Note;
-        if(dto.PatientId.HasValue) existing.PatientId = dto.PatientId.Value;
         if(dto.DoctorId.HasValue) existing.DoctorId = dto.DoctorId.Value;
         if(dto.ClinicId.HasValue) existing.ClinicId = dto.ClinicId.Value;
         if(dto.CategoryId.HasValue) existing.CategoryId = dto.CategoryId.Value;

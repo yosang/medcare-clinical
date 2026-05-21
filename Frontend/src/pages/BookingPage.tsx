@@ -66,15 +66,6 @@ export default function BookingPage() {
             lastname,
             phone
         }
-        // const patientData = token && appointments ? {
-        //     firstname: appointments[0].patient.firstName,
-        //     lastname: appointments[0].patient.lastName,
-        //     phone: appointments[0].patient.phone,
-        // }:{
-        //     firstname,
-        //     lastname,
-        //     phone
-        // }
 
         const validation = PatientSchema.safeParse(patientData);
 
@@ -83,7 +74,6 @@ export default function BookingPage() {
             return
         }
 
-        // Create a patient, errors are caught in the catch block
         try {
             const newPatient = await createPatient(patientData)
     
@@ -232,7 +222,7 @@ export default function BookingPage() {
     </form>
     {token && 
         <div className={styles.appointmentHistory}>
-            <h1>Appointment history</h1>
+            <h1>My appointments</h1>
             <AppointmentsTable />
         </div>
     }

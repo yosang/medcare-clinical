@@ -1,8 +1,10 @@
 import { useEffect, useRef, useState,  type ChangeEvent,  type SyntheticEvent } from "react"
 import type { Doctor } from "../types/Doctors";
-import { fetchDoctorsBySearch } from "../services/api";
+import { fetchDoctorsBySearch } from "../api/api";
 import LoadingSpinner from "../components/layout/LoadingSpinner";
 import DoctorList from "../components/layout/DoctorList";
+import Button from "../components/elements/Button";
+import styles from "./SearchPage.module.css";
 
 export default function SearchPage() {
     const inputRef = useRef<HTMLInputElement | null>(null);
@@ -33,6 +35,7 @@ export default function SearchPage() {
     }
 
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+        if(!e.target.value.trim()) setDoctors(null);
         setTerm(e.target.value)
     }
 
@@ -42,16 +45,16 @@ export default function SearchPage() {
 
     return (
         <>
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} className={styles.layout}>
             <input 
                 aria-label="Doctor search"
                 ref={inputRef}
                 name="name"
                 value={term}
-                placeholder="Search for a doctor by firstname / lastname"
+                placeholder="Enter firstname or lastname"
                 onChange={handleChange}
             />
-            <button type="submit">Search</button>
+            <Button type="submit">Search</Button>
         </form>
         {isLoading && <LoadingSpinner />}
 

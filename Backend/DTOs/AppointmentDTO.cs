@@ -55,10 +55,9 @@ public class UpdateAppointmentDTO
     [DataType(DataType.DateTime)]
     public DateTime AppointmentDate { get; set; }
 
+    [DefaultValue(30)]
     public int Duration { get; set; }
     public string? Note { get; set; }
-
-    public int? PatientId { get; set; }
 
     [DefaultValue(1)]
     [Range(1, int.MaxValue)]

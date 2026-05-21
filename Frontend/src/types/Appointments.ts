@@ -58,9 +58,11 @@ export interface AppointmentsState {
     loading: boolean,
     error: boolean,
     errorMessage: string | null,
-    createAppointment: (payload: AppointmentPayload) => Promise<void>,
     getAppointments: (token: string) => Promise<void>,
+    getAppointment: (token: string, apId:number) => Promise<Appointment>
+    createAppointment: (payload: AppointmentPayload) => Promise<void>,
     updateAppointment: (payload: AppointmentUpdatePayload, token: string, apId: number) => Promise<void>,
+    cancelAppointment: (token: string, apId: number) => Promise<void>,
     clearErrors: () => void
 }
 

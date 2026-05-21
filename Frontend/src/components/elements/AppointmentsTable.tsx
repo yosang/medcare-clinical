@@ -10,10 +10,11 @@ import TextArea from "../forms/TextArea";
 import { useLoginStore } from "../../stores/useLoginStore";
 import type { AppointmentUpdateForm } from "../../types/Appointments";
 import { toast } from "sonner";
+import LoadingSpinner from "../layout/LoadingSpinner";
 
 export default function AppointmentsTable() {
     const {token } = useLoginStore();
-    const { error, errorMessage, clearErrors, appointments, getAppointments, updateAppointment } = useAppointmentsStore();
+    const { loading, error, errorMessage, clearErrors, appointments, getAppointments, getAppointment, updateAppointment, cancelAppointment } = useAppointmentsStore();
     const [open, setOpen] = useState(false)
 
     const[apId, setApId] = useState<number | null>(null);
@@ -50,7 +51,7 @@ export default function AppointmentsTable() {
             action: {
                 label: "Yes",
                 onClick: () => {
-                    toast.promise(updateAppointment({ appointmentDate: form?.appointmentDate, duration: form?.duration, statusId: 3 }, token, apId), {
+                    toast.promise(cancelAppointment(token, apId), {
                         position: "top-center",
                         loading: "Cancelling appointment...",
                         success: () => {
@@ -73,19 +74,21 @@ export default function AppointmentsTable() {
         })
     }
 
-    const handleAppointmentClick = (id:number) => {
-        const ap = appointments?.find(ap => ap.id === id);
-        if(!ap) return;
+    const handleAppointmentClick = async (id:number) => {
+        if(!token) return
+        const appointment = await getAppointment(token, id)
+        
+        if(!appointment) return;
 
-        setApId(ap.id);
+        setApId(appointment.id);
 
         setForm({
-            appointmentDate: ap.appointmentDate,
-            duration: ap.duration,
-            note: ap.note,
-            doctorId: ap.doctor.id,
-            clinicId: ap.clinic.id,
-            categoryId: ap.category.id,
+            appointmentDate: appointment.appointmentDate,
+            duration: appointment.duration,
+            note: appointment.note,
+            doctorId: appointment.doctor.id,
+            clinicId: appointment.clinic.id,
+            categoryId: appointment.category.id,
         })
 
         setOpen(true)
@@ -105,6 +108,9 @@ export default function AppointmentsTable() {
 
     return  <>
     <Drawer title="Appointment" isOpen={open} onClose={handleDrawerClose}>
+        {loading ? (<LoadingSpinner />):(
+            <>
+            
         <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", height: "85vh"}}>
             <div style={{ display: "flex", flexDirection: "column", flex: 1 }}>
                 <br />
@@ -145,6 +151,8 @@ export default function AppointmentsTable() {
         <div style={{ display: "flex", justifyContent: "center" }}>
             <Button  disabled={isCancelled} onClick={handleCancel} style={{ backgroundColor: "red" }}>Cancel Appointment</Button>
         </div>
+            </>
+        )}
     </Drawer>
     <table className={styles.layout}>
                 <thead>
@@ -158,7 +166,7 @@ export default function AppointmentsTable() {
                     </tr>
                 </thead>
                 <tbody>
-                    {appointments && appointments.map((ap) => (
+                    {appointments && appointments.sort((a, b) => new Date(b.appointmentDate).getTime() - new Date(a.appointmentDate).getTime()).map((ap) => (
                         <tr key={ap.id} onClick={() => handleAppointmentClick(ap.id)}>
                             <td>{ap.category.name}</td>
                             <td>{new Date(ap.appointmentDate).toLocaleDateString("no-NO")}</td>
@@ -175,7 +183,7 @@ export default function AppointmentsTable() {
 
                              }} >{ap.status.name}</td>
                         </tr>
-                    )).reverse()}
+                    ))}
                 </tbody>
             </table>
     </>

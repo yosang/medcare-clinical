@@ -2,8 +2,6 @@ using Data.Context;
 using DTOS;
 using Microsoft.EntityFrameworkCore;
 using Extensions.Mappers;
-using Models;
-using Microsoft.AspNetCore.Http.HttpResults;
 
 namespace Services;
 public class AppointmentService
@@ -14,35 +12,6 @@ public class AppointmentService
     {
         _ctx = context;
     }
-
-    public async Task<IEnumerable<AppointmentWithDetailsDTO>> GetAppointments()
-    {
-        var appointments = await _ctx.Appointments.AsNoTracking()
-                                                    .Include(ap => ap.Doctor)
-                                                    .Include(ap => ap.Patient)
-                                                    .Include(ap => ap.Category)
-                                                    .Include(ap => ap.Status)
-                                                    .Include(ap => ap.Clinic)
-                                                    .Select(appointment => appointment.ToAppointmentWithDetailsDTO())
-                                                    .ToListAsync();
-        return appointments;
-    }
-
-    public async Task<AppointmentWithDetailsDTO?> GetAppointment(int id)
-    {
-        var appointment = await _ctx.Appointments.AsNoTracking()
-                                                    .Where(ap => ap.Id == id)
-                                                    .Include(ap => ap.Doctor)
-                                                    .Include(ap => ap.Patient)
-                                                    .Include(ap => ap.Category)
-                                                    .Include(ap => ap.Status)
-                                                    .Include(ap => ap.Clinic)
-                                                    .Select(appointment => appointment.ToAppointmentWithDetailsDTO())
-                                                    .FirstOrDefaultAsync();
-
-        return appointment;
-    }
-
     public async Task<IEnumerable<AppointmentWithDetailsDTO>> GetAppointmentsForPatient(int patientId)
     {
         var appointments = await _ctx.Appointments.AsNoTracking()
@@ -56,6 +25,21 @@ public class AppointmentService
                                                     .ToListAsync();
         return appointments;
     }
+    public async Task<AppointmentWithDetailsDTO?> GetAppointment(int id, int patientId)
+    {
+        var appointment = await _ctx.Appointments.AsNoTracking()
+                                                    .Include(ap => ap.Doctor)
+                                                    .Include(ap => ap.Patient)
+                                                    .Include(ap => ap.Category)
+                                                    .Include(ap => ap.Status)
+                                                    .Include(ap => ap.Clinic)
+                                                    .Where(ap => ap.Id == id && ap.PatientId == patientId)
+                                                    .Select(appointment => appointment.ToAppointmentWithDetailsDTO())
+                                                    .FirstOrDefaultAsync();
+
+        return appointment;
+    }
+
     public async Task<AppointmentDTO?> CreateAppointment(CreateAppointmentDTO dto)
     {
 
@@ -80,8 +64,11 @@ public class AppointmentService
         return newAp.ToAppointmentDTO();
     }
 
-    public async Task<AppointmentDTO?> UpdateAppointment(int id, UpdateAppointmentDTO dto)
+    public async Task<( bool notFound, bool overlap )> UpdateAppointment(int id, int patientId, UpdateAppointmentDTO dto)
     {
+
+        var existing = await _ctx.Appointments.FirstOrDefaultAsync(ap => ap.Id == id && ap.PatientId == patientId);
+        if(existing == null) return ( notFound: true, overlap: false );
 
         var overlaps = await _ctx.Appointments.AsNoTracking().AnyAsync(ap => 
             ap.DoctorId == dto.DoctorId 
@@ -92,24 +79,22 @@ public class AppointmentService
 
         );
 
-        if(overlaps) return null;
-
-        var existing = await _ctx.Appointments.FindAsync(id);
-        if(existing == null) return null;
+        if(overlaps) return ( notFound: false, overlap: true );
 
         existing.UpdateWith(dto);
-
+        
         await _ctx.SaveChangesAsync();
-
-        return existing.ToAppointmentDTO();
+        return ( notFound: false, overlap: false );
     }
 
-    public async Task<bool> DeleteAppointment(int id)
+    public async Task<bool> CancelAppointment(int id, int patientId)
     {
-        var existing = await _ctx.Appointments.FindAsync(id);
+        var existing = await _ctx.Appointments.FirstOrDefaultAsync(a => a.Id == id && a.PatientId == patientId);
         if(existing == null) return false;
 
-        _ctx.Appointments.Remove(existing);
+        if(existing.StatusId == 2 || existing.StatusId == 3) return false;
+
+        existing.StatusId = 3;
 
         await _ctx.SaveChangesAsync();
 

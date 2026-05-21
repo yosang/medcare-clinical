@@ -1,6 +1,6 @@
 import { create } from "zustand"
 import { type GuestPatientPayload, type GuestPatientState } from "../types/Patients"
-import { createGuestPatient } from "../services/api";
+import { createGuestPatient } from "../api/api";
 
 export const usePatientStore = create<GuestPatientState>((set) => ({
     loading: false,
