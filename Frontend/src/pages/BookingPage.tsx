@@ -136,9 +136,9 @@ export default function BookingPage() {
                         ref={inputRef}
                         required
                         type="text"
-                        value={token && appointments ? appointments[0].patient.firstName : firstname}
+                        value={token && appointments && appointments.length > 0 ? appointments[0].patient.firstName : firstname}
                         disabled={!!token}
-                        placeholder={token && appointments ? appointments[0].patient.firstName : ""}
+                        placeholder={token && appointments && appointments.length > 0 ? appointments[0].patient.firstName : ""}
                         onChange={(e) => setFirstname(e.target.value)}
                         />
                 </label>
@@ -149,7 +149,7 @@ export default function BookingPage() {
                         type="text"
                         value={lastname}
                         disabled={!!token}
-                        placeholder={token && appointments ? appointments[0].patient.lastName : ""}
+                        placeholder={token && appointments && appointments.length > 0 ? appointments[0].patient.lastName : ""}
                         onChange={(e) => setLastname(e.target.value)}
                         />
                 </label>
@@ -158,7 +158,7 @@ export default function BookingPage() {
                     <input 
                         type="tel"
                         value={phone}
-                        placeholder={token && appointments ? appointments[0].patient.phone : "+4746200264"}
+                        placeholder={token && appointments && appointments.length > 0 ? appointments[0].patient.phone : "+4746200264"}
                         disabled={!!token}
                         onChange={(e) => setPhone(e.target.value)}
                         />

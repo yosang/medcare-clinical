@@ -2,6 +2,7 @@ import { useEffect, useRef, useState,  type ChangeEvent,  type SyntheticEvent } 
 import type { Doctor } from "../types/Doctors";
 import { fetchDoctorsBySearch } from "../services/api";
 import LoadingSpinner from "../components/layout/LoadingSpinner";
+import DoctorList from "../components/layout/DoctorList";
 
 export default function SearchPage() {
     const inputRef = useRef<HTMLInputElement | null>(null);
@@ -15,15 +16,18 @@ export default function SearchPage() {
         e.preventDefault();
         if(!term.trim()) return;
         
+        setDoctors(null);
+
         try {
             setIsLoading(true);
             const data = await fetchDoctorsBySearch(term);
             setDoctors(data);
             setError(false);
-            setIsLoading(false);
         } catch(err) {
             setError(true);
             console.error("An error occurred durin fetch:", err )
+        } finally {
+            setIsLoading(false);
         }
 
     }
@@ -39,24 +43,22 @@ export default function SearchPage() {
     return (
         <>
         <form onSubmit={handleSubmit}>
-            <label>
-                Search for a doctor by firstname / lastname
-                <input 
-                    ref={inputRef}
-                    name="name"
-                    value={term}
-                    onChange={handleChange}
-                />
-                <button type="submit">Search</button>
-            </label>
+            <input 
+                aria-label="Doctor search"
+                ref={inputRef}
+                name="name"
+                value={term}
+                placeholder="Search for a doctor by firstname / lastname"
+                onChange={handleChange}
+            />
+            <button type="submit">Search</button>
         </form>
         {isLoading && <LoadingSpinner />}
-        <ul>
-            {doctors && doctors.length < 1 && <p>No match</p>}
-            {doctors && doctors.map(d => (
-                <li key={d.id}>{d.firstName} {d.lastName} - {d.clinic.name} - {d.specialty.name}</li>
-            ))}
-        </ul>
+
+        {doctors && doctors.length < 1 && <p>No match</p>}
+
+        {doctors && <DoctorList data={doctors}/>}
+
         {error && <p style={{ color: "red" }}>Internal Server Error</p>}
         </>
     )

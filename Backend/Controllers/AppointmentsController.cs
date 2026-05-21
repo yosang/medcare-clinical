@@ -26,29 +26,30 @@ public class AppointmentsController : ControllerBase
 
         var IsAuthenticated = User.Identity!.IsAuthenticated;
 
-        if(IsAuthenticated)
+        if (IsAuthenticated)
         {
             var patiendIdClaim = User.FindFirst("PatientId");
-            
-            if(patiendIdClaim == null) return BadRequest(new ProblemDetails()
-            {
-               Title = "Invalid token",
-               Detail = "PatientID claim is missing",
-               Status = StatusCodes.Status400BadRequest 
-            });
 
-            if(!int.TryParse(patiendIdClaim.Value, out int patientId)) return BadRequest(new ProblemDetails()
+            if (patiendIdClaim == null) return BadRequest(new ProblemDetails()
             {
                 Title = "Invalid token",
-               Detail = "Invalid PatientID claim value",
-               Status = StatusCodes.Status400BadRequest 
+                Detail = "PatientID claim is missing",
+                Status = StatusCodes.Status400BadRequest
+            });
+
+            if (!int.TryParse(patiendIdClaim.Value, out int patientId)) return BadRequest(new ProblemDetails()
+            {
+                Title = "Invalid token",
+                Detail = "Invalid PatientID claim value",
+                Status = StatusCodes.Status400BadRequest
             });
 
             return Ok(await _service.GetAppointmentsForPatient(patientId));
-        };
+        }
+        ;
 
         var appointments = await _service.GetAppointments();
-        
+
         return Ok(appointments);
     }
 
@@ -65,7 +66,7 @@ public class AppointmentsController : ControllerBase
     {
         var appointment = await _service.GetAppointment(id);
 
-        if(appointment == null) return NotFound();
+        if (appointment == null) return NotFound();
 
         return Ok(appointment);
     }
@@ -94,7 +95,7 @@ public class AppointmentsController : ControllerBase
     {
         var IsAuthenticated = User.Identity!.IsAuthenticated;
 
-        if(IsAuthenticated)
+        if (IsAuthenticated)
         {
             // We first validate the token, this must be a token that is not expired or ionvalid - This is handled by the JWT package
             // If validation passes, we retrieve the patient ID
@@ -103,35 +104,35 @@ public class AppointmentsController : ControllerBase
             // Then we create an appointment with the PatientId from the token
 
             var patiendIdClaim = User.FindFirst("PatientId");
-            
-            if(patiendIdClaim == null) return BadRequest(new ProblemDetails()
-            {
-               Title = "Invalid token",
-               Detail = "PatientID claim is missing",
-               Status = StatusCodes.Status400BadRequest 
-            });
 
-            if(!int.TryParse(patiendIdClaim.Value, out int patientId)) return BadRequest(new ProblemDetails()
+            if (patiendIdClaim == null) return BadRequest(new ProblemDetails()
             {
                 Title = "Invalid token",
-               Detail = "Invalid PatientID claim value",
-               Status = StatusCodes.Status400BadRequest 
+                Detail = "PatientID claim is missing",
+                Status = StatusCodes.Status400BadRequest
             });
-            
+
+            if (!int.TryParse(patiendIdClaim.Value, out int patientId)) return BadRequest(new ProblemDetails()
+            {
+                Title = "Invalid token",
+                Detail = "Invalid PatientID claim value",
+                Status = StatusCodes.Status400BadRequest
+            });
+
             // We use the patientId retrieved from the claim to register the apppointment under its authenticated patient.
             dto.PatientId = patientId;
         }
 
-        var result = await _service.CreateAppointment(dto); 
-        
-        if(result == null) return BadRequest(new ProblemDetails
+        var result = await _service.CreateAppointment(dto);
+
+        if (result == null) return BadRequest(new ProblemDetails
         {
             Title = "Date overlap",
             Detail = "Provided date and time overlaps with an existing appointment",
-            Status = StatusCodes.Status400BadRequest 
+            Status = StatusCodes.Status400BadRequest
         });
 
-        return CreatedAtAction(nameof(Get), new { id = result.Id}, result);
+        return CreatedAtAction(nameof(Get), new { id = result.Id }, result);
     }
 
     /// <summary>Update an appointment</summary>
@@ -160,29 +161,29 @@ public class AppointmentsController : ControllerBase
     public async Task<IActionResult> Update(int id, UpdateAppointmentDTO dto)
     {
         var patiendIdClaim = User.FindFirst("PatientId");
-            
-        if(patiendIdClaim == null) return BadRequest(new ProblemDetails()
+
+        if (patiendIdClaim == null) return BadRequest(new ProblemDetails()
         {
             Title = "Invalid token",
             Detail = "PatientID claim is missing",
-            Status = StatusCodes.Status400BadRequest 
+            Status = StatusCodes.Status400BadRequest
         });
 
-        if(!int.TryParse(patiendIdClaim.Value, out int patientId)) return BadRequest(new ProblemDetails()
+        if (!int.TryParse(patiendIdClaim.Value, out int patientId)) return BadRequest(new ProblemDetails()
         {
             Title = "Invalid token",
             Detail = "Invalid PatientID claim value",
-            Status = StatusCodes.Status400BadRequest 
+            Status = StatusCodes.Status400BadRequest
         });
 
         dto.PatientId = patientId;
 
         var updated = await _service.UpdateAppointment(id, dto);
-        if(updated == null) return BadRequest(new ProblemDetails
+        if (updated == null) return BadRequest(new ProblemDetails
         {
             Title = "Date overlap",
             Detail = "Provided date and time overlaps with an existing appointment",
-            Status = StatusCodes.Status400BadRequest 
+            Status = StatusCodes.Status400BadRequest
         });
 
         return NoContent();
@@ -199,7 +200,7 @@ public class AppointmentsController : ControllerBase
     public async Task<ActionResult<string>> Delete(int id)
     {
         var deleted = await _service.DeleteAppointment(id);
-        if(!deleted) return NotFound();
+        if (!deleted) return NotFound();
 
         return NoContent();
     }
