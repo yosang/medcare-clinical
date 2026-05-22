@@ -13,34 +13,23 @@ public class StatusService
         _ctx = context;
     }
 
-    public async Task<IEnumerable<StatusWithDetailsDTO>> GetStatuses()
+    public async Task<IEnumerable<StatusDTO>> GetStatuses()
     {
 
         var statuses = await _ctx.Statuses.AsNoTracking()
-                                            .Include(s => s.Appointments)
-                                            .Select(status => status.ToStatusWithDetailsDTO())
+                                            .Select(status => status.ToStatusDTO())
                                             .ToListAsync();
 
         return statuses;
     }
 
-    public async Task<StatusWithDetailsDTO?> GetStatus(int id)
+    public async Task<StatusDTO?> GetStatus(int id)
     {
         var status = await _ctx.Statuses.AsNoTracking()
                                         .Where(status => status.Id == id)
-                                        .Include(s => s.Appointments)
-                                        .Select(status => status.ToStatusWithDetailsDTO())
+                                        .Select(status => status.ToStatusDTO())
                                         .FirstOrDefaultAsync();
         return status;
-    }
-
-    public async Task<IEnumerable<AppointmentDTO>> GetAppointments(int id)
-    {
-        var appointments = await _ctx.Appointments.AsNoTracking()
-                                        .Where(appointment => appointment.StatusId == id)
-                                        .Select(appointment => appointment.ToAppointmentDTO())
-                                        .ToListAsync();
-        return appointments;
     }
 
     public async Task<StatusDTO> CreateStatus(CreateStatusDTO dto)

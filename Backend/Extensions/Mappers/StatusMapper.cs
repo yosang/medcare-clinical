@@ -22,16 +22,6 @@ public static class StatusMapper
         };
     }
 
-    public static StatusWithDetailsDTO ToStatusWithDetailsDTO(this Status status)
-    {
-        return new StatusWithDetailsDTO
-        {
-            Id = status.Id,
-            Name = status.Name,
-            Appointments = status.Appointments?.Select(appointment => appointment.ToAppointmentDTO())
-        };
-    }
-
     public static void UpdateWith(this Status existing, UpdateStatusDTO dto)
     {
         if(!string.IsNullOrWhiteSpace(dto.Name)) existing.Name = dto.Name;
