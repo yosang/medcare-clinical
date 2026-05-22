@@ -10,7 +10,7 @@ import { toast } from "sonner";
 
 import styles from "./BookingPage.module.css"
 import Button from "../components/elements/Button";
-import { BookUser, BriefcaseMedical, CalendarFold } from "lucide-react";
+import { Info } from "lucide-react";
 import { useLoginStore } from "../stores/useLoginStore";
 import AppointmentsTable from "../components/elements/AppointmentsTable";
 
@@ -23,7 +23,8 @@ const PatientSchema = z.object({
                 .trim()
                 .min(2, "Lastname must be at least 2 characters")
                 .max(100, "Lastname is too long"),
-    phone: z.e164("Phone number must start with a country code prefixed with + and contain only numbers").trim()
+    phone: z.string().trim()
+                .regex(/^\d{8}$/, "Phone number must be exactly 8 digits")
 
 })
 
@@ -40,7 +41,7 @@ export default function BookingPage() {
     const [lastname, setLastname] = useState("");
     const [phone, setPhone] = useState("");
     const [note, setNote] = useState("");
-    const [duration, setDuration] = useState("15");
+    const [duration, setDuration] = useState("30");
 
     const [validationErrors, setValidationErrors ] = useState<string[] | null>(null);
 
@@ -124,14 +125,22 @@ export default function BookingPage() {
 
     return (
     <>
-
-    <form onSubmit={handleSubmit}>
-        <div className={styles.layout}>
-
+    <div className={styles.mainLayout}>
+        {!token && (<div className={styles.sideInfo}>
+            <div style={{ display: "flex", flexDirection: "column", gap: "5px" }}>
+                <h3 style={{ color: "var(--brand-primary)", textTransform: "uppercase"}}>professional healthcare</h3>
+                <h1 style={{ fontWeight: "700", lineHeight: "56px", fontSize: "50px", letterSpacing: "-0.02em" }}>Expert Medical Care at Your Fingertips.</h1>
+            </div>
+            <p> Schedule your visit with our world-class specialists in just a few clicks. Your health is our primary mission, supported by precision and absolute trust.</p>
+            <div className={styles.infoCard}>
+                <Info size={40} fill="var(--color-primary)" style={{ color: "var(--color-primary-text)" }} />
+                <p><strong>Register to track your history.</strong> Log in to manage past appointments effortlessly. </p>
+            </div>
+            <img src="https://i.imgur.com/8WNM1hA.png" alt="Medical Room Image"/>
+        </div>)}
+        
+        <form onSubmit={handleSubmit} className={styles.formLayout}>
             <div className={styles.personalDetails}>
-                <div className={styles.icon}>
-                    <BookUser />
-                </div>
                 <label>
                     Firstname
                     <input 
@@ -139,7 +148,7 @@ export default function BookingPage() {
                         required
                         type="text"
                         value={token && patient?.firstName || firstname}
-                        placeholder={token && patient ? patient.firstName:""}
+                        placeholder={token && patient ? patient.firstName:"John"}
                         disabled={!!token}
                         onChange={(e) => setFirstname(e.target.value)}
                         />
@@ -150,7 +159,7 @@ export default function BookingPage() {
                         required
                         type="text"
                         value={token && patient?.lastName || lastname}
-                        placeholder={token && patient ? patient.lastName:""}
+                        placeholder={token && patient ? patient.lastName:"Doe"}
                         disabled={!!token}
                         onChange={(e) => setLastname(e.target.value)}
                         />
@@ -160,19 +169,14 @@ export default function BookingPage() {
                     <input 
                         type="tel"
                         value={token && patient?.phone || phone}
-                        placeholder={token && patient ? patient.phone:""}
+                        placeholder={token && patient ? patient.phone:"912 34 567"}
                         disabled={!!token}
                         onChange={(e) => setPhone(e.target.value)}
                         />
                 </label>
             </div>
             
-
-
             <div className={styles.selection}>
-                <div className={styles.icon}>
-                    <BriefcaseMedical />
-                </div>
                 <DoctorSelection/>
                 <CategorySelection />
                 <label>
@@ -186,10 +190,6 @@ export default function BookingPage() {
             </div>
 
             <div className={styles.dateTimeDetails}>
-                <div className={styles.icon}>
-                    <CalendarFold />
-                </div>    
-                <div className={styles.dateTimeInputs}>
                     <label>
                         Appointment Date and time
                         <input
@@ -203,39 +203,34 @@ export default function BookingPage() {
                     <label>
                         Appointment Duration
                         <select value={duration} onChange={(e) => setDuration(e.target.value)} >
-                            <option value="15">15 minutes</option>
                             <option value="30">30 minutes</option>
-                            <option value="45">45 minutes</option>
-                            <option value="60">1 hour</option>
+                            <option value="60">60 minutes</option>
+                            <option value="90">90 minutes</option>
                         </select>
                     </label>
-                </div>
-
-                <Button type="submit" disabled={loadingAppointment || loadingPatient} >{loadingPatient || loadingAppointment ? (<LoadingSpinner />):"Book new appointment"}</Button>
-            
             </div>
-            
-        </div>
-        
-        <div className={styles.messages}>
+            <Button style={{ width: "50%", height: "50px" }} type="submit" disabled={loadingAppointment || loadingPatient} >{loadingPatient || loadingAppointment ? (<LoadingSpinner />):"Book appointment"}</Button>
 
-        {validationErrors && validationErrors.length > 0 && (
-                validationErrors.map((error => (
-                    <p style={{ color: "red" }}>{error}</p>
-                )))
-            )
+            <div className={styles.messages}>
+
+                {validationErrors && validationErrors.length > 0 && (
+                        validationErrors.map((error => (
+                            <p style={{ color: "red" }}>{error}</p>
+                        )))
+                    )
+                }
+
+                {error && <p style={{ color: "red" }}>{errorMessage}</p>}
+
+            </div>
+        </form>
+        {token && 
+            <div className={styles.appointmentHistory}>
+                <h1>My appointments</h1>
+                <AppointmentsTable />
+            </div>
         }
-
-        {error && <p style={{ color: "red" }}>{errorMessage}</p>}
-
-        </div>
-    </form>
-    {token && 
-        <div className={styles.appointmentHistory}>
-            <h1>My appointments</h1>
-            <AppointmentsTable />
-        </div>
-    }
+    </div>
     </>
     )
 }

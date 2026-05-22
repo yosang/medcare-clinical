@@ -18,7 +18,7 @@ const RegistrationSchema = z.object({
                 .trim()
                 .min(2, "Must be at least 2 characters")
                 .max(100, "Too long"),
-    phone: z.e164("Must start with a country code prefixed with + and contain only numbers").trim(),
+    phone: z.string().trim().regex(/^\d{8}$/, "Phone number must be exactly 8 digits"),
     email: z.email(),
     dateOfBirth: z.string(),
     nationalIdentityNumber: z.string()
@@ -93,35 +93,37 @@ export default function RegisterPage() {
                     <BookUser />
                 </div>
                 <label>
-                    Enter your first name
+                    Firstname
                     <input 
                         ref={inputRef}
                         required
                         type="text"
                         name="firstName"
+                        placeholder="John"
                         className={inputsWithError.includes("firstName") ? styles.errorInput : ""}
                         />
                 </label>
                 <label>
-                    Enter your last name
+                    Lastname
                     <input 
                         required
                         type="text"
                         name="lastName"
+                        placeholder="Doe"
                         className={inputsWithError.includes("lastName") ? styles.errorInput : ""}
                         />
                 </label>
                 <label>
-                    Enter your phone number
+                    Phone number
                     <input 
                         type="tel"
                         name="phone"
-                        placeholder="+4746200264"
+                        placeholder="462 00 264"
                         className={inputsWithError.includes("phone") ? styles.errorInput : ""}
                         />
                 </label>
                 <label>
-                    Enter your date of birth
+                    Date of birth
                     <input 
                         required
                         type="date"
@@ -137,7 +139,7 @@ export default function RegisterPage() {
                     <BookLock />
                 </div>
                 <label>
-                    Enter your email
+                    Email
                     <input 
                         required
                         type="email"
@@ -147,11 +149,12 @@ export default function RegisterPage() {
                         />
                 </label>
                 <label>
-                    Enter your National Identity Number
+                    National Identity Number
                     <input 
                         required
                         type="text"
                         name="nationalIdentityNumber"
+                        placeholder="DDMMÅÅXXXXX"
                         className={inputsWithError.includes("nationalIdentityNumber") ? styles.errorInput : ""}
                         />
                 </label>

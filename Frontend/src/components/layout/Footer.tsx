@@ -1,10 +1,10 @@
 import styles from "./Footer.module.css"
 
 export default function Footer() {
-    return <footer className={styles.layout}>
+    return <footer className={styles.footerLayout}>
         <div>
-        <p style={{ color:"var(--color-primary" }}><strong>MediCare Clinical</strong></p>
-        © {new Date().getFullYear()} MediCare Clinical Systems. All rights reserved.
+        <h2 style={{ color:"var(--color-primary" }}><strong>MediCare Clinical</strong></h2>
+        <p>© {new Date().getFullYear()} <strong>MediCare Clinical Systems. All rights reserved.</strong></p>
         </div>
 
         <div className={styles.links}>

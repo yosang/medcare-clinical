@@ -117,8 +117,8 @@ export default function Header() {
                             </>
                         ):(
                             <>
-                            <Button><Link to="/login">Login</Link></Button>
-                            <Button><Link to="/register">Register</Link></Button>
+                            <Button variant="secondary"><Link to="/login" style={{ color: "var(--color-secondary-text)" }}>Login</Link></Button>
+                            <Button ><Link to="/register" style={{ color: "var(--color-primary-text)" }}>Register</Link></Button>
                         </>
                         )}
                     </div>

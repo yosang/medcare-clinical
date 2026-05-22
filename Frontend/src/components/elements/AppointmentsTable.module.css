@@ -11,10 +11,14 @@
     top: 0;
     z-index: 10;
     background-color: var(--color-primary);
+    color: var(--color-primary-text);
+    padding: var(--spacing-sm);
 }
 
 .layout th, td {
     text-align: left;
+    padding: var(--spacing-sm);
+    color: var(--color-text);
 }
 
 .layout th {
@@ -28,7 +32,8 @@
 
 .layout tbody tr:nth-child(even)
  {
-    background-color: rgb(60, 60, 60)
+    color: var(--color-text);
+    background-color: var(--color-accent);
  }
 
  .layout tbody tr:hover {

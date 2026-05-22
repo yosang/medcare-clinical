@@ -1,28 +1,80 @@
-.layout {
+.mainLayout {
     display: flex;
     flex-direction: column;
+    padding: 20px 50px;
     gap: 20px;
-    width: 100%;
-    padding: var(--spacing-sm) var(--spacing-sm);
 }
 
-.layout label, 
-.layout p, 
-.layout input, 
-.layout textarea, 
-.layout select,
-.layout table{
-    display: block;
-    margin: var(--spacing-sm) 0;
-    padding: var(--spacing-sm) var(--spacing-sm);
+.formLayout {
+    background-color: var(--color-secondary);
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    border: 1px solid rgba(0,0,0,0.3);
+    border-radius: var(--radius);
+    border: 1px solid
+}
+
+.sideInfo {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 35px;
+    padding: var(--spacing-md) var(--spacing-md);
+}
+
+.sideInfo img {
+    height: 300px;
+    width: auto;
+    object-fit: cover;
+    border-radius: var(--radius);
+}
+.infoCard {
+    color: var(--color-primary);
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+    background-color: var(--color-accent);
+    padding: var(--spacing-md);
+    border-radius: var(--radius);
+    border: 1px solid rgba(0, 0, 0, 0.1)
+}
+
+
+.formLayout label, 
+.formLayout p, 
+.formLayout input, 
+.formLayout textarea, 
+.formLayout select,
+.formLayout table{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 10px;
+    width: 100%;
+    padding: var(--spacing-sm);
+    border-radius: var(--radius);
     font:inherit;
 }
 
-.layout textarea {
-    /* width: auto; */
-    max-width: max-content;
+.formLayout textarea, input, select {
+    border: 1px solid rgba(87, 87, 87, 0.2);
+    height: 3rem;
+    outline: 0;
+    transition: all 0.3s ease-in-out;
+}
+.formLayout textarea:focus, input:focus {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 1px;
+}
+
+.formLayout textarea {
+    width: 100%;
     max-height: 100px;
+    min-height: 50px;
     overflow-y: scroll;
+    resize: vertical;
 }
 
 .messages {
@@ -44,20 +96,16 @@
 }
 
 .personalDetails, .selection, .dateTimeDetails {
-    background-color: var(--brand-secondary);
     color: var(--bg-dark);
     padding: var(--spacing-lg) var(--spacing-sm);
     border: 5px solid var(--accent);
     border-radius: var(--radius);
+    display: grid;
+    grid-template-columns: repeat(2, minmax(100px, 1fr));
 }
 
-.dateTimeDetails {
-    display: flex;
-    flex-direction: column;
-}
-
-.dateTimeDetails .dateTimeInputs {
-    flex: 1
+.selection label:last-child, .personalDetails label:last-child {
+    grid-column: 1 / -1;
 }
 
 .icon {
@@ -70,11 +118,18 @@
     flex-direction: column;
     gap: 20px;
     align-items: center;
-    height: 500px;
+    height: 100vh;
+    width: 100%;
+    font-size: 0.8rem;
+    padding: 0 var(--spacing-sm);
+    overflow: scroll;
 }
 
 @media (min-width: 900px) {
-    .layout{
+    .mainLayout {
         flex-direction: row;
+    }
+    .formLayout{
+        flex-direction: column;
     }
 }
