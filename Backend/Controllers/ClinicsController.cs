@@ -1,4 +1,5 @@
 using DTOS;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Services;
 
@@ -58,19 +59,6 @@ public class ClinicsController : ControllerBase
     }
     
     /// <summary>
-    /// Retrieve a list of appointments for clinic
-    /// </summary>
-    /// <param name="id"></param>
-    /// <response code="200">Resource list retrieved</response>
-    [HttpGet("{id}/appointments")]
-    [ProducesResponseType(typeof(IEnumerable<AppointmentDTO>), StatusCodes.Status200OK)]
-    public async Task<ActionResult<IEnumerable<AppointmentDTO>>> GetAppointments(int id)
-    {
-        var appointments = await _service.GetAppointments(id);
-        return Ok(appointments);
-    }
-
-    /// <summary>
     /// Create a new clinic
     /// </summary>
     /// <remarks>
@@ -88,8 +76,11 @@ public class ClinicsController : ControllerBase
     /// </remarks>
     /// <param name="dto"></param>
     /// <response code="201">Resource updated successfully, created resource returned</response>
+    /// <response code="403">Forbidden</response>
     [HttpPost]
+    [Authorize(Roles = "Admin")]
     [ProducesResponseType(typeof(ClinicDTO), StatusCodes.Status201Created)]
+    [ProducesResponseType(StatusCodes.Status403Forbidden)]
     public async Task<ActionResult<ClinicDTO>> Create(CreateClinicDTO dto)
     {
         var result = await _service.CreateClinic(dto);
@@ -116,8 +107,11 @@ public class ClinicsController : ControllerBase
     /// <param name="id"></param>
     /// <param name="dto"></param>
     /// <response code="204">Resource updated successfully, no content returned</response>
+    /// <response code="403">Forbidden</response>
     [HttpPut("{id}")]
+    [Authorize(Roles = "Admin")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status403Forbidden)]
     public async Task<IActionResult> Update(int id, UpdateClinicDTO dto)
     {
         var updated = await _service.UpdateClinic(id, dto);
@@ -131,8 +125,11 @@ public class ClinicsController : ControllerBase
     /// </summary>
     /// <param name="id"></param>
     /// <response code="204">Resource deleted successfully, no content returned</response>
+    /// <response code="403">Forbidden</response>
     [HttpDelete("{id}")]
+    [Authorize(Roles = "Admin")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status403Forbidden)]
     public async Task<IActionResult> Delete(int id)
     {
         var deleted = await _service.DeleteClinic(id);

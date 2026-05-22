@@ -17,7 +17,6 @@ public class ClinicService
     public async Task<IEnumerable<ClinicWithDetailsDTO>> GetClinics()
     {
         var clinics = await _ctx.Clinics.AsNoTracking()
-                                        .Include(c => c.Appointments)
                                         .Include(c => c.City)
                                         .Select(clinic => clinic.ToClinicWithDetailsDTO())
                                         .ToListAsync();
@@ -28,7 +27,6 @@ public class ClinicService
     {
         var clinic = await _ctx.Clinics.AsNoTracking()
                                         .Where(c => c.Id == id)
-                                        .Include(c => c.Appointments)
                                         .Include(c => c.City)
                                         .Select(clinic => clinic.ToClinicWithDetailsDTO())
                                         .FirstOrDefaultAsync();
@@ -42,14 +40,6 @@ public class ClinicService
                                         .Select(d => d.ToDoctorDTO())
                                         .ToListAsync();
         return doctors;
-    }
-    public async Task<IEnumerable<AppointmentDTO>> GetAppointments(int id)
-    {
-        var appointments = await _ctx.Appointments.AsNoTracking()
-                                        .Where(d => d.ClinicId == id)
-                                        .Select(d => d.ToAppointmentDTO())
-                                        .ToListAsync();
-        return appointments;
     }
 
     public async Task<ClinicDTO> CreateClinic(CreateClinicDTO dto)

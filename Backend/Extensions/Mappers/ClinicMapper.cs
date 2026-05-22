@@ -28,7 +28,6 @@ public static class ClinicMapper
             Address = clinic.Address,
             PostalCode = clinic.PostalCode,
             City = clinic.City?.ToCityDTO(),
-            Appointments = clinic.Appointments?.Select(appointment => appointment.ToAppointmentDTO())
         };
     }
 

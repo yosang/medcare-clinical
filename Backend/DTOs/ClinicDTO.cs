@@ -25,7 +25,6 @@ public class ClinicWithDetailsDTO
     public string? PostalCode { get; set; }
 
     public CityDTO? City { get; set; }
-    public IEnumerable<AppointmentDTO>? Appointments { get; set; }
 }
 
 public class CreateClinicDTO
