@@ -1,10 +1,9 @@
 import { Link } from "react-router";
 import styles from "./Header.module.css";
 import logo from "../../assets/logo.png"
-import { LogOut, Search, User } from "lucide-react";
+import { LogOut, User } from "lucide-react";
 import { useLoginStore } from "../../stores/useLoginStore";
 import { useNavigate } from "react-router";
-import Divider from "../elements/Divider";
 import { toast } from "sonner";
 import { useEffect, useState, type ChangeEvent } from "react";
 import { Drawer } from "../elements/Drawer";
@@ -99,25 +98,30 @@ export default function Header() {
                 )}
             </Drawer>
             <nav className={styles.layout}>
-                <Link to="/"><img className={styles.logo} src={logo} alt="Web logo" style={{ height: "100px", width: "80px"}}/></Link>
-                
-                <div className={styles.menuITems}>
-                    <Link to="/book">Booking</Link>
-                    <Link to="/search"><Search /></Link>
-                    <Divider />
-
-                    {token ? (
-                        <>
-                        <User className={styles.navIcon} onClick={() => setOpen(true)}/>
-                        <LogOut className={styles.navIcon} onClick={handleLogout}/>
-                        </>
-                    ):(
-                        <>
-                        <Link to="/login">Login</Link>
-                        <Link to="/register">Register</Link>
-                    </>
-                    )}
+                <div className={styles.navLayout}>
+                    <div className={styles.menuItems}>
+                        <div className={styles.logo}>
+                            <Link to="/"><img src={logo} alt="Web logo" style={{ height: "50px", width: "40px"}}/></Link>
+                            <Link to="/"><h2 style={{ color: "var(--color-primary"}}>MedCare Clinical</h2></Link>
+                        </div>
+                        <Link to="/book">Booking</Link>
+                        <Link to="/search">Search</Link>
+                    </div>
                     
+                    <div className={styles.menuItems}>
+
+                        {token ? (
+                            <>
+                            <User className={styles.navIcon} onClick={() => setOpen(true)}/>
+                            <LogOut className={styles.navIcon} onClick={handleLogout}/>
+                            </>
+                        ):(
+                            <>
+                            <Button><Link to="/login">Login</Link></Button>
+                            <Button><Link to="/register">Register</Link></Button>
+                        </>
+                        )}
+                    </div>
                 </div>
             </nav>
             </>

@@ -1,5 +1,5 @@
 .layout {
-    height: 100px;
+    height: 150px;
     width: 90%;
     display: flex;
     justify-content: space-between;
@@ -11,8 +11,10 @@
 }
 
 .links {
-    display: flex;
-    gap: 20px;
+    width: 50%;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+    gap: 5px;
 }
 
 .links a {
@@ -26,6 +28,7 @@
 
 @media (min-width: 900px) {
     .layout {
-        font-size: 16px;
+        height: 100px;
+        font-size: 12px;
     }
 }
