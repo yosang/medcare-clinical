@@ -1,6 +1,6 @@
 import type { AppointmentPayload, AppointmentUpdatePayload } from "../types/Appointments";
 
-const appointmentsUrl = import.meta.env.VITE_APPOINTMENTS;
+const appointmentsUrl = import.meta.env.VITE_APPOINTMENTS
 
 // GET appointments: Private
 export async function fetchAppointments(token:string) {
