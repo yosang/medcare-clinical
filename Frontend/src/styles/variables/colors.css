@@ -1,7 +1,9 @@
 :root {
     /* background */
     --bg-light: #f9fafb;
+    --bg-pure-light: #ffffff;
     --bg-dark: #242424; 
+    --bg-pure-dark: #181818; 
     
     /* text */
     --text-light: #f9fafb;

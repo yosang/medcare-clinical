@@ -1,39 +1,47 @@
-.layout {
+.search {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 70vh;
+}
+.formLayout {
     display: flex;
     gap: 20px;
     width: 100%;
     justify-content: center;
     align-items: center;
     flex-direction: column;
-    padding: var(--spacing-md) 0;
-    margin-bottom: 10px;
+    padding: var(--spacing-sm) var(--spacing-md);
 }
 
-.layout button {
+.formLayout button {
     width: 100px;
 }
 
-.layout input {
+.formLayout input {
     padding: var(--spacing-sm) var(--spacing-sm);
     border-radius: var(--radius);
     width: 30vw;
     transition: width 0.8s ease-in-out;
 }
 
-.layout input:focus  {
+.formLayout input:focus  {
     width: 60vw;
 }
 
+.searchResult {
+    flex: 1;
+}
 @media (min-width: 900px) {
-    .layout {
+    .formLayout {
         flex-direction: row;
     }
 
-    .layout input {
+    .formLayout input {
         width: 10vw;
     }
 
-    .layout input:focus  {
+    .formLayout input:focus  {
         width: 20vw;
     }
 }

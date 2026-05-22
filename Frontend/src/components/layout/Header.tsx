@@ -10,6 +10,7 @@ import { Drawer } from "../elements/Drawer";
 import { usePatientStore } from "../../stores/usePatientStore";
 import LoadingSpinner from "./LoadingSpinner";
 import Button from "../elements/Button";
+import ThemeSwitch from "../elements/ThemSwitch";
 
 export default function Header() {
 
@@ -110,13 +111,14 @@ export default function Header() {
                     
                     <div className={styles.menuItems}>
 
+                        <ThemeSwitch />
                         {token ? (
                             <>
                             <User className={styles.navIcon} onClick={() => setOpen(true)}/>
                             <LogOut className={styles.navIcon} onClick={handleLogout}/>
                             </>
                         ):(
-                            <>
+                        <>
                             <Button variant="secondary"><Link to="/login" style={{ color: "var(--color-secondary-text)" }}>Login</Link></Button>
                             <Button ><Link to="/register" style={{ color: "var(--color-primary-text)" }}>Register</Link></Button>
                         </>

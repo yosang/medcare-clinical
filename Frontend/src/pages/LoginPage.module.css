@@ -3,12 +3,12 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    height: 100vh;
+    height: 70vh;
     gap: 20px;
 }
 
 .loginCard {
-    width: 80vw;
+    width: 100vw;
     background-color: var(--brand-secondary);
     color: var(--bg-dark);
     padding: var(--spacing-lg) var(--spacing-sm);
@@ -25,6 +25,7 @@
 
 .loginInputs label {
     display: flex;
+    width: 70%;
     flex-direction: column;
 }
 

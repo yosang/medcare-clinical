@@ -32,8 +32,8 @@
 
 .layout tbody tr:nth-child(even)
  {
-    color: var(--color-text);
-    background-color: var(--color-accent);
+    color: var(--color-primary-text);
+    background-color: rgb(40, 40, 40);
  }
 
  .layout tbody tr:hover {

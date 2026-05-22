@@ -45,24 +45,29 @@ export default function SearchPage() {
 
     return (
         <>
-        <form onSubmit={handleSubmit} className={styles.layout}>
-            <input 
-                aria-label="Doctor search"
-                ref={inputRef}
-                name="name"
-                value={term}
-                placeholder="Enter firstname or lastname"
-                onChange={handleChange}
-            />
-            <Button type="submit">Search</Button>
-        </form>
-        {isLoading && <LoadingSpinner />}
+        <div className={styles.search}>
+            <form onSubmit={handleSubmit} className={styles.formLayout}>
+                <input 
+                    aria-label="Doctor search"
+                    ref={inputRef}
+                    name="name"
+                    value={term}
+                    placeholder="Enter firstname or lastname"
+                    onChange={handleChange}
+                />
+                <Button type="submit">Search</Button>
+            </form>
+  
+            <div className={styles.searchResult}>
+                {isLoading && <LoadingSpinner />}
 
-        {doctors && doctors.length < 1 && <p>No match</p>}
+                {doctors && doctors.length < 1 && <p>No match</p>}
 
-        {doctors && <DoctorList data={doctors}/>}
+                {doctors && <DoctorList data={doctors}/>}
 
-        {error && <p style={{ color: "red" }}>Internal Server Error</p>}
+                {error && <p style={{ color: "red" }}>Internal Server Error</p>}
+            </div>
+        </div>
         </>
     )
 }
