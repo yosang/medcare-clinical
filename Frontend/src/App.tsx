@@ -1,5 +1,4 @@
-import Content from "./components/layout/Content"
-import Footer from "./components/layout/Footer"
+import Main from "./components/layout/Main"
 import Header from "./components/layout/Header"
 import { BrowserRouter, Routes, Route } from "react-router"
 import BookingPage from "./pages/BookingPage"
@@ -15,7 +14,7 @@ function App() {
     <div className={styles.layout}>
     <BrowserRouter>
       <Header />
-      <Content>
+      <Main>
         <Routes>
           <Route path="/" element={<BookingPage />} />
           <Route path="/book" element={<BookingPage />} />
@@ -23,8 +22,7 @@ function App() {
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/login" element={<LoginPage />} />
         </Routes>
-      </Content>
-      <Footer />
+      </Main>
     </BrowserRouter>
     </div>
   )

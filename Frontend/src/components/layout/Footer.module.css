@@ -1,6 +1,31 @@
 .layout {
+    height: 100px;
+    width: 90%;
     display: flex;
-    justify-content: center;
-    padding: var(--spacing-sm);
-    background-color: rgba(0, 0, 0, 0.207);
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 var(--spacing-sm);
+    background-color: white;
+    padding: var(--spacing-sm) var(--spacing-lg);
+    font-size: 12px;
+}
+
+.links {
+    display: flex;
+    gap: 20px;
+}
+
+.links a {
+    text-decoration: none;
+    color: var(--color-text);
+}
+
+.links a:hover {
+    color: var(--color-primary);
+}
+
+@media (min-width: 900px) {
+    .layout {
+        font-size: 16px;
+    }
 }
