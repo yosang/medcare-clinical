@@ -34,7 +34,7 @@ export default function BookingPage() {
 
     const { token } = useLoginStore();
     const {  error, errorMessage, clearErrors, loading: loadingAppointment, createAppointment, getAppointments} = useAppointmentsStore();
-    const { loading: loadingPatient, createPatient } = usePatientStore();
+    const { loading: loadingPatient, createPatient, patient, getPatient } = usePatientStore();
 
     const [firstname, setFirstname] = useState("");
     const [lastname, setLastname] = useState("");
@@ -61,7 +61,11 @@ export default function BookingPage() {
         const formData = new FormData(e.currentTarget);
         const docId = formData.get("DoctorId") as string;
 
-        const patientData = {
+        const patientData = token && patient ? { 
+            firstname: patient.firstName,
+            lastname: patient.lastName,
+            phone: patient.phone
+         }:{
             firstname,
             lastname,
             phone
@@ -111,9 +115,12 @@ export default function BookingPage() {
     useEffect(() => {
         inputRef.current?.focus();
 
-        if(token) getAppointments(token);
+        if(token) {
+            getAppointments(token);
+            getPatient(token);
+        }
 
-    }, [getAppointments, token])
+    }, [getAppointments, getPatient,token])
 
     return (
     <>
@@ -131,7 +138,8 @@ export default function BookingPage() {
                         ref={inputRef}
                         required
                         type="text"
-                        value={firstname}
+                        value={token && patient?.firstName || firstname}
+                        placeholder={token && patient ? patient.firstName:""}
                         disabled={!!token}
                         onChange={(e) => setFirstname(e.target.value)}
                         />
@@ -141,7 +149,8 @@ export default function BookingPage() {
                     <input 
                         required
                         type="text"
-                        value={lastname}
+                        value={token && patient?.lastName || lastname}
+                        placeholder={token && patient ? patient.lastName:""}
                         disabled={!!token}
                         onChange={(e) => setLastname(e.target.value)}
                         />
@@ -150,7 +159,8 @@ export default function BookingPage() {
                     Phone number
                     <input 
                         type="tel"
-                        value={phone}
+                        value={token && patient?.phone || phone}
+                        placeholder={token && patient ? patient.phone:""}
                         disabled={!!token}
                         onChange={(e) => setPhone(e.target.value)}
                         />
