@@ -48,15 +48,17 @@ public class CategoriesController : ControllerBase
     /// Sample request:
     ///
     ///     {
-    ///         "Name": "Laboratory Testing"
+    ///         "Name": "Laboratory Test"
     ///     }
     ///
     /// </remarks>
     /// <param name="category"></param>
     /// <response code="201">Resource created</response>
+    /// <response code="401">Forbidden</response>
     [HttpPost]
-    [Authorize]
+    [Authorize(Roles = "Admin")]
     [ProducesResponseType(typeof(CategoriesDTO), StatusCodes.Status201Created)]
+    [ProducesResponseType(StatusCodes.Status403Forbidden)]
     public async Task<ActionResult<CategoriesDTO>> Create(CreateCategoryDTO category)
     {
         var result = await _service.CreateCategory(category);
@@ -76,10 +78,12 @@ public class CategoriesController : ControllerBase
     /// <param name="id"></param>
     /// <param name="category"></param>
     /// <response code="204">Update successful, no content returned</response>
+    /// <response code="401">Forbidden</response>
     /// <response code="404">Resource not found by id</response>
     [HttpPut("{id}")]
-    [Authorize]
+    [Authorize(Roles = "Admin")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status403Forbidden)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> Update(int id, UpdateCategoryDTO category)
     {
@@ -92,10 +96,12 @@ public class CategoriesController : ControllerBase
     /// <summary>Delete a category</summary>
     /// <param name="id"></param>
     /// <response code="204">Deletion successful, no content returned</response>
+    /// <response code="401">Forbidden</response>
     /// <response code="404">Resource not found by id</response>
     [HttpDelete("{id}")]
-    [Authorize]
+    [Authorize(Roles = "Admin")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status403Forbidden)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> Delete(int id)
     {
