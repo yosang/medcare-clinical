@@ -1,4 +1,5 @@
 using DTOS;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Services;
 
@@ -27,7 +28,12 @@ public class DoctorsController : ControllerBase
         return Ok(doctors);
     }
 
+    /// <summary>
+    /// Returns a list of doctors matching firstname / lastname search term
+    /// </summary>
+    /// <response code="200">Resources returned</response>
     [HttpGet("search")]
+    [ProducesResponseType(typeof(IEnumerable<DoctorWithDetailsDTO>), StatusCodes.Status200OK)]
     public async Task<ActionResult<IEnumerable<DoctorWithDetailsDTO>>> Get(string name)
     {
         var doctors = await _service.GetDoctors(name);
@@ -52,20 +58,6 @@ public class DoctorsController : ControllerBase
         return Ok(doctor);
     }
 
-    /// <summary>
-    /// Returns a list of Appointments for Doctor
-    /// </summary>
-    /// <param name="id"></param>
-    /// <response code="200">Resources returned</response>
-    [HttpGet("{id}/appointments")]
-    [ProducesResponseType(typeof(IEnumerable<AppointmentDTO>), StatusCodes.Status200OK)]
-    public async Task<ActionResult<IEnumerable<AppointmentDTO>>> GetAppointments(int id)
-    {
-        var appointments = await _service.GetAppointments(id);
-
-        return Ok(appointments);
-    }
-
     /// <summary>Create a new doctor</summary>
     /// <remarks>
     /// Sample request:
@@ -81,8 +73,11 @@ public class DoctorsController : ControllerBase
     /// </remarks>
     /// <param name="doctor"></param>
     /// <response code="201">Resource created</response>
+    /// <response code="403">Forbidden</response>
     [HttpPost]
+    [Authorize(Roles = "Admin")]
     [ProducesResponseType(typeof(DoctorDTO), StatusCodes.Status201Created)]
+    [ProducesResponseType(StatusCodes.Status403Forbidden)]
     public async Task<ActionResult<DoctorDTO>> Create(CreateDoctorDTO doctor)
     {
         var result = await _service.CreateDoctor(doctor);
@@ -106,9 +101,12 @@ public class DoctorsController : ControllerBase
     /// <param name="id"></param>
     /// <param name="doctor"></param>
     /// <response code="204">Update successful, no content returned</response>
+    /// <response code="403">Forbidden</response>
     /// <response code="404">Resource not found by id</response>
     [HttpPut("{id}")]
+    [Authorize(Roles = "Admin")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status403Forbidden)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> Update(int id, UpdateDoctorDTO doctor)
     {
@@ -120,9 +118,12 @@ public class DoctorsController : ControllerBase
     /// <summary>Delete a doctor</summary>
     /// <param name="id"></param>
     /// <response code="204">Deletion successful, no content returned</response>
+    /// <response code="403">Forbidden</response>
     /// <response code="404">Resource not found by id</response>
     [HttpDelete("{id}")]
+    [Authorize(Roles = "Admin")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status403Forbidden)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> Delete(int id)
     {

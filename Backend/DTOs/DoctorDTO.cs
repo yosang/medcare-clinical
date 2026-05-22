@@ -21,7 +21,6 @@ public class DoctorWithDetailsDTO
     public string LastName { get; set; } = null!;
     public string? Email { get; set; }
 
-    public IEnumerable<AppointmentDTO>? Appointments { get; set; }
     public SpecialtyDTO? Specialty { get; set; }
     public ClinicDTO? Clinic { get; set; }
 }

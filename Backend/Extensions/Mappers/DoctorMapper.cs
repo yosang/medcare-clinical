@@ -27,7 +27,6 @@ public static class DoctorMapper
           Email = doctor.Email,
           Specialty = doctor.Specialty?.ToSpecialtyDTO(),
           Clinic = doctor.Clinic?.ToClinicDTO(),
-          Appointments = doctor.Appointments?.Select(appointment => appointment.ToAppointmentDTO())
         };
     }
 
