@@ -5,24 +5,14 @@ namespace Extensions.Mappers;
 
 public static class CategoryMapper
 {
-    public static CategoryDTO ToCategoryDTO(this Category category)
+    public static CategoriesDTO ToCategoriesDTO(this Category category)
     {
-        return new CategoryDTO
+        return new CategoriesDTO
         {
             Id = category.Id,
             Name = category.Name
         };
     }
-
-    public static CategoryWithDetailsDTO ToCategoryWithDetailsDTO(this Category category)
-    {
-        return new CategoryWithDetailsDTO
-        {
-            Id = category.Id,
-            Name = category.Name,
-            Appointments = category.Appointments?.Select(appointments => appointments.ToAppointmentDTO())
-        };
-    }    
 
     public static Category ToCategory(this CreateCategoryDTO dto)
     {

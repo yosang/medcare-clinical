@@ -1,6 +1,6 @@
 import { create } from "zustand";
 import { type Login, type LoginState } from "../types/Auth";
-import { login } from "../api/auth-api";
+import { login } from "../api/auth";
 
 export const useLoginStore = create<LoginState>(set => ({
     token: null,

@@ -2,18 +2,10 @@ using System.ComponentModel.DataAnnotations;
 
 namespace DTOS;
 
-public class CategoryDTO
+public class CategoriesDTO
 {
     public int Id { get; set; }
     public string Name { get; set; } = null!;
-}
-
-public class CategoryWithDetailsDTO
-{
-    public int Id { get; set; }
-    public string Name { get; set; } = null!;
-
-    public IEnumerable<AppointmentDTO>? Appointments { get; set; }
 }
 
 public class CreateCategoryDTO {

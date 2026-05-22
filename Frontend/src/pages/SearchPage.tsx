@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState,  type ChangeEvent,  type SyntheticEvent } from "react"
 import type { Doctor } from "../types/Doctors";
-import { fetchDoctorsBySearch } from "../api/api";
+import { fetchDoctorsBySearch } from "../api/shared";
 import LoadingSpinner from "../components/layout/LoadingSpinner";
 import DoctorList from "../components/layout/DoctorList";
 import Button from "../components/elements/Button";

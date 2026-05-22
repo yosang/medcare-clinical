@@ -1,6 +1,6 @@
 import { create } from "zustand";
 import { type StatusState } from "../types/Appointments";
-import { fetchStatus } from "../api/api";
+import { fetchStatus } from "../api/shared";
 
 export const useStatusStore = create<StatusState>((set) => ({
     status: null,

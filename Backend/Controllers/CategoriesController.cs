@@ -1,24 +1,25 @@
 using DTOS;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Services;
 
 [ApiController]
 [Route("api/[Controller]")]
 [Produces("application/json")]
-public class CategoryController : ControllerBase
+public class CategoriesController : ControllerBase
 {
 
-    private readonly CategoryService _service;
+    private readonly CategoriesService _service;
 
-    public CategoryController(CategoryService service) => (_service) = (service); 
+    public CategoriesController(CategoriesService service) => (_service) = (service); 
 
     /// <summary>
     /// Returns a list of categories
     /// </summary>
     /// <response code="200">Resources returned</response>
     [HttpGet]
-    [ProducesResponseType(typeof(IEnumerable<CategoryWithDetailsDTO>), StatusCodes.Status200OK)]
-    public async Task<ActionResult<IEnumerable<CategoryWithDetailsDTO>>> Get()
+    [ProducesResponseType(typeof(IEnumerable<CategoriesDTO>), StatusCodes.Status200OK)]
+    public async Task<ActionResult<IEnumerable<CategoriesDTO>>> Get()
     {
         var categories = await _service.GetCategories();
 
@@ -32,28 +33,14 @@ public class CategoryController : ControllerBase
     /// <response code="200">Resource returned</response>
     /// <response code="404">Resource not found</response>
     [HttpGet("{id}")]
-    [ProducesResponseType(typeof(CategoryWithDetailsDTO), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(CategoriesDTO), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<ActionResult<CategoryWithDetailsDTO>> Get(int id)
+    public async Task<ActionResult<CategoriesDTO>> Get(int id)
     {
         var category = await _service.GetCategory(id);
         if(category == null) return NotFound();
 
         return Ok(category);
-    }
-
-    /// <summary>
-    /// Returns a list of Appointments for Category
-    /// </summary>
-    /// <param name="id"></param>
-    /// <response code="200">Resources returned</response>
-    [HttpGet("{id}/appointments")]
-    [ProducesResponseType(typeof(IEnumerable<AppointmentDTO>), StatusCodes.Status200OK)]
-    public async Task<ActionResult<IEnumerable<AppointmentDTO>>> GetAppointments(int id)
-    {
-        var appointments = await _service.GetAppointments(id);
-
-        return Ok(appointments);
     }
 
     /// <summary>Create a new category</summary>
@@ -68,8 +55,9 @@ public class CategoryController : ControllerBase
     /// <param name="category"></param>
     /// <response code="201">Resource created</response>
     [HttpPost]
-    [ProducesResponseType(typeof(CategoryDTO), StatusCodes.Status201Created)]
-    public async Task<ActionResult<CategoryDTO>> Create(CreateCategoryDTO category)
+    [Authorize]
+    [ProducesResponseType(typeof(CategoriesDTO), StatusCodes.Status201Created)]
+    public async Task<ActionResult<CategoriesDTO>> Create(CreateCategoryDTO category)
     {
         var result = await _service.CreateCategory(category);
 
@@ -90,6 +78,7 @@ public class CategoryController : ControllerBase
     /// <response code="204">Update successful, no content returned</response>
     /// <response code="404">Resource not found by id</response>
     [HttpPut("{id}")]
+    [Authorize]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> Update(int id, UpdateCategoryDTO category)
@@ -105,6 +94,7 @@ public class CategoryController : ControllerBase
     /// <response code="204">Deletion successful, no content returned</response>
     /// <response code="404">Resource not found by id</response>
     [HttpDelete("{id}")]
+    [Authorize]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> Delete(int id)

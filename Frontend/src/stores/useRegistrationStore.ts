@@ -1,6 +1,6 @@
 import { create } from "zustand"
 import type { Registration, RegistrationState } from "../types/Auth";
-import { register } from "../api/auth-api";
+import { register } from "../api/auth";
 
 export const useRegistrationStore = create<RegistrationState>((set) => ({
     loading: false,

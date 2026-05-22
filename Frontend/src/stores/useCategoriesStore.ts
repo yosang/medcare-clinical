@@ -1,6 +1,6 @@
 import { create } from "zustand";
 import type { CategoriesState } from "../types/Appointments";
-import { fetchCategories } from "../api/api";
+import { fetchCategories } from "../api/shared";
 
 export const useCategoriesStore = create<CategoriesState>((set) => ({
     categories: null,

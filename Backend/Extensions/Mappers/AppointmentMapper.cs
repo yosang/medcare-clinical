@@ -14,7 +14,7 @@ public static class AppointmentMapper
                 Duration = appointment.Duration,
                 Note = appointment.Note,
                 Doctor = appointment.Doctor!.ToDoctorDTO(),
-                Category = appointment.Category!.ToCategoryDTO(),
+                Category = appointment.Category!.ToCategoriesDTO(),
                 Status = appointment.Status!.ToStatusDTO(),
                 Clinic = appointment.Clinic!.ToClinicDTO(),
             };
