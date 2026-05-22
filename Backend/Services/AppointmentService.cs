@@ -73,7 +73,7 @@ public class AppointmentService
         var overlaps = await _ctx.Appointments.AsNoTracking().AnyAsync(ap => 
             ap.DoctorId == dto.DoctorId 
             && ap.StatusId != 3 
-            && ap.Id != id // Since this is an update, we are excluding the current appointment
+            && ap.Id != id // Since this is an own update, we are excluding the current appointment
             && ap.AppointmentDate.AddMinutes(ap.Duration) >= dto.AppointmentDate // if Existing.End >= New.Start = overlap
             && ap.AppointmentDate <= dto.AppointmentDate.AddMinutes(dto.Duration) // If existing.Start <= New.End = overlap
 
@@ -92,7 +92,7 @@ public class AppointmentService
         var existing = await _ctx.Appointments.FirstOrDefaultAsync(a => a.Id == id && a.PatientId == patientId);
         if(existing == null) return false;
 
-        if(existing.StatusId == 2 || existing.StatusId == 3) return false;
+        if(existing.StatusId == 2 || existing.StatusId == 3) return false; // Dont cancel appointments that are already cancelled or completed
 
         existing.StatusId = 3;
 

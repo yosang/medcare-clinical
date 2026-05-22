@@ -1,4 +1,5 @@
 using DTOS;
+using Extensions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Services;
@@ -17,50 +18,27 @@ public class PatientsController : ControllerBase
     }
 
     /// <summary>
-    /// Retrieve a list of patients
+    /// Retrieve details as a logged in patient
     /// </summary>
-    /// <response code="200">Resources returned</response>
-    [HttpGet]
-    [ProducesResponseType(typeof(IEnumerable<PatientWithDetailsDTO>), StatusCodes.Status200OK)]
-    public async Task<ActionResult<IEnumerable<PatientWithDetailsDTO>>> Get()
-    {
-        var patients = await _service.GetPatients();
-
-        return Ok(patients);
-    }
-
-    /// <summary>
-    /// Retreive a single patient
-    /// </summary>
-    /// <param name="id"></param>
     /// <response code="200">Resource returned</response>
+    /// <response code="401">Resource not found</response>
     /// <response code="404">Resource not found</response>
-    [HttpGet("{id}")]
+    [HttpGet("me")]
+    [Authorize]
     [ProducesResponseType(typeof(PatientWithDetailsDTO), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<ActionResult<PatientWithDetailsDTO>> Get(int id)
+    public async Task<ActionResult<PatientWithDetailsDTO>> GetMyProfile()
     {
-        var patient = await _service.GetPatient(id);
-        if (patient == null) return NotFound();
+        var patientId = User.GetPatientId();
+        if(patientId == null) return Unauthorized();
+
+        var patient = await _service.GetPatient(patientId.Value);
+
         return Ok(patient);
     }
 
-    /// <summary>
-    /// Retrieves appointments for a patient
-    /// </summary>
-    /// <param name="id"></param>
-    /// <response code="200">Resource returned</response>
-    [HttpGet("{id}/appointments")]
-    [ProducesResponseType(typeof(AppointmentDTO), StatusCodes.Status200OK)]
-    [Authorize]
-    public async Task<ActionResult<IEnumerable<AppointmentDTO>>> GetAppointments(int id)
-    {
-        var appointments = await _service.GetAppointments(id);
-
-        return Ok(appointments);
-    }
-
-    /// <summary> Create a new guest patient </summary>
+    /// <summary> Create a new guest patient</summary>
     /// <remarks>
     /// Sample request:
     /// 
@@ -73,17 +51,17 @@ public class PatientsController : ControllerBase
     /// </remarks>
     /// <param name="dto"></param>
     /// <response code="201">Resource created</response>
-    [HttpPost]
+    [HttpPost("guest")]
     [ProducesResponseType(typeof(GuestPatientDTO), StatusCodes.Status201Created)]
-    public async Task<ActionResult<GuestPatientDTO>> Create(CreateGuestPatientDTO dto)
+    public async Task<ActionResult<GuestPatientDTO>> CreateGuestPatient(CreateGuestPatientDTO dto)
     {
         var result = await _service.CreatePatient(dto);
 
-        return CreatedAtAction(nameof(Get), new { id = result.Id }, result);
+        return CreatedAtAction(nameof(CreateGuestPatient), new { id = result.Id }, result);
     }
 
     /// <summary>
-    /// Update an existing patient
+    /// Update profile as a logged inn patient
     /// </summary>
     /// <remarks>
     /// Sample request:
@@ -95,38 +73,47 @@ public class PatientsController : ControllerBase
     ///       "email": "mh@mail.com",
     ///       "dateOfBirth": "1984-03-22",
     ///       "nationalIdentityNumber": "22222222222",
-    ///       "passwordHash": "FAKEHASH",
-    ///       "isRegistered": true
+    ///       "password": "p@ssword",
     ///     }
     /// 
     /// </remarks>
-    /// <param name="id"></param>
     /// <param name="dto"></param>
     /// <response code="204">Update successful, no content returned</response>
+    /// <response code="401">Unauthorized</response>
     /// <response code="404">Resource not found</response>
-    [HttpPut("{id}")]
+    [HttpPut("me")]
+    [Authorize]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> Update(int id, UpdatePatientDTO dto)
+    public async Task<IActionResult> UpdateMyProfile(UpdatePatientDTO dto)
     {
-        var updated = await _service.UpdatePatient(id, dto);
+        var patientId = User.GetPatientId();
+        if(patientId == null) return Unauthorized();
+
+        var updated = await _service.UpdatePatient(patientId.Value, dto);
         if (updated == null) return NotFound();
 
         return NoContent();
     }
 
     /// <summary>
-    /// Delete a patient
+    /// Delete patient profile as a logged in patient
     /// </summary>
-    /// <param name="id"></param>
     /// <response code="204">Resource deleted</response>
+    /// <response code="401">Unauthorized</response>
     /// <response code="404">Resource not found</response>
-    [HttpDelete("{id}")]
+    [HttpDelete("me")]
+    [Authorize]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> Delete(int id)
+    public async Task<IActionResult> DeleteMyAccount()
     {
-        var deleted = await _service.DeletePatient(id);
+        var patientId = User.GetPatientId();
+        if(patientId == null) return Unauthorized();
+
+        var deleted = await _service.DeletePatient(patientId.Value);
         if (!deleted) return NotFound();
 
         return NoContent();

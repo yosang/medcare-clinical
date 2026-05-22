@@ -14,15 +14,6 @@ public class PatientService
         _ctx = context;
     }
 
-    public async Task<IEnumerable<PatientWithDetailsDTO>> GetPatients()
-    {
-        var patients = await _ctx.Patients.AsNoTracking()
-                                            .Include(p => p.Appointments)
-                                            .Select(patient => patient.ToPatientWithDetailsDTO())
-                                            .ToListAsync();
-        return patients;
-    }
-
     public async Task<PatientWithDetailsDTO?> GetPatient(int id)
     {
         var patient = await _ctx.Patients.AsNoTracking()
@@ -31,15 +22,6 @@ public class PatientService
                                         .Select(patient => patient.ToPatientWithDetailsDTO())
                                         .FirstOrDefaultAsync();
         return patient;
-    }
-
-    public async Task<IEnumerable<AppointmentDTO>> GetAppointments(int id)
-    {
-        var appointments = await _ctx.Appointments.AsNoTracking()
-                                                    .Where(ap => ap.PatientId == id)
-                                                    .Select(ap => ap.ToAppointmentDTO())
-                                                    .ToListAsync();
-        return appointments;
     }
 
     public async Task<GuestPatientDTO> CreatePatient(CreateGuestPatientDTO dto)
@@ -63,9 +45,9 @@ public class PatientService
         return newP.ToGuestPatientDTO();
     }
 
-    public async Task<PatientDTO?> UpdatePatient(int id, UpdatePatientDTO dto)
+    public async Task<PatientDTO?> UpdatePatient(int patientId, UpdatePatientDTO dto)
     {
-        var existing = await _ctx.Patients.FindAsync(id);
+        var existing = await _ctx.Patients.FindAsync(patientId);
         if (existing == null) return null;
 
         existing.UpdateWith(dto);
@@ -75,9 +57,9 @@ public class PatientService
         return existing.ToPatientDTO();
     }
 
-    public async Task<bool> DeletePatient(int id)
+    public async Task<bool> DeletePatient(int patientId)
     {
-        var existing = await _ctx.Patients.FindAsync(id);
+        var existing = await _ctx.Patients.FindAsync(patientId);
         if (existing == null) return false;
 
         _ctx.Patients.Remove(existing);

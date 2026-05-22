@@ -24,6 +24,7 @@ public class AppointmentsController : ControllerBase
     [HttpGet]
     [Authorize]
     [ProducesResponseType(typeof(IEnumerable<AppointmentWithDetailsDTO>), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     public async Task<ActionResult<IEnumerable<AppointmentWithDetailsDTO>>> GetMyAppointments()
     {
         var patientId = User.GetPatientId();
@@ -43,6 +44,7 @@ public class AppointmentsController : ControllerBase
     /// <response code="404">Resource not found</response>
     [HttpGet("{id}")]
     [ProducesResponseType(typeof(AppointmentWithDetailsDTO), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<ActionResult<AppointmentWithDetailsDTO?>> Get(int id)
     {
@@ -56,7 +58,7 @@ public class AppointmentsController : ControllerBase
         return Ok(appointment);
     }
 
-    /// <summary>Create a new appointment</summary>
+    /// <summary>Create a new appointment (Frontend must provide a PatientId for Guests)</summary>
     /// <remarks>
     /// Sample request:
     ///
@@ -78,12 +80,13 @@ public class AppointmentsController : ControllerBase
     /// <response code="401">Unauthorized</response>
     [HttpPost]
     [ProducesResponseType(typeof(AppointmentDTO), StatusCodes.Status201Created)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     public async Task<ActionResult<AppointmentDTO>> Create(CreateAppointmentDTO dto)
     {
         if (User.Identity!.IsAuthenticated)
         {
             var patientId = User.GetPatientId();
-             if(patientId == null) return Unauthorized();
+            if(patientId == null) return Unauthorized();
 
             dto.PatientId = patientId.Value;
         }
@@ -124,6 +127,8 @@ public class AppointmentsController : ControllerBase
     [HttpPut("{id}")]
     [Authorize]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> Update(int id, UpdateAppointmentDTO dto)
     {
@@ -152,6 +157,7 @@ public class AppointmentsController : ControllerBase
     [HttpDelete("{id}")]
     [Authorize]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> Cancel(int id)
     {

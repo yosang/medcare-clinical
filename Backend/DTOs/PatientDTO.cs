@@ -30,8 +30,6 @@ public class PatientWithDetailsDTO
     public string? Email { get; set; }
     public DateTime? DateOfBirth { get; set; }
     public string? NationalIdentityNumber { get; set; }
-    public string? PasswordHash { get; set; }
-    public bool IsRegistered { get; set; }
 
     public IEnumerable<AppointmentDTO>? Appointments { get; set; }
 }
@@ -73,8 +71,7 @@ public class UpdatePatientDTO
     [MinLength(11)]
     [MaxLength(11)]
     public string? NationalIdentityNumber { get; set; }
-    public string? PasswordHash { get; set; }
-    public bool? IsRegistered { get; set; }
+    public string? Password { get; set; }
 }
 
 public class RegisterPatientDTO

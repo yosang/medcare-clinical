@@ -1,4 +1,5 @@
 using DTOS;
+using Microsoft.AspNetCore.Identity;
 using Models;
 
 namespace Extensions.Mappers;
@@ -64,7 +65,6 @@ public static class PatientMapper
             Email = patient.Email,
             DateOfBirth = patient.DateOfBirth,
             NationalIdentityNumber = patient.NationalIdentityNumber,
-            IsRegistered = patient.IsRegistered,
             Appointments = patient.Appointments?.Select(appointment => appointment.ToAppointmentDTO())
         };
     }
@@ -77,7 +77,6 @@ public static class PatientMapper
         if(!string.IsNullOrWhiteSpace(dto.Email)) existing.Email = dto.Email;
         if(dto.DateOfBirth.HasValue) existing.DateOfBirth = dto.DateOfBirth.Value;
         if(!string.IsNullOrWhiteSpace(dto.NationalIdentityNumber)) existing.NationalIdentityNumber = dto.NationalIdentityNumber;
-        if(!string.IsNullOrWhiteSpace(dto.PasswordHash)) existing.PasswordHash = dto.PasswordHash;
-        if(dto.IsRegistered.HasValue) existing.IsRegistered = dto.IsRegistered.Value;
+        if(!string.IsNullOrWhiteSpace(dto.Password)) existing.PasswordHash = new PasswordHasher<object>().HashPassword(null!, dto.Password);
     }
 }
