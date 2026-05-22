@@ -31,7 +31,6 @@ public class PatientWithDetailsDTO
     public DateTime? DateOfBirth { get; set; }
     public string? NationalIdentityNumber { get; set; }
 
-    public IEnumerable<AppointmentDTO>? Appointments { get; set; }
 }
 
 public class CreateGuestPatientDTO

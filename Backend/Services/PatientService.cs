@@ -18,7 +18,6 @@ public class PatientService
     {
         var patient = await _ctx.Patients.AsNoTracking()
                                         .Where(p => p.Id == id)
-                                        .Include(p => p.Appointments)
                                         .Select(patient => patient.ToPatientWithDetailsDTO())
                                         .FirstOrDefaultAsync();
         return patient;

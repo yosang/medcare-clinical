@@ -65,7 +65,6 @@ public static class PatientMapper
             Email = patient.Email,
             DateOfBirth = patient.DateOfBirth,
             NationalIdentityNumber = patient.NationalIdentityNumber,
-            Appointments = patient.Appointments?.Select(appointment => appointment.ToAppointmentDTO())
         };
     }
 

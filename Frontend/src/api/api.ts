@@ -1,6 +1,3 @@
-import type { GuestPatientPayload } from "../types/Patients";
-
-const patientsUrl = import.meta.env.VITE_PATIENTS;
 const statusUrl = import.meta.env.VITE_STATUS;
 const categoriesUrl = import.meta.env.VITE_CATEGORIES;
 const doctorsUrl = import.meta.env.VITE_DOCTORS;
@@ -58,23 +55,5 @@ export async function fetchDoctorsBySearch(name: string ) {
     if(!res.ok) throw new Error("Failed to fetch doctors with search")
     
     return res.json();
-}
-
-// POST: Public
-export async function createGuestPatient(payload: GuestPatientPayload) {
-    if(!patientsUrl) {
-        throw new Error("VITE_PATIENTS url is not defined in .env")
-    }
-
-    const res = await fetch(patientsUrl, {
-        method: "POST",
-        body: JSON.stringify(payload),
-        headers: { "Content-Type": "application/json" }
-    })
-
-    if(!res.ok) throw new Error("Failed to create guest patient")
-    
-    return res.json();
-
 }
 

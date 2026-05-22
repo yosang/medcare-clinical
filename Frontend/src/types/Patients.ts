@@ -6,7 +6,6 @@ export interface Patient {
       email: string,
       dateOfBirth: string,
       nationalIdentityNumber: string,
-      isRegistered: boolean
 }
 
 export type GuestPatientPayload = {
@@ -22,8 +21,10 @@ export interface GuestPatient {
     phone: string
 }
 
-export interface GuestPatientState {
+export interface PatientState {
+    patient: Patient | null,
     loading: boolean,
     error: boolean,
-    createPatient: (payload: GuestPatientPayload) => Promise<GuestPatient>
+    createPatient: (payload: GuestPatientPayload) => Promise<GuestPatient>,
+    getPatient: (token: string) => Promise<void>
 }
