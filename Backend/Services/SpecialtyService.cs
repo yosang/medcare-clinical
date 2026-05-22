@@ -13,34 +13,23 @@ public class SpecialtyService
         _ctx = context;
     }
 
-    public async Task<IEnumerable<SpecialtyWithDetailsDTO>> GetSpecialties()
+    public async Task<IEnumerable<SpecialtyDTO>> GetSpecialties()
     {
 
         var specialties = await _ctx.Specialties.AsNoTracking()
-                                                .Include(s => s.Doctors)
-                                                .Select(specialty => specialty.ToSpecialtyWithDetailsDTO())
+                                                .Select(specialty => specialty.ToSpecialtyDTO())
                                                 .ToListAsync();
 
         return specialties;
     }
 
-    public async Task<SpecialtyWithDetailsDTO?> GetSpecialty(int id)
+    public async Task<SpecialtyDTO?> GetSpecialty(int id)
     {
         var specialty = await _ctx.Specialties.AsNoTracking()
                                               .Where(specialty => specialty.Id == id)
-                                              .Include(s => s.Doctors)
-                                              .Select(specialty => specialty.ToSpecialtyWithDetailsDTO())
+                                              .Select(specialty => specialty.ToSpecialtyDTO())
                                               .FirstOrDefaultAsync();
         return specialty;
-    }
-
-    public async Task<IEnumerable<DoctorDTO>> GetDoctors(int id)
-    {
-        var doctors = await _ctx.Doctors.AsNoTracking()
-                                        .Where(doctor => doctor.SpecialtyId == id)
-                                        .Select(doctor => doctor.ToDoctorDTO())
-                                        .ToListAsync();
-        return doctors;
     }
 
     public async Task<SpecialtyDTO> CreateSpecialty(CreateSpecialtyDTO dto)

@@ -1,4 +1,5 @@
 using DTOS;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Services;
 
@@ -16,8 +17,8 @@ public class SpecialtiesController : ControllerBase
     /// </summary>
     /// <response code="200">List of specialties returned</response>
     [HttpGet]
-    [ProducesResponseType(typeof(IEnumerable<SpecialtyWithDetailsDTO>), StatusCodes.Status200OK)]
-    public async Task<ActionResult<IEnumerable<SpecialtyWithDetailsDTO>>> Get()
+    [ProducesResponseType(typeof(IEnumerable<SpecialtyDTO>), StatusCodes.Status200OK)]
+    public async Task<ActionResult<IEnumerable<SpecialtyDTO>>> Get()
     {
         var specialties = await _service.GetSpecialties();
         return Ok(specialties);
@@ -30,29 +31,15 @@ public class SpecialtiesController : ControllerBase
     /// <response code="200">Resource retrieved</response>
     /// <response code="404">Resource not found</response>
     [HttpGet("{id}")]
-    [ProducesResponseType(typeof(SpecialtyWithDetailsDTO), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(SpecialtyDTO), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<ActionResult<SpecialtyWithDetailsDTO>> Get(int id)
+    public async Task<ActionResult<SpecialtyDTO>> Get(int id)
     {
         var specialty = await _service.GetSpecialty(id);
 
         if(specialty == null) return NotFound();
 
         return Ok(specialty);
-    }
-
-    /// <summary>
-    /// Returns a list of Doctors for Specialty
-    /// </summary>
-    /// <param name="id"></param>
-    /// <response code="200">Resources returned</response>
-    [HttpGet("{id}/doctors")]
-    [ProducesResponseType(typeof(IEnumerable<DoctorDTO>), StatusCodes.Status200OK)]
-    public async Task<ActionResult<IEnumerable<DoctorDTO>>> GetDoctors(int id)
-    {
-        var doctors = await _service.GetDoctors(id);
-
-        return Ok(doctors);
     }
 
     /// <summary>Create a new specialty</summary>
@@ -66,8 +53,11 @@ public class SpecialtiesController : ControllerBase
     /// </remarks>
     /// <param name="specialty"></param>
     /// <response code="201">Resource created</response>
+    /// <response code="401">Forbidden</response>
     [HttpPost]
+    [Authorize(Roles = "Admin")]
     [ProducesResponseType(typeof(SpecialtyDTO), StatusCodes.Status201Created)]
+    [ProducesResponseType(StatusCodes.Status403Forbidden)]
     public async Task<ActionResult<SpecialtyDTO>> Create(CreateSpecialtyDTO specialty)
     {
         var result = await _service.CreateSpecialty(specialty);
@@ -87,9 +77,12 @@ public class SpecialtiesController : ControllerBase
     /// <param name="id"></param>
     /// <param name="specialty"></param>
     /// <response code="204">Update successful, no content returned</response>
+    /// <response code="401">Forbidden</response>
     /// <response code="404">Resource not found by id</response>
     [HttpPut("{id}")]
+    [Authorize(Roles = "Admin")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status403Forbidden)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> Update(int id, UpdateSpecialtyDTO specialty)
     {
@@ -102,9 +95,12 @@ public class SpecialtiesController : ControllerBase
     /// <summary>Delete a specialty</summary>
     /// <param name="id"></param>
     /// <response code="204">Deletion successful, no content returned</response>
+    /// <response code="401">Forbidden</response>
     /// <response code="404">Resource not found by id</response>
     [HttpDelete("{id}")]
+    [Authorize(Roles = "Admin")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status403Forbidden)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> Delete(int id)
     {
