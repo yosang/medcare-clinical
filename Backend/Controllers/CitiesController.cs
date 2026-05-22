@@ -1,4 +1,5 @@
 using DTOS;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Services;
 
@@ -45,20 +46,6 @@ public class CitiesController : ControllerBase
         return Ok(city);
     }
 
-    /// <summary>
-    /// Returns a list of Clinics for City
-    /// </summary>
-    /// <param name="id"></param>
-    /// <response code="200">Resources returned</response>
-    [HttpGet("{id}/clinics")]
-    [ProducesResponseType(typeof(IEnumerable<ClinicDTO>), StatusCodes.Status200OK)]
-    public async Task<ActionResult<IEnumerable<ClinicDTO>>> GetClinics(int id)
-    {
-        var clinics = await _service.GetClinics(id);
-
-        return Ok(clinics);
-    }
-
     /// <summary>Create a new city</summary>
     /// <remarks>
     /// Sample request:
@@ -70,8 +57,11 @@ public class CitiesController : ControllerBase
     /// </remarks>
     /// <param name="dto"></param>
     /// <response code="201">Resource created</response>
+    /// <response code="403">Forbidden</response>
     [HttpPost]
+    [Authorize(Roles = "Admin")]
     [ProducesResponseType(typeof(CityDTO), StatusCodes.Status201Created)]
+    [ProducesResponseType(StatusCodes.Status403Forbidden)]
     public async Task<ActionResult<CityDTO>> Create(CreateCityDTO dto)
     {
         var result = await _service.CreateCity(dto);
@@ -91,9 +81,12 @@ public class CitiesController : ControllerBase
     /// <param name="id"></param>
     /// <param name="dto"></param>
     /// <response code="204">Update successful, no content returned</response>
+    /// <response code="403">Forbidden</response>
     /// <response code="404">Resource not found by id</response>
     [HttpPut("{id}")]
+    [Authorize(Roles = "Admin")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status403Forbidden)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> Update(int id, UpdateCityDTO dto)
     {
@@ -106,9 +99,12 @@ public class CitiesController : ControllerBase
     /// <summary>Delete a city</summary>
     /// <param name="id"></param>
     /// <response code="204">Deletion successful, no content returned</response>
+    /// <response code="403">Forbidden</response>
     /// <response code="404">Resource not found by id</response>
     [HttpDelete("{id}")]
+    [Authorize(Roles = "Admin")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status403Forbidden)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> Delete(int id)
     {

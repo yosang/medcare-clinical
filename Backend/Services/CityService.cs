@@ -34,15 +34,6 @@ public class CityService
         return city;
     }
 
-    public async Task<IEnumerable<ClinicDTO>> GetClinics(int id)
-    {
-        var clinics = await _ctx.Clinics.AsNoTracking()
-                                        .Where(clinic => clinic.CityId == id)
-                                        .Select(clinic => clinic.ToClinicDTO())
-                                        .ToListAsync();
-        return clinics;
-    }
-
     public async Task<CityDTO> CreateCity(CreateCityDTO dto)
     {
         var newCity = dto.ToCity();
