@@ -7,8 +7,17 @@ import LoginPage from "./pages/LoginPage"
 
 import styles from "./App.module.css";
 import SearchPage from "./pages/SearchPage"
+import { useEffect } from "react"
+import { refreshToken } from "./api/auth"
 
 function App() {
+  
+  useEffect(() => {
+    const refresh = async() => {
+      await refreshToken();
+    }
+    refresh();
+  })
 
   return (
     <div className={styles.layout}>

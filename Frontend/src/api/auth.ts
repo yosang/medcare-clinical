@@ -1,5 +1,7 @@
+import { useLoginStore } from "../stores/useLoginStore";
 import type { Login, Registration } from "../types/Auth";
 
+const refreshURL = import.meta.env.VITE_REFRESH;
 const registrationURL = import.meta.env.VITE_REGISTER;
 const loginURL = import.meta.env.VITE_LOGIN;
 
@@ -8,6 +10,7 @@ async function authFetchHelper(url: string, payload: Login | Registration, custo
     const res = await fetch(url, {
         method: "POST",
         body: JSON.stringify(payload),
+        credentials: "include",
         headers: { "Content-Type": "application/json" }
     })
 
@@ -29,6 +32,22 @@ export async function register(payload: Registration) {
 
 export async function login(payload: Login) {
     if(!loginURL) throw new Error("VITE_LOGIN url is not defined in .env")
+        
+        return await authFetchHelper(loginURL, payload, "Failed to login patient")
+    }
+    
+export async function refreshToken() {
+    if(!refreshURL) throw new Error("VITE_REFRESH url is not defined in .env")
 
-    return await authFetchHelper(loginURL, payload, "Failed to login patient")
+    const res = await fetch(refreshURL, {
+      method: "POST",
+      credentials: "include"
+    });
+
+    if(!res.ok) {
+        throw new Error("Failed to refresh access")
+    }
+
+    const data = await res.json();
+    useLoginStore.getState().setToken(data);
 }

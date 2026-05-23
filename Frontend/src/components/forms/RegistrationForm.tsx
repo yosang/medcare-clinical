@@ -10,7 +10,7 @@ import styles from "./RegistrationForm.module.css"
 
 type Props = { 
     errors: string[], 
-    validationErrors: string[] | null,
+    validationErrors: string[],
     backendError: string | null,
     loading: boolean 
     submitHandler: (e: SyntheticEvent<HTMLFormElement>) => void

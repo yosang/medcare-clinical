@@ -31,5 +31,6 @@ export interface LoginState {
     error: boolean,
     errorMessage: string | null,
     loginPatient: (payload: Login) => Promise<void>
+    setToken: (token: string) => void
     logout: () => void
 }

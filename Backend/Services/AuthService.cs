@@ -1,3 +1,4 @@
+using System.ComponentModel;
 using Data.Context;
 using DTOS;
 using Extensions.Mappers;
@@ -28,14 +29,17 @@ public class AuthService
         
         if(isPasswordValid == PasswordVerificationResult.Failed) return null;
 
-        return new TokenDTO { Token = _ts.GenerateToken(existing)};
+        var access_token = _ts.GenerateAccessToken(existing);
+        var refresh_token = _ts.GenerateRefreshToken(existing);
+
+        return new TokenDTO { accessToken = access_token, refreshToken = refresh_token};
     }
-    public async Task<TokenDTO?> Register(RegisterPatientDTO dto)
+    public async Task<bool> Register(RegisterPatientDTO dto)
     {
         var existing = await _ctx.Patients.AsNoTracking()
                                             .Where(p => p.Email == dto.Email || p.NationalIdentityNumber == dto.NationalIdentityNumber)
                                             .FirstOrDefaultAsync();
-        if(existing != null) return null;
+        if(existing != null) return false;
 
         var newPatient = dto.ToPatient();
 
@@ -46,8 +50,19 @@ public class AuthService
 
         await _ctx.SaveChangesAsync();
 
-        var token = _ts.GenerateToken(newPatient);
+        return true;
+    }
 
-        return new TokenDTO { Token = token};
+    public async Task<TokenDTO?> RefreshToken(int patientId)
+    {
+        var existing = await _ctx.Patients.AsNoTracking()
+                                            .Where(p => p.Id == patientId)
+                                            .FirstOrDefaultAsync();
+
+        if(existing == null) return null;
+
+        var access_token = _ts.GenerateAccessToken(existing);
+
+        return new TokenDTO { accessToken = access_token };
     }
 }

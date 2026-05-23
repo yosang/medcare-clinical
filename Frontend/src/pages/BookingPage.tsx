@@ -1,11 +1,10 @@
-import { useEffect, useRef, useState, type SyntheticEvent } from "react"
+import { useEffect, useRef, useState, type ChangeEvent, type SyntheticEvent } from "react"
 import DoctorSelection from "../components/forms/DoctorSelection";
 import CategorySelection from "../components/forms/CategorySelection";
 import { usePatientStore } from "../stores/usePatientStore";
 import LoadingSpinner from "../components/layout/LoadingSpinner";
 import { useDoctorsStore } from "../stores/useDoctorsStore";
 import { useAppointmentsStore } from "../stores/useAppointmentsStore";
-import { z } from "zod";
 import { toast } from "sonner";
 
 import styles from "./BookingPage.module.css"
@@ -14,20 +13,10 @@ import Button from "../components/elements/Button";
 import { ClipboardClock, Info } from "lucide-react";
 import { useLoginStore } from "../stores/useLoginStore";
 import AppointmentsTable from "../components/elements/AppointmentsTable";
-
-const PatientSchema = z.object({
-    firstname: z.string()
-                .trim()
-                .min(2, "Firstname must be at least 2 characters")
-                .max(100, "Firstname is too long"),
-    lastname: z.string()
-                .trim()
-                .min(2, "Lastname must be at least 2 characters")
-                .max(100, "Lastname is too long"),
-    phone: z.string().trim()
-                .regex(/^\d{8}$/, "Phone number must be exactly 8 digits")
-
-})
+import TextInput from "../components/formElements/TextInput";
+import DateTimeSelector from "../components/forms/DateTimeSelector";
+import DurationSelection from "../components/forms/DurationSelection";
+import { PatientSchema } from "../schemas/patientSchema";
 
 export default function BookingPage() {
 
@@ -83,7 +72,6 @@ export default function BookingPage() {
         try {
             const newPatient = await createPatient(patientData)
     
-            // Create an appointment with promise based toast the required values, errors are caught in the error method.
             toast.promise(createAppointment({
                 AppointmentDate: appointmentDateAndTime,
                 Duration: Number(duration),
@@ -146,39 +134,28 @@ export default function BookingPage() {
             </div>
             
             {!token && (<div className={styles.personalDetails}>
-                <label>
-                    Firstname
-                    <input 
-                        ref={inputRef}
-                        required
-                        type="text"
-                        value={token && patient?.firstName || firstname}
-                        placeholder={token && patient ? patient.firstName:"John"}
-                        disabled={!!token}
-                        onChange={(e) => setFirstname(e.target.value)}
-                        />
-                </label>
-                <label>
-                    Lastname
-                    <input 
-                        required
-                        type="text"
-                        value={token && patient?.lastName || lastname}
-                        placeholder={token && patient ? patient.lastName:"Doe"}
-                        disabled={!!token}
-                        onChange={(e) => setLastname(e.target.value)}
-                        />
-                </label>
-                <label>
-                    Phone number
-                    <input 
-                        type="tel"
-                        value={token && patient?.phone || phone}
-                        placeholder={token && patient ? patient.phone:"912 34 567"}
-                        disabled={!!token}
-                        onChange={(e) => setPhone(e.target.value)}
-                        />
-                </label>
+                <TextInput 
+                    ref={inputRef}
+                    labelText="Firstname"
+                    value={token && patient?.firstName || firstname}
+                    placeholder={token && patient ? patient.firstName:"John"}
+                    disabled={!!token}
+                    onChange={(e) => setFirstname(e.target.value)}
+                    />
+                <TextInput 
+                    labelText="Lastname"
+                    value={token && patient?.lastName || lastname}
+                    placeholder={token && patient ? patient.lastName:"Doe"}
+                    disabled={!!token}
+                    onChange={(e) => setLastname(e.target.value)}
+                />
+                <TextInput 
+                    labelText="Phone number"
+                    value={token && patient?.phone || phone}
+                    placeholder={token && patient ? patient.phone:"912 34 567"}
+                    disabled={!!token}
+                    onChange={(e) => setPhone(e.target.value)}
+                />
             </div>)}
             
             <div className={styles.selection}>
@@ -195,24 +172,16 @@ export default function BookingPage() {
             </div>
 
             <div className={styles.dateTimeDetails}>
-                    <label>
-                        Appointment Date and time
-                        <input
-                            required
-                            type="datetime-local"
-                            value={appointmentDateAndTime}
-                            onChange={(e) => setAppointmentDateAndTime(e.target.value)}
-                            min={new Date().toISOString().slice(0, 16)}
-                        />
-                    </label>
-                    <label>
-                        Appointment Duration
-                        <select value={duration} onChange={(e) => setDuration(e.target.value)} >
-                            <option value="30">30 minutes</option>
-                            <option value="60">60 minutes</option>
-                            <option value="90">90 minutes</option>
-                        </select>
-                    </label>
+                <DateTimeSelector 
+                    required
+                    type="datetime-local"
+                    value={appointmentDateAndTime}
+                    onChange={(e: ChangeEvent<HTMLDataElement>) => setAppointmentDateAndTime(e.target.value)}
+                    min={new Date().toISOString().slice(0, 16)}
+                />
+                <DurationSelection 
+                    value={duration} onChange={(e: ChangeEvent<HTMLSelectElement>) => setDuration(e.target.value)}
+                />
             </div>
             
             <Button style={{ width: "50%", height: "50px" }} type="submit" disabled={loadingAppointment || loadingPatient} >{loadingPatient || loadingAppointment ? (<LoadingSpinner />):"Book appointment"}</Button>

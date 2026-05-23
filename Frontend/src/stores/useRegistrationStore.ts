@@ -5,6 +5,7 @@ import { register } from "../api/auth";
 export const useRegistrationStore = create<RegistrationState>((set) => ({
     loading: false,
     error: false,
+    errorMessage: null,
     registerPatient: async(payload:Registration) => {
         set({loading: true})
         try {
@@ -12,7 +13,7 @@ export const useRegistrationStore = create<RegistrationState>((set) => ({
             set({ loading: false})
         } catch(err) {
             console.error("An error occurred during fetch:", err )
-            set({ error: true, loading: false })
+            set({ error: true, errorMessage: err.message, loading: false })
             throw err;
         }
     }

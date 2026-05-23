@@ -14,7 +14,7 @@ public class TokenService
         _jwtSettings = jwtSettings;
     }
 
-    public string GenerateToken(Patient patient)
+    public string GenerateAccessToken(Patient patient)
     {
         var token = new JwtSecurityToken(
             issuer: _jwtSettings.Issuer, 
@@ -23,7 +23,24 @@ public class TokenService
             {
                 new Claim("PatientId", patient.Id.ToString())
             },
-            expires: DateTime.UtcNow.AddMinutes(_jwtSettings.ExpiryMinutes ?? 60),
+            expires: DateTime.UtcNow.AddMinutes(_jwtSettings.ExpiryMinutes ?? 15),
+            signingCredentials: new SigningCredentials(new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtSettings.SecretKey)), SecurityAlgorithms.HmacSha256)
+        );
+
+        var tokenString = new JwtSecurityTokenHandler().WriteToken(token);
+
+        return tokenString;
+    }
+    public string GenerateRefreshToken(Patient patient)
+    {
+        var token = new JwtSecurityToken(
+            issuer: _jwtSettings.Issuer, 
+            audience: _jwtSettings.Audience, 
+            claims: new List<Claim>()
+            {
+                new Claim("PatientId", patient.Id.ToString())
+            },
+            expires: DateTime.UtcNow.AddDays(7),
             signingCredentials: new SigningCredentials(new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtSettings.SecretKey)), SecurityAlgorithms.HmacSha256)
         );
 

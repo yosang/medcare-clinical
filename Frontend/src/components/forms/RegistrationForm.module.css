@@ -28,6 +28,10 @@
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
 }
 
+.errorInput {
+    border: 1px solid red;
+}
+
 .formLayout button {
     margin: var(--spacing-lg);
 }

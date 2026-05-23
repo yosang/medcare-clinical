@@ -6,6 +6,7 @@
 }
 
 .formLayout {
+    padding: var(--spacing-lg);
     background-color: var(--color-secondary);
     display: flex;
     flex-direction: column;

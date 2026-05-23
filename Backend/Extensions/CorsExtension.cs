@@ -7,10 +7,13 @@ public static class CorsConfigExtension
         {
             options.AddDefaultPolicy(policy =>
             {
-                policy.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader();
+                policy
+                        .WithOrigins("http://localhost:5173")
+                        .AllowAnyMethod()
+                        .AllowAnyHeader()
+                        .AllowCredentials();
             });
 
-            // This is default setup for development, for production we would have to add origins with the extention ".WithOrigins"
         });
 
         return service;

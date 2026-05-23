@@ -1,4 +1,6 @@
+using System.IdentityModel.Tokens.Jwt;
 using DTOS;
+using Extensions;
 using Microsoft.AspNetCore.Mvc;
 
 [ApiController]
@@ -33,7 +35,15 @@ public class AuthController : ControllerBase
             Status = StatusCodes.Status401Unauthorized
         });
 
-        return Ok(token);
+       Response.Cookies.Append("refresh_token", token.refreshToken, new CookieOptions
+       {
+           HttpOnly = true,
+            // Secure = true, // When using HTTPS, we are not using https, so comment out for now
+            SameSite = SameSiteMode.Lax,
+            Expires = DateTimeOffset.UtcNow.AddDays(7)
+       });
+
+        return Ok(new { token = token.accessToken});
     }
 
     /// <summary>
@@ -45,16 +55,37 @@ public class AuthController : ControllerBase
     [HttpPost("register")]
     [ProducesResponseType(typeof(TokenDTO), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<ActionResult<TokenDTO>> Register(RegisterPatientDTO dto)
+    public async Task<IActionResult> Register(RegisterPatientDTO dto)
     {
-        var token = await _service.Register(dto);
-        if(token == null) return Conflict(new ProblemDetails()
+        var registered = await _service.Register(dto);
+        if(!registered) return Conflict(new ProblemDetails()
         {
             Title = "Registration failed",
             Detail = "Could not complete registration. Please check your information and try again.",
             Status = StatusCodes.Status400BadRequest
         });
 
-        return Ok(token);
+        return NoContent();
+    }
+
+    [HttpPost("refresh")]
+    public async Task<IActionResult> Refresh()
+    {
+        var refreshToken = Request.Cookies["refresh_token"];
+        if(refreshToken == null) return Unauthorized();
+
+        var handler = new JwtSecurityTokenHandler();
+
+        var principal = handler.ReadJwtToken(refreshToken);
+
+        var patientId = principal.Claims.FirstOrDefault(p => p.Type == "PatientId");
+
+        if (patientId == null) return Unauthorized();
+
+        var token = await _service.RefreshToken(int.Parse(patientId.Value));
+
+        if(token == null ) return Unauthorized();
+
+        return Ok(new { token = token.accessToken});
     }
 }

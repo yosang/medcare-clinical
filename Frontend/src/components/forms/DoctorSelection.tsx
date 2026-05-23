@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import LoadingSpinner from "../layout/LoadingSpinner";
 import { useDoctorsStore } from "../../stores/useDoctorsStore";
 
+import styles from "./SelectElement.module.css"
 
 export default function DoctorSelection() {
         const { doctors, loading, error, fetchDoctors } = useDoctorsStore();
@@ -27,7 +28,7 @@ export default function DoctorSelection() {
             <>
             <label>
                 Select your doctor
-                <select name="DoctorId" >
+                <select name="DoctorId" className={styles.layout}>
                             {doctors.map(d => <option key={d.id} value={d.id}>{d.firstName} {d.lastName}</option>)}
                 </select>             
             </label>

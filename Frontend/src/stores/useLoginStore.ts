@@ -17,5 +17,8 @@ export const useLoginStore = create<LoginState>(set => ({
             throw err;
         }
     },
+    setToken: (token) => {
+        set({ token })
+    },
     logout: () => set({token: ""})
 }))

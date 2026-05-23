@@ -1,6 +1,5 @@
-import { useEffect, useRef, useState, type SyntheticEvent } from "react"
+import { useEffect, useRef, type SyntheticEvent } from "react"
 
-import { z } from "zod";
 import { toast } from "sonner";
 
 import styles from "./RegisterPage.module.css"
@@ -8,51 +7,24 @@ import styles from "./RegisterPage.module.css"
 import { useRegistrationStore } from "../stores/useRegistrationStore";
 import RegistrationForm from "../components/forms/RegistrationForm";
 import SideCard from "../components/elements/SideCard";
-
-const RegistrationSchema = z.object({
-    firstName: z.string()
-                .trim()
-                .min(2, "Must be at least 2 characters")
-                .max(100, "Too long"),
-    lastName: z.string()
-                .trim()
-                .min(2, "Must be at least 2 characters")
-                .max(100, "Too long"),
-    phone: z.string().trim().regex(/^\d{8}$/, "Phone number must be exactly 8 digits"),
-    email: z.email(),
-    dateOfBirth: z.string(),
-    nationalIdentityNumber: z.string()
-                            .trim()
-                            .min(11, "Must be at least 11 digists")
-                            .max(11, "Cannot be longer than 11 digits"),
-    password: z.string().trim()
-
-})
+import { RegistrationSchema } from "../schemas/registrationSchema";
+import { useValidationStore } from "../stores/useValidationStore";
 
 export default function RegisterPage() {
     
     const inputRef = useRef<HTMLInputElement | null>(null);
     const formRef = useRef<HTMLFormElement | null>(null);
-    const { loading,  registerPatient } = useRegistrationStore();
-    const [validationErrors, setValidationErrors ] = useState<string[] | null>(null);
-    const [inputsWithError, setInputsWithError] = useState<string[]>([]);
 
-    const [backendError, setBackendError] = useState<string | null>(null);
+    const { loading,  registerPatient, errorMessage } = useRegistrationStore();
+    const { validationErrors, inputsWithErrors, validate, clearErrors } = useValidationStore();
 
     const handleSubmit = async(e: SyntheticEvent<HTMLFormElement>) => {
         e.preventDefault();
-        setValidationErrors(null)
-        setInputsWithError([])
-        setBackendError(null)
+        clearErrors();
+        
         const formData = new FormData(e.currentTarget);
         
-        const validation = RegistrationSchema.safeParse(Object.fromEntries(formData));
-
-        if(!validation.success) {
-            setValidationErrors(validation.error.issues.map(err => `${err.path}: ${err.message} `))
-            setInputsWithError(validation.error.issues.map(err => String(err.path[0])))
-            return
-        }
+        validate(RegistrationSchema, Object.fromEntries(formData))
 
         toast.promise(registerPatient({
             firstName: String(formData.get("firstName")),
@@ -72,7 +44,6 @@ export default function RegisterPage() {
             },
             error: (err) => {
                 console.log("Something went wrong during registration", err)
-                setBackendError(err.message)
                 return "Registration failed"
             }
         })
@@ -94,8 +65,8 @@ export default function RegisterPage() {
                 <RegistrationForm
                     submitHandler={handleSubmit}
                     validationErrors={validationErrors}
-                    backendError={backendError}
+                    backendError={errorMessage}
                     loading={loading} 
-                    errors={inputsWithError} />
+                    errors={inputsWithErrors} />
             </div>
 }

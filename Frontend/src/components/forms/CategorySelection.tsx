@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import LoadingSpinner from "../layout/LoadingSpinner";
 import { useCategoriesStore } from "../../stores/useCategoriesStore";
 
+import styles from "./SelectElement.module.css"
 
 export default function CategorySelection({...props}) {
         const { categories, loading, error, fetchCategories } = useCategoriesStore();
@@ -15,7 +16,7 @@ export default function CategorySelection({...props}) {
 
         return <label style={{ display: "flex", flexDirection:"column", gap: "5px", padding:"var(--spacing-sm)" }}>
                Category
-               <select name="CategoryId" {...props}>
+               <select name="CategoryId" {...props} className={styles.layout}>
                         {categories.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
                </select>                
                </label>
