@@ -26,9 +26,6 @@ public class AuthService
 
         var isPasswordValid = _passwordHasher.VerifyHashedPassword(null!, existing.PasswordHash!, dto.Password);
         
-        Console.WriteLine("Checking if password validation goes well");
-        Console.WriteLine(isPasswordValid);
-        
         if(isPasswordValid == PasswordVerificationResult.Failed) return null;
 
         return new TokenDTO { Token = _ts.GenerateToken(existing)};
@@ -36,13 +33,14 @@ public class AuthService
     public async Task<TokenDTO?> Register(RegisterPatientDTO dto)
     {
         var existing = await _ctx.Patients.AsNoTracking()
-                                            .Where(p => p.Email == dto.Email)
+                                            .Where(p => p.Email == dto.Email || p.NationalIdentityNumber == dto.NationalIdentityNumber)
                                             .FirstOrDefaultAsync();
         if(existing != null) return null;
 
         var newPatient = dto.ToPatient();
 
         newPatient.PasswordHash = _passwordHasher.HashPassword(null!, dto.Password!);
+        newPatient.IsRegistered = true;
 
         _ctx.Patients.Add(newPatient);
 

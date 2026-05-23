@@ -8,9 +8,8 @@ export const useRegistrationStore = create<RegistrationState>((set) => ({
     registerPatient: async(payload:Registration) => {
         set({loading: true})
         try {
-            const data = await register(payload);
+            await register(payload);
             set({ loading: false})
-            return data;
         } catch(err) {
             console.error("An error occurred during fetch:", err )
             set({ error: true, loading: false })

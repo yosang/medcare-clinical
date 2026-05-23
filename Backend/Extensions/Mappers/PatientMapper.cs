@@ -50,7 +50,6 @@ public static class PatientMapper
             Email = dto.Email,
             DateOfBirth = dto.DateOfBirth,
             NationalIdentityNumber = dto.NationalIdentityNumber,
-            IsRegistered = dto.IsRegistered
         };
     }
 

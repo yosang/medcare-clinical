@@ -9,8 +9,9 @@ import { z } from "zod";
 import { toast } from "sonner";
 
 import styles from "./BookingPage.module.css"
+
 import Button from "../components/elements/Button";
-import { Info } from "lucide-react";
+import { ClipboardClock, Info } from "lucide-react";
 import { useLoginStore } from "../stores/useLoginStore";
 import AppointmentsTable from "../components/elements/AppointmentsTable";
 
@@ -127,7 +128,7 @@ export default function BookingPage() {
     <>
     <div className={styles.mainLayout}>
         {!token && (<div className={styles.sideInfo}>
-            <div style={{ display: "flex", flexDirection: "column", gap: "5px" }}>
+            <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
                 <h3 style={{ color: "var(--brand-primary)", textTransform: "uppercase"}}>professional healthcare</h3>
                 <h1 style={{ fontWeight: "700", lineHeight: "56px", fontSize: "50px", letterSpacing: "-0.02em" }}>Expert Medical Care at Your Fingertips.</h1>
             </div>
@@ -140,7 +141,12 @@ export default function BookingPage() {
         </div>)}
         
         <form onSubmit={handleSubmit} className={styles.formLayout}>
-            <div className={styles.personalDetails}>
+            <div style={{ display: "flex", alignItems: "center", gap: "5px", padding: "var(--spacing-md)" }}>
+                <ClipboardClock color="var(--color-primary)" />
+                <h1 style={{ color: "var(--color-secondary-text)"}}>Schedule Appointment</h1>
+            </div>
+            
+            {!token && (<div className={styles.personalDetails}>
                 <label>
                     Firstname
                     <input 
@@ -174,7 +180,7 @@ export default function BookingPage() {
                         onChange={(e) => setPhone(e.target.value)}
                         />
                 </label>
-            </div>
+            </div>)}
             
             <div className={styles.selection}>
                 <DoctorSelection/>
@@ -209,6 +215,7 @@ export default function BookingPage() {
                         </select>
                     </label>
             </div>
+            
             <Button style={{ width: "50%", height: "50px" }} type="submit" disabled={loadingAppointment || loadingPatient} >{loadingPatient || loadingAppointment ? (<LoadingSpinner />):"Book appointment"}</Button>
 
             <div className={styles.messages}>

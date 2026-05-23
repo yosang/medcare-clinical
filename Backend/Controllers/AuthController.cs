@@ -41,18 +41,18 @@ public class AuthController : ControllerBase
     /// </summary>
     /// <param name="dto"></param>
     /// <response code="200">Returns token on successful registration</response>
-    /// <response code="409">Cannot register an account that exists already</response>
+    /// <response code="400">Cannot register an account that exists already</response>
     [HttpPost("register")]
     [ProducesResponseType(typeof(TokenDTO), StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<ActionResult<TokenDTO>> Register(RegisterPatientDTO dto)
     {
         var token = await _service.Register(dto);
         if(token == null) return Conflict(new ProblemDetails()
         {
-            Title = "Existing account found",
-            Detail = "An existing account with this email adress was found",
-            Status = StatusCodes.Status409Conflict
+            Title = "Registration failed",
+            Detail = "Could not complete registration. Please check your information and try again.",
+            Status = StatusCodes.Status400BadRequest
         });
 
         return Ok(token);

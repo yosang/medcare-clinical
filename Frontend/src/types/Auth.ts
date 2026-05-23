@@ -16,7 +16,7 @@ export interface Token {
 export interface RegistrationState {
     loading: boolean,
     error: boolean,
-    registerPatient: (payload: Registration) => Promise<Token>
+    registerPatient: (payload: Registration) => Promise<void>
 }
 
 export interface Login {
