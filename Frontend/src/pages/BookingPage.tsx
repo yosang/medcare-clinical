@@ -137,7 +137,6 @@ export default function BookingPage() {
                 <Info size={40} fill="var(--color-primary)" style={{ color: "var(--color-primary-text)" }} />
                 <p><strong>Register to track your history.</strong> Log in to manage past appointments effortlessly. </p>
             </div>
-            <img src="https://i.imgur.com/8WNM1hA.png" alt="Medical Room Image"/>
         </div>)}
         
         <form onSubmit={handleSubmit} className={styles.formLayout}>

@@ -33,7 +33,7 @@ export default function RegisterPage() {
     
     const inputRef = useRef<HTMLInputElement | null>(null);
     const formRef = useRef<HTMLFormElement | null>(null);
-    const { loading,  registerPatient} = useRegistrationStore();
+    const { loading,  registerPatient } = useRegistrationStore();
     const [validationErrors, setValidationErrors ] = useState<string[] | null>(null);
     const [inputsWithError, setInputsWithError] = useState<string[]>([]);
 

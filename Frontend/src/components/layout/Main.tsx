@@ -8,7 +8,7 @@ export default function Main({children}: {children: ReactNode}) {
         <div className={styles.content}>
             {children}
         </div>
-    <Footer />
+        <Footer />
     </main>
     </>
 }

@@ -1,46 +1,70 @@
-.layout {
+.mainLayout {
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    padding: 50px 50px;
+    border: var(--radius);
+    /* gap: 20px; */
+}
+
+.sideCard {
+    display: none;
+}
+
+.text {
+    color: var(--color-primary-text);
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width: 100%;
+    justify-content: flex-start;
+    padding: 50px;
+    z-index: 1;
+}
+
+.text p:last-child {
+    display: flex;
     align-items: center;
-    height: 70vh;
-    gap: 20px;
+    gap: 10px;
+    margin-top: auto;
+}
+
+.sideCard::after {
+    content: "";
+    position: absolute;
+    background-color: rgba(7, 122, 105, 0.484);
+    border-top-left-radius: inherit;
+    border-bottom-left-radius: inherit;
+    inset: 0;
+}
+
+.sideCard img {
+    border-top-left-radius: inherit;
+    border-bottom-left-radius: inherit;
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
 }
 
 .loginCard {
-    width: 100vw;
-    background-color: var(--brand-secondary);
-    color: var(--bg-dark);
-    padding: var(--spacing-lg) var(--spacing-sm);
-    border: 5px solid var(--accent);
-    border-radius: var(--radius);
+    height: stretch;
 }
 
-.loginInputs {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-.loginInputs label {
-    display: flex;
-    width: 70%;
-    flex-direction: column;
-}
-
-.loginInputs button {
-    margin-top: 10px;
-    width: 100px;
-}
-
-.icon {
-    display: flex;
-    justify-content: center;
-}
-
-@media (min-width: 900px) {
-    .loginCard {
-        width: 30vw;
+@media (min-width:900px) {
+    .mainLayout {
+        flex-direction: row;
+    }
+    
+    .sideCard {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 35px;
+        height: 500px;
+        width: 500px;
+        position: relative;
+        border-top-left-radius: var(--radius);
+        border-bottom-left-radius: var(--radius);
     }
 }

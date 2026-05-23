@@ -1,18 +1,18 @@
-import { useEffect, useRef, type ChangeEvent } from "react";
-import Button from "../components/elements/Button";
-import styles from "./LoginPage.module.css"
-import { ScanFace } from "lucide-react";
+import { type ChangeEvent } from "react";
 import { useLoginStore } from "../stores/useLoginStore";
 import { toast } from "sonner"
-import LoadingSpinner from "../components/layout/LoadingSpinner";
 import { useNavigate } from "react-router";
+import LoginForm from "../components/forms/LoginForm";
+
+import styles from "./LoginPage.module.css"
+
+import { ShieldCheck } from "lucide-react";
 
 export default function LoginPage() {
 
-    const emailref = useRef<HTMLInputElement | null>(null);
     const navigate = useNavigate();
 
-    const { loading, loginPatient } = useLoginStore();
+    const { loginPatient} = useLoginStore();
 
     const handleSubmit = (e: ChangeEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -25,49 +25,29 @@ export default function LoginPage() {
         }), {
             loading: "Logging you in...",
             success: () => {
-                
                 navigate("/book")
-                
                 return "Logged in!"
             },
             error: (err) => {
                 console.log("Something went wrong during login", err)
-
-                // Set a backend error
                 return "Failed to log in."
             }
         })
     }
 
-    useEffect(() => {
-        emailref.current?.focus();
-    }, [])
 
-    return <form onSubmit={handleSubmit} className={styles.layout}>
-            <div className={styles.loginCard}>
-                <div className={styles.loginInputs}>
-                <div className={styles.icon}>
-                    <ScanFace />
+
+    return <div className={styles.mainLayout}>
+                <div className={styles.sideCard}>
+                    <div className={styles.text}>
+                        <h2>MedCare Clinical</h2>
+                        <p>Access, manage and review your clinical appointments with ease.</p>
+                        <p><ShieldCheck />Secure Healthcare Certified</p>
+                    </div>
+                    <img src="https://i.imgur.com/8WNM1hA.png" alt="Medical Room Image"/>
                 </div>
-                    <label>
-                        Email
-                        <input 
-                            ref={emailref}
-                            required
-                            name="email"
-                            type="email"
-                            />
-                    </label>
-                    <label>
-                        Password
-                        <input 
-                            required
-                            name="password"
-                            type="password"
-                            />
-                    </label>
-                    <Button type="submit" disabled={loading} >{loading ? (<LoadingSpinner />):"Login"}</Button>
+                <div className={styles.loginCard}>
+                    <LoginForm submitHandler={handleSubmit} />
                 </div>
             </div>
-        </form>
 }

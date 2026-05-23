@@ -16,6 +16,7 @@ export interface Token {
 export interface RegistrationState {
     loading: boolean,
     error: boolean,
+    errorMessage: string | null,
     registerPatient: (payload: Registration) => Promise<void>
 }
 
@@ -28,6 +29,7 @@ export interface LoginState {
     token: string | null,
     loading: boolean,
     error: boolean,
+    errorMessage: string | null,
     loginPatient: (payload: Login) => Promise<void>
     logout: () => void
 }

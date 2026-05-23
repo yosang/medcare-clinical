@@ -24,12 +24,6 @@
     padding: var(--spacing-md) var(--spacing-md);
 }
 
-.sideInfo img {
-    height: 300px;
-    width: auto;
-    object-fit: cover;
-    border-radius: var(--radius);
-}
 .infoCard {
     color: var(--color-primary);
     display: flex;
