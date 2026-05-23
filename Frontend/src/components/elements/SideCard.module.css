@@ -1,0 +1,54 @@
+.sideCard {
+    display: none;
+}
+
+.text {
+    color: var(--color-primary-text);
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width: 100%;
+    justify-content: flex-start;
+    padding: 50px;
+    z-index: 1;
+}
+
+.text p:last-child {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: auto;
+}
+
+.sideCard::after {
+    content: "";
+    position: absolute;
+    background-color: rgba(7, 122, 105, 0.484);
+    border-top-left-radius: inherit;
+    border-bottom-left-radius: inherit;
+    inset: 0;
+}
+
+.sideCard img {
+    border-top-left-radius: inherit;
+    border-bottom-left-radius: inherit;
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+}
+
+@media (min-width:900px) {   
+    .sideCard {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 35px;
+        height: 100%;
+        width: 500px;
+        position: relative;
+        border-top-left-radius: var(--radius);
+        border-bottom-left-radius: var(--radius);
+    }
+}

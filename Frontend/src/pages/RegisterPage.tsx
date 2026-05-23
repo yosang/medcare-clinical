@@ -1,13 +1,13 @@
 import { useEffect, useRef, useState, type SyntheticEvent } from "react"
 
-import { BookUser, BookLock } from "lucide-react"
-import LoadingSpinner from "../components/layout/LoadingSpinner";
 import { z } from "zod";
 import { toast } from "sonner";
 
 import styles from "./RegisterPage.module.css"
-import Button from "../components/elements/Button";
+
 import { useRegistrationStore } from "../stores/useRegistrationStore";
+import RegistrationForm from "../components/forms/RegistrationForm";
+import SideCard from "../components/elements/SideCard";
 
 const RegistrationSchema = z.object({
     firstName: z.string()
@@ -83,108 +83,19 @@ export default function RegisterPage() {
         inputRef.current?.focus();
     }, [])
 
-    return (
-    <>
-    <form onSubmit={handleSubmit} className={styles.formLayout} ref={formRef}>
-        <div className={styles.layout}>
-
-            <div className={styles.personalDetails}>
-                <div className={styles.icon}>
-                    <BookUser />
-                </div>
-                <label>
-                    Firstname
-                    <input 
-                        ref={inputRef}
-                        required
-                        type="text"
-                        name="firstName"
-                        placeholder="John"
-                        className={inputsWithError.includes("firstName") ? styles.errorInput : ""}
-                        />
-                </label>
-                <label>
-                    Lastname
-                    <input 
-                        required
-                        type="text"
-                        name="lastName"
-                        placeholder="Doe"
-                        className={inputsWithError.includes("lastName") ? styles.errorInput : ""}
-                        />
-                </label>
-                <label>
-                    Phone number
-                    <input 
-                        type="tel"
-                        name="phone"
-                        placeholder="462 00 264"
-                        className={inputsWithError.includes("phone") ? styles.errorInput : ""}
-                        />
-                </label>
-                <label>
-                    Date of birth
-                    <input 
-                        required
-                        type="date"
-                        name="dateOfBirth"
-                        className={inputsWithError.includes("dateOfBirth") ? styles.errorInput : ""}
-                        />
-                </label>
+    return <div className={styles.mainLayout}>
+                <SideCard 
+                    imageLink="https://i.imgur.com/8WNM1hA.png"
+                    headerText="Welcome to a new standard of health care"
+                    contentText="Join MedCare Clinical Systems to manage your appointments with absolute privacy"
+                    footerText="Secure Data Encryption"
+                />
+                
+                <RegistrationForm
+                    submitHandler={handleSubmit}
+                    validationErrors={validationErrors}
+                    backendError={backendError}
+                    loading={loading} 
+                    errors={inputsWithError} />
             </div>
-
-
-            <div className={styles.sensitiveDetails}>
-                <div className={styles.icon}>
-                    <BookLock />
-                </div>
-                <label>
-                    Email
-                    <input 
-                        required
-                        type="email"
-                        name="email"
-                        placeholder="example@domain.com"
-                        className={inputsWithError.includes("email") ? styles.errorInput : ""}
-                        />
-                </label>
-                <label>
-                    National Identity Number
-                    <input 
-                        required
-                        type="text"
-                        name="nationalIdentityNumber"
-                        placeholder="DDMMÅÅXXXXX"
-                        className={inputsWithError.includes("nationalIdentityNumber") ? styles.errorInput : ""}
-                        />
-                </label>
-                <label>
-                    Enter a password
-                    <input 
-                        required
-                        type="password"
-                        name="password"
-                        className={inputsWithError.includes("password") ? styles.errorInput : ""}
-                        />
-                </label>
-            
-                <Button type="submit" disabled={loading} >{loading ? (<LoadingSpinner />):"Register"}</Button>
-            </div>
-        </div>
-        
-        
-        <div className={styles.messages}>
-
-            {validationErrors && validationErrors.length > 0 && (
-                    validationErrors.map((error => (
-                        <p style={{ color: "red" }}>{error}</p>
-                    )))
-                )
-            }
-
-            {backendError && <p style={{ color: "red" }}>{backendError}</p>}
-        </div>
-    </form>
-    </>
-    )
 }

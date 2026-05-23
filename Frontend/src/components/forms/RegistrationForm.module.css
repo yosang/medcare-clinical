@@ -1,0 +1,48 @@
+.formLayout {
+    background-color: var(--brand-secondary);
+    color: var(--bg-dark);
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.header {
+    padding: var(--spacing-md)
+}
+
+.inputs {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 30px;
+    padding: var(--spacing-lg);
+    width: 100%;
+}
+
+.personalDetails, .sensitiveDetails {
+    height: 100%;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+}
+
+.formLayout button {
+    margin: var(--spacing-lg);
+}
+
+@media (min-width: 900px) {
+    .inputs {
+        flex-direction: row;
+    }
+
+    .personalDetails, .sensitiveDetails {
+        padding: var(--spacing-lg);
+    }
+
+    .header {
+        display: flex;
+        flex-direction: column;
+    }
+}

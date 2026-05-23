@@ -24,8 +24,8 @@ export default function LoginForm({ submitHandler }:{ submitHandler: (e: ChangeE
                         <h2>Welcome back</h2>
                         <p style={{ color: "var(--text-muted"}}>Please enter your credentials to continue</p>
                     </div>
-                    <EmailInput ref={emailref} labelText="Email" />
-                    <PasswordInput labelText="Password"/>
+                    <EmailInput name={"email"} ref={emailref} labelText="Email" />
+                    <PasswordInput name="password" labelText="Password"/>
                     <Button type="submit" disabled={loading} >{loading ? (<LoadingSpinner />):"Login"}</Button>
                     <p style={{ color: "var(--text-muted"}}>Dont have an account? <a style={{ color: "var(--brand-primary)", textDecoration: "none" }} href="/register">Register</a></p>
                     {error && <p style={{ color: "red", padding: "var(--spacing-md)" }}>{errorMessage}</p>}

@@ -1,18 +1,20 @@
-import { forwardRef, type Ref } from "react"
+import { forwardRef, type InputHTMLAttributes, type Ref } from "react"
 import styles from "./Inputs.module.css"
 
 type Props = {
-    labelText: string
-}
+    labelText: string,
+    name: string
+} & InputHTMLAttributes<HTMLInputElement>
 
-const EmailInput = forwardRef(({labelText}:Props, ref: Ref<HTMLInputElement> | undefined) => {
+const EmailInput = forwardRef(({labelText, name, ...props}:Props, ref: Ref<HTMLInputElement> | undefined) => {
     return <label className={styles.layout}>
                     {labelText}
                     <input 
                         ref={ref}
                         required
-                        name="email"
+                        name={name}
                         type="email"
+                        {...props}
                         />
             </label>
 })

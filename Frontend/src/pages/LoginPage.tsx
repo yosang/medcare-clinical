@@ -6,7 +6,7 @@ import LoginForm from "../components/forms/LoginForm";
 
 import styles from "./LoginPage.module.css"
 
-import { ShieldCheck } from "lucide-react";
+import SideCard from "../components/elements/SideCard";
 
 export default function LoginPage() {
 
@@ -34,20 +34,14 @@ export default function LoginPage() {
             }
         })
     }
-
-
-
+    
     return <div className={styles.mainLayout}>
-                <div className={styles.sideCard}>
-                    <div className={styles.text}>
-                        <h2>MedCare Clinical</h2>
-                        <p>Access, manage and review your clinical appointments with ease.</p>
-                        <p><ShieldCheck />Secure Healthcare Certified</p>
-                    </div>
-                    <img src="https://i.imgur.com/8WNM1hA.png" alt="Medical Room Image"/>
-                </div>
-                <div className={styles.loginCard}>
-                    <LoginForm submitHandler={handleSubmit} />
-                </div>
+                <SideCard 
+                    imageLink="https://i.imgur.com/8WNM1hA.png"
+                    headerText="MedCare Clinical"
+                    contentText="Access, manage and review your clinical appointments with ease."
+                    footerText="Secure Healthcare Certified"
+                />
+                <LoginForm submitHandler={handleSubmit} />
             </div>
 }
