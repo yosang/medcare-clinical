@@ -28,7 +28,8 @@ public static class JWTExtension
                         ValidAudience = jwtSettings.Audience,
                         ValidateLifetime = true,
                         ValidateIssuerSigningKey = true,
-                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings.SecretKey!))
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings.SecretKey!)),
+                        ClockSkew = TimeSpan.Zero
                     };
                 });
 

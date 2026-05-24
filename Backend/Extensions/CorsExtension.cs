@@ -5,7 +5,7 @@ public static class CorsConfigExtension
     {
         service.AddCors(options =>
         {
-            options.AddDefaultPolicy(policy =>
+            options.AddPolicy("AllowFrontend", policy =>
             {
                 policy
                         .WithOrigins("http://localhost:5173")
@@ -21,7 +21,7 @@ public static class CorsConfigExtension
 
     public static WebApplication UseCorsMiddleware(this WebApplication app)
     {
-        app.UseCors();
+        app.UseCors("AllowFrontend");
         app.Logger.LogWarning("App is CORS configured for Development only");
         return app;
     }

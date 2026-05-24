@@ -1,4 +1,5 @@
 import type { AppointmentPayload, AppointmentUpdatePayload } from "../types/Appointments";
+import { UnauthorizedError } from "./auth";
 
 const appointmentsUrl = import.meta.env.VITE_APPOINTMENTS
 
@@ -9,14 +10,16 @@ export async function fetchAppointments(token:string) {
     }
 
     const res = await fetch(appointmentsUrl, {
-        headers: { "Authorization": `Bearer ${token}`}
+        headers: { "Authorization": `Bearer ${token}`},
+        credentials: "include"
     })
-
+    
     if(!res.ok) {
+        if(res.status === 401) throw new UnauthorizedError("Access token is invalid");
 
         throw new Error("Failed to fetch appointments")
     }
-    
+
     return res.json();
 }
 
@@ -30,7 +33,11 @@ export async function fetchAppointment(token:string, apId:number) {
         headers: { "Authorization": `Bearer ${token}`}
     })
 
-    if(!res.ok) throw new Error("Failed to fetch appointment")
+    if(!res.ok) {
+        if(res.status === 401) throw new UnauthorizedError("Access token is invalid");
+
+        throw new Error("Failed to fetch appointments")
+    }
     
     return res.json();
 }
@@ -49,6 +56,8 @@ export async function createAppointment(payload:AppointmentPayload) {
 
     if(!res.ok) {
         
+        if(res.status === 401) throw new UnauthorizedError("Access token is invalid");
+
         const errorObject = await res.json()
         if(errorObject) throw new Error(errorObject.detail);
         
@@ -70,6 +79,9 @@ export async function updateAppointment(payload:AppointmentUpdatePayload, token:
     })
 
     if(!res.ok) {
+
+        if(res.status === 401) throw new UnauthorizedError("Access token is invalid");
+
         const errorObject = await res.json()
         if(errorObject) throw new Error(errorObject.detail);
         
@@ -89,6 +101,9 @@ export async function cancelAppointment(token: string, apId: number) {
     })
 
     if(!res.ok) {
+
+        if(res.status === 401) throw new UnauthorizedError("Access token is invalid");
+
         const errorObject = await res.json()
         if(errorObject) throw new Error(errorObject.detail);
         

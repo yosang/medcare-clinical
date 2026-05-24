@@ -1,4 +1,4 @@
-import { useState, type ChangeEvent } from "react"
+import { useEffect, useState, type ChangeEvent } from "react"
 import styles from "./AppointmentsTable.module.css"
 import { Drawer } from "./Drawer"
 import { useAppointmentsStore } from "../../stores/useAppointmentsStore"
@@ -105,6 +105,15 @@ export default function AppointmentsTable() {
         const cancelled = appointments.find(ap => ap.id === apId && ap.status.id === 3)
         if(cancelled) return true
     })()
+
+
+        useEffect(() => {
+    
+            if(token) {
+                getAppointments(token);
+            }
+    
+        }, [])
 
     return  <>
     <Drawer title="Appointment" isOpen={open} onClose={handleDrawerClose}>

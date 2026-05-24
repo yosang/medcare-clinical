@@ -3,19 +3,20 @@ using Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddDatabaseConfig(builder.Configuration)
+builder.Services.AddCorsConfig()
+                .AddDatabaseConfig(builder.Configuration)
                 .AddJWTConfig(builder.Configuration)
-                .AddCorsConfig()
                 .AddServices()
-                .AddSwagger()
                 .AddExceptionHandler<GlobalExceptionHandler>()
+                .AddSwagger()
                 .AddProblemDetails()
                 .AddControllers();
 
 var app = builder.Build();
 
-app.UseExceptionHandler();
 app.UseCorsMiddleware();
+app.UseJWTMiddlewares();
+app.UseExceptionHandler();
 app.UseSwaggerMiddlewares();
 app.MapControllers();
 

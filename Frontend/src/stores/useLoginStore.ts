@@ -2,7 +2,7 @@ import { create } from "zustand";
 import { type Login, type LoginState } from "../types/Auth";
 import { login, logoutRequest, refreshToken } from "../api/auth";
 
-export const useLoginStore = create<LoginState>(set => ({
+export const useLoginStore = create<LoginState>((set) => ({
     token: null,
     loading: false,
     error: false,
@@ -32,8 +32,8 @@ export const useLoginStore = create<LoginState>(set => ({
     },
     logout: async () => {
         try {
-            await logoutRequest();
             set({ token: null });
+            await logoutRequest();
         } catch(err) {
             set({ loading: false, error: true })
             throw err;

@@ -110,7 +110,7 @@ export default function BookingPage() {
             getPatient(token);
         }
 
-    }, [getAppointments, getPatient,token])
+    }, [])
 
     return (
     <>
@@ -176,7 +176,7 @@ export default function BookingPage() {
                     required
                     type="datetime-local"
                     value={appointmentDateAndTime}
-                    onChange={(e: ChangeEvent<HTMLDataElement>) => setAppointmentDateAndTime(e.target.value)}
+                    onChange={(e: ChangeEvent<HTMLInputElement>) => setAppointmentDateAndTime(e.target.value)}
                     min={new Date().toISOString().slice(0, 16)}
                 />
                 <DurationSelection 

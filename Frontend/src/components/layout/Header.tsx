@@ -57,6 +57,7 @@ export default function Header() {
                             <input 
                                 name="firstName"
                                 value={patient?.firstName}
+                                readOnly
                                 />
                         </label>
                         <label style={{ display: "flex", flexDirection:"column", gap: "5px", padding:"var(--spacing-sm)" }}>
@@ -64,6 +65,7 @@ export default function Header() {
                             <input 
                                 name="lastName"
                                 value={patient?.lastName}
+                                readOnly
                                 />
                         </label>
                         <label style={{ display: "flex", flexDirection:"column", gap: "5px", padding:"var(--spacing-sm)" }}>
@@ -71,6 +73,7 @@ export default function Header() {
                             <input 
                                 name="phone"
                                 value={patient?.phone}
+                                readOnly
                                 />
                         </label>
                         <label style={{ display: "flex", flexDirection:"column", gap: "5px", padding:"var(--spacing-sm)" }}>
@@ -78,6 +81,7 @@ export default function Header() {
                             <input 
                                 name="email"
                                 value={patient?.email}
+                                readOnly
                                 />
                         </label>
                         <label style={{ display: "flex", flexDirection:"column", gap: "5px", padding:"var(--spacing-sm)" }}>
@@ -85,6 +89,7 @@ export default function Header() {
                             <input 
                                 name="nationalIdentityNumber"
                                 value={patient?.nationalIdentityNumber}
+                                readOnly
                                 />
                         </label>
                     </div>
