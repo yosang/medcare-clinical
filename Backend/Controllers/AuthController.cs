@@ -1,7 +1,9 @@
 using System.IdentityModel.Tokens.Jwt;
+using System.Text;
+using Data.JWT;
 using DTOS;
-using Extensions;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
 
 [ApiController]
 [Route("api/[Controller]")]
@@ -9,10 +11,12 @@ using Microsoft.AspNetCore.Mvc;
 public class AuthController : ControllerBase
 {
     private readonly AuthService _service;
+    private readonly JWTSettings _jwtSettings;
 
-    public AuthController(AuthService service)
+    public AuthController(AuthService service, JWTSettings jwtSettings)
     {
         _service = service;
+        _jwtSettings = jwtSettings;
     }
 
     /// <summary>
@@ -74,9 +78,16 @@ public class AuthController : ControllerBase
         var refreshToken = Request.Cookies["refresh_token"];
         if(refreshToken == null) return Unauthorized();
 
-        var handler = new JwtSecurityTokenHandler();
-
-        var principal = handler.ReadJwtToken(refreshToken);
+        var principal = new JwtSecurityTokenHandler().ValidateToken(refreshToken, new TokenValidationParameters
+                    {
+                        ValidateIssuer = true,
+                        ValidIssuer = _jwtSettings.Issuer,
+                        ValidateAudience = true,
+                        ValidAudience = _jwtSettings.Audience,
+                        ValidateLifetime = true,
+                        ValidateIssuerSigningKey = true,
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtSettings.SecretKey!))
+                    }, out SecurityToken validatedToken);
 
         var patientId = principal.Claims.FirstOrDefault(p => p.Type == "PatientId");
 
@@ -87,5 +98,13 @@ public class AuthController : ControllerBase
         if(token == null ) return Unauthorized();
 
         return Ok(new { token = token.accessToken});
+    }
+
+    [HttpPost("logout")]
+    public async Task<IActionResult> Logout()
+    {
+        Response.Cookies.Delete("refresh_token");
+
+        return NoContent();
     }
 }

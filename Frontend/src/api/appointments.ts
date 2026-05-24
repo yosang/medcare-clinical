@@ -1,7 +1,5 @@
 import type { AppointmentPayload, AppointmentUpdatePayload } from "../types/Appointments";
 
-// import { refreshToken } from "./auth";
-
 const appointmentsUrl = import.meta.env.VITE_APPOINTMENTS
 
 // GET appointments: Private
@@ -15,13 +13,6 @@ export async function fetchAppointments(token:string) {
     })
 
     if(!res.ok) {
-        // if(res.status === 401) {
-        //     try {
-        //         await refreshToken();
-        //     } catch(err) {
-        //         console.log("Failed to refresh");
-        //     }
-        // }
 
         throw new Error("Failed to fetch appointments")
     }

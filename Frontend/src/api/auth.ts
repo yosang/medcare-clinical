@@ -1,9 +1,9 @@
-import { useLoginStore } from "../stores/useLoginStore";
 import type { Login, Registration } from "../types/Auth";
 
 const refreshURL = import.meta.env.VITE_REFRESH;
 const registrationURL = import.meta.env.VITE_REGISTER;
 const loginURL = import.meta.env.VITE_LOGIN;
+const logoutURL = import.meta.env.VITE_LOGOUT;
 
 async function authFetchHelper(url: string, payload: Login | Registration, customErrorMessage:string = "Fetch was not successful") {
     
@@ -35,6 +35,19 @@ export async function login(payload: Login) {
         
         return await authFetchHelper(loginURL, payload, "Failed to login patient")
     }
+
+export async function logoutRequest() {
+    if(!logoutURL) throw new Error("VITE_LOGOUT url is not defined in .env")
+
+    const res = await fetch(logoutURL, {
+        method: "POST",
+        credentials: "include"
+    });
+
+    if(!res.ok) {
+        throw new Error("Failed to logout");
+    }
+}
     
 export async function refreshToken() {
     if(!refreshURL) throw new Error("VITE_REFRESH url is not defined in .env")
@@ -45,9 +58,17 @@ export async function refreshToken() {
     });
 
     if(!res.ok) {
+        if(res.status === 401) {
+            throw new UnauthorizedError("Accedd denied")
+        }
         throw new Error("Failed to refresh access")
     }
 
-    const data = await res.json();
-    useLoginStore.getState().setToken(data);
+    return await res.json();
+}
+
+export class UnauthorizedError extends Error {
+    constructor(message: string) {
+        super(message)
+    }
 }

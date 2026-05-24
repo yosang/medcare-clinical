@@ -7,17 +7,19 @@ import LoginPage from "./pages/LoginPage"
 
 import styles from "./App.module.css";
 import SearchPage from "./pages/SearchPage"
+
 import { useEffect } from "react"
-import { refreshToken } from "./api/auth"
+import { useLoginStore } from "./stores/useLoginStore"
 
 function App() {
-  
+
+  const {  refreshAccessToken } = useLoginStore();
+
   useEffect(() => {
-    const refresh = async() => {
-      await refreshToken();
-    }
-    refresh();
-  })
+
+      refreshAccessToken();
+    
+  }, [refreshAccessToken])
 
   return (
     <div className={styles.layout}>
