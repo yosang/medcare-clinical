@@ -1,4 +1,5 @@
 import type { GuestPatientPayload } from "../types/Patients";
+import { UnauthorizedError } from "./auth";
 
 const patientsMeUrl = import.meta.env.VITE_PATIENTS_ME;
 const patientsGuestUrl = import.meta.env.VITE_PATIENTS_GUEST;
@@ -11,10 +12,16 @@ export async function getPatientDetails(token: string) {
 
     const res = await fetch(patientsMeUrl, {
         method: "GET",
-        headers: { "Authorization": `Bearer ${token}`}
+        headers: { "Authorization": `Bearer ${token}`},
+        credentials: "include"
     })
 
-    if(!res.ok) throw new Error("Failed to fetch patient")
+    if(!res.ok) {
+        
+        if(res.status === 401) throw new UnauthorizedError("Access token is invalid");
+
+        throw new Error("Failed to fetch patient")
+    }
     
     return res.json();
 }

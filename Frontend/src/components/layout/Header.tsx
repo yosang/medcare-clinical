@@ -44,7 +44,8 @@ export default function Header() {
 
     useEffect(() => {
         if(token) getPatient(token);
-    }, [getPatient, token])
+        
+    }, [])
 
     return  <>
             <Drawer title="My Profile" isOpen={open} onClose={handleDrawerClose}>

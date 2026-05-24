@@ -90,7 +90,6 @@ export const useAppointmentsStore = create<AppointmentsState>((set) => ({
         set({loading: true})
         try {
             await updateAppointment(payload, token, apId)
-            console.log("Initial fetch", token)
         } catch(err) {
             
             if(err instanceof UnauthorizedError)  {
@@ -118,7 +117,6 @@ export const useAppointmentsStore = create<AppointmentsState>((set) => ({
         set({loading: true})
         try {
             await cancelAppointment(token, apId)
-            console.log("Initial fetch", token)
         } catch(err) {
             
             if(err instanceof UnauthorizedError)  {
@@ -126,7 +124,6 @@ export const useAppointmentsStore = create<AppointmentsState>((set) => ({
                     await useLoginStore.getState().refreshAccessToken();
                     
                     const newToken = useLoginStore.getState().token
-                    console.log("Refreshed token", newToken)
                     
                     if(newToken) {
                         await cancelAppointment(newToken, apId)

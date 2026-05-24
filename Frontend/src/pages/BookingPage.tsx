@@ -105,6 +105,8 @@ export default function BookingPage() {
     useEffect(() => {
         inputRef.current?.focus();
 
+        clearErrors();
+
         if(token) {
             getAppointments(token);
             getPatient(token);

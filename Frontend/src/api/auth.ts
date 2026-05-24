@@ -14,7 +14,12 @@ async function authFetchHelper(url: string, payload: Login | Registration, custo
         headers: { "Content-Type": "application/json" }
     })
 
+    if (res.status === 204) {
+        return null;
+    }
+
     if(!res.ok) {
+
         const errorObject = await res.json()
         if(errorObject) throw new Error(errorObject.detail);
         
@@ -34,7 +39,7 @@ export async function login(payload: Login) {
     if(!loginURL) throw new Error("VITE_LOGIN url is not defined in .env")
         
         return await authFetchHelper(loginURL, payload, "Failed to login patient")
-    }
+}
 
 export async function logoutRequest() {
     if(!logoutURL) throw new Error("VITE_LOGOUT url is not defined in .env")
@@ -48,7 +53,7 @@ export async function logoutRequest() {
         throw new Error("Failed to logout");
     }
 }
-    
+
 export async function refreshToken() {
     if(!refreshURL) throw new Error("VITE_REFRESH url is not defined in .env")
 

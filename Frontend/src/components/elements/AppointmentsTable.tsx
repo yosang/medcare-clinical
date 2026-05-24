@@ -75,6 +75,7 @@ export default function AppointmentsTable() {
     }
 
     const handleAppointmentClick = async (id:number) => {
+        clearErrors()
         if(!token) return
         const appointment = await getAppointment(token, id)
         

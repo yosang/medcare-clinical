@@ -43,17 +43,22 @@ public class AppointmentService
     public async Task<AppointmentDTO?> CreateAppointment(CreateAppointmentDTO dto)
     {
 
-        var overlaps = await _ctx.Appointments.AsNoTracking().AnyAsync(ap => 
-                ap.DoctorId == dto.DoctorId && ap.StatusId != 3 &&
-                // if Existing.End >= New.Start = overlap
-                ap.AppointmentDate.AddMinutes(ap.Duration) >= dto.AppointmentDate &&
+        // Overlap logic:
+        // if Existing.End >= New.Start = overlap
+        // If existing.Start <= New.End = overlap
+        var doctorOverlap = await _ctx.Appointments.AsNoTracking().AnyAsync(ap => 
+                                                                            ap.DoctorId == dto.DoctorId && ap.StatusId != 3 &&
+                                                                            ap.AppointmentDate.AddMinutes(ap.Duration) >= dto.AppointmentDate &&
+                                                                            ap.AppointmentDate <= dto.AppointmentDate.AddMinutes(dto.Duration)
+                                                                        );
 
-                // If existing.Start <= New.End = overlap
-                ap.AppointmentDate <= dto.AppointmentDate.AddMinutes(dto.Duration)
+        var patientOverlap = await _ctx.Appointments.AsNoTracking().AnyAsync(ap => 
+                                                                            ap.PatientId == dto.PatientId && ap.StatusId != 3 &&                                      
+                                                                            ap.AppointmentDate.AddMinutes(ap.Duration) >= dto.AppointmentDate &&
+                                                                            ap.AppointmentDate <= dto.AppointmentDate.AddMinutes(dto.Duration)
+                                                                        );
 
-        );
-
-        if(overlaps) return null;
+        if (patientOverlap || doctorOverlap) return null;
 
         var newAp = dto.ToAppointment();
 

@@ -9,7 +9,7 @@ using MySql.EntityFrameworkCore.Metadata;
 namespace booking_rest_api.Migrations
 {
     /// <inheritdoc />
-    public partial class freshMigration : Migration
+    public partial class fresh : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -51,12 +51,12 @@ namespace booking_rest_api.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
-                    FirstName = table.Column<string>(type: "varchar(255)", nullable: false),
-                    LastName = table.Column<string>(type: "varchar(255)", nullable: false),
+                    FirstName = table.Column<string>(type: "longtext", nullable: false),
+                    LastName = table.Column<string>(type: "longtext", nullable: false),
                     Phone = table.Column<string>(type: "longtext", nullable: true),
-                    Email = table.Column<string>(type: "longtext", nullable: true),
+                    Email = table.Column<string>(type: "varchar(255)", nullable: true),
                     DateOfBirth = table.Column<DateTime>(type: "datetime(6)", nullable: true),
-                    NationalIdentityNumber = table.Column<string>(type: "longtext", nullable: true),
+                    NationalIdentityNumber = table.Column<string>(type: "varchar(255)", nullable: true),
                     PasswordHash = table.Column<string>(type: "longtext", nullable: true),
                     IsRegistered = table.Column<bool>(type: "tinyint(1)", nullable: false)
                 },
@@ -156,6 +156,7 @@ namespace booking_rest_api.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
                     AppointmentDate = table.Column<DateTime>(type: "datetime(6)", nullable: false),
+                    Duration = table.Column<int>(type: "int", nullable: false),
                     Note = table.Column<string>(type: "longtext", nullable: true),
                     PatientId = table.Column<int>(type: "int", nullable: false),
                     DoctorId = table.Column<int>(type: "int", nullable: false),
@@ -276,12 +277,12 @@ namespace booking_rest_api.Migrations
 
             migrationBuilder.InsertData(
                 table: "Appointments",
-                columns: new[] { "Id", "AppointmentDate", "CategoryId", "ClinicId", "DoctorId", "Note", "PatientId", "StatusId" },
+                columns: new[] { "Id", "AppointmentDate", "CategoryId", "ClinicId", "DoctorId", "Duration", "Note", "PatientId", "StatusId" },
                 values: new object[,]
                 {
-                    { 1, new DateTime(2026, 5, 24, 8, 15, 0, 0, DateTimeKind.Unspecified), 1, 1, 1, null, 1, 1 },
-                    { 2, new DateTime(2026, 5, 24, 10, 30, 0, 0, DateTimeKind.Unspecified), 1, 1, 1, null, 2, 1 },
-                    { 3, new DateTime(2026, 5, 24, 12, 30, 0, 0, DateTimeKind.Unspecified), 1, 1, 1, null, 3, 1 }
+                    { 1, new DateTime(2026, 5, 24, 8, 15, 0, 0, DateTimeKind.Unspecified), 1, 1, 1, 30, null, 1, 1 },
+                    { 2, new DateTime(2026, 5, 24, 10, 30, 0, 0, DateTimeKind.Unspecified), 1, 1, 1, 30, null, 2, 1 },
+                    { 3, new DateTime(2026, 5, 24, 12, 30, 0, 0, DateTimeKind.Unspecified), 1, 1, 1, 30, null, 3, 1 }
                 });
 
             migrationBuilder.CreateIndex(
@@ -300,10 +301,9 @@ namespace booking_rest_api.Migrations
                 column: "DoctorId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Appointments_PatientId_AppointmentDate",
+                name: "IX_Appointments_PatientId",
                 table: "Appointments",
-                columns: new[] { "PatientId", "AppointmentDate" },
-                unique: true);
+                column: "PatientId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Appointments_StatusId",
@@ -350,9 +350,15 @@ namespace booking_rest_api.Migrations
                 column: "SpecialtyId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Patients_FirstName_LastName",
+                name: "IX_Patients_Email",
                 table: "Patients",
-                columns: new[] { "FirstName", "LastName" },
+                column: "Email",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Patients_NationalIdentityNumber",
+                table: "Patients",
+                column: "NationalIdentityNumber",
                 unique: true);
 
             migrationBuilder.CreateIndex(

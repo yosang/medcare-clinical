@@ -55,13 +55,11 @@ namespace booking_rest_api.Migrations
 
                     b.HasIndex("ClinicId");
 
+                    b.HasIndex("DoctorId");
+
+                    b.HasIndex("PatientId");
+
                     b.HasIndex("StatusId");
-
-                    b.HasIndex("DoctorId", "AppointmentDate")
-                        .IsUnique();
-
-                    b.HasIndex("PatientId", "AppointmentDate")
-                        .IsUnique();
 
                     b.ToTable("Appointments");
 
