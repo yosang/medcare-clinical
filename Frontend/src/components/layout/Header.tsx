@@ -23,7 +23,9 @@ export default function Header() {
         e.preventDefault();
         const formData = new FormData(e.currentTarget)
 
-        console.log(formData)
+        // console.log(formData)
+
+        // To be implemented...
 
         return
     }
@@ -45,7 +47,7 @@ export default function Header() {
     useEffect(() => {
         if(token) getPatient(token);
         
-    }, [])
+    }, [token, getPatient])
 
     return  <>
             <Drawer title="My Profile" isOpen={open} onClose={handleDrawerClose}>
@@ -95,7 +97,7 @@ export default function Header() {
                         </label>
                     </div>
                         <div style={{ display: "flex", justifyContent: "center", padding: "var(--spacing-md) 0"}}>
-                            <Button type="submit">Save</Button>
+                            <Button type="submit">Upate profile</Button>
                         </div>
                     </form>
                 <div style={{ display: "flex", justifyContent: "center" }}>
@@ -125,8 +127,8 @@ export default function Header() {
                             </>
                         ):(
                         <>
-                            <Button variant="secondary"><Link to="/login" style={{ color: "var(--color-secondary-text)" }}>Login</Link></Button>
-                            <Button ><Link to="/register" style={{ color: "var(--color-primary-text)" }}>Register</Link></Button>
+                            <Link to="/login" style={{ color: "var(--color-secondary-text)" }}><Button variant="secondary">Login</Button></Link>
+                            <Link to="/register" style={{ color: "var(--color-primary-text)" }}><Button >Register</Button></Link>
                         </>
                         )}
                     </div>

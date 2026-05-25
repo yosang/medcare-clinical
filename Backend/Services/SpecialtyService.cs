@@ -13,6 +13,9 @@ public class SpecialtyService
         _ctx = context;
     }
 
+
+    /// <summary> Reads specialties from the database without tracking for reduced performance overhead </summary>
+    /// <returns>List of specialties</returns>
     public async Task<IEnumerable<SpecialtyDTO>> GetSpecialties()
     {
 
@@ -22,7 +25,10 @@ public class SpecialtyService
 
         return specialties;
     }
-
+    
+    /// <summary> Reads a single specialty from the database without tracking for reduced performance overhead </summary>
+    /// <param name="id"></param>
+    /// <returns>A single specialty</returns>
     public async Task<SpecialtyDTO?> GetSpecialty(int id)
     {
         var specialty = await _ctx.Specialties.AsNoTracking()
@@ -32,6 +38,9 @@ public class SpecialtyService
         return specialty;
     }
 
+    /// <summary> Writes a new specialty entity to the database </summary>
+    /// <param name="dto"></param>
+    /// <returns>Created specialty</returns>
     public async Task<SpecialtyDTO> CreateSpecialty(CreateSpecialtyDTO dto)
     {
         var newSpecialty = dto.ToSpecialty();
@@ -43,6 +52,10 @@ public class SpecialtyService
         return newSpecialty.ToSpecialtyDTO();
     }
 
+   /// <summary> Updates an existing specialty </summary>
+    /// <param name="id"></param>
+    /// <param name="dto"></param>
+    /// <returns>Updated specialty</returns>
     public async Task<SpecialtyDTO?> UpdateSpecialty(int id, UpdateSpecialtyDTO dto)
     {
         var existing = await _ctx.Specialties.FindAsync(id);
@@ -55,6 +68,9 @@ public class SpecialtyService
         return existing.ToSpecialtyDTO();
     }
 
+    /// <summary> Deletes an existing specialty </summary>
+    /// <param name="id"></param>
+    /// <returns>Boolean representation of deletion result</returns>
     public async Task<bool> DeleteSpecialty(int id)
     {
         var existing = await _ctx.Specialties.FindAsync(id);

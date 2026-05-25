@@ -14,6 +14,10 @@ public class TokenService
         _jwtSettings = jwtSettings;
     }
 
+    /// <summary>
+    /// Generates a short lived access token
+    /// </summary>
+    /// <param name="patient"></param>
     public string GenerateAccessToken(Patient patient)
     {
         var token = new JwtSecurityToken(
@@ -21,6 +25,7 @@ public class TokenService
             audience: _jwtSettings.Audience, 
             claims: new List<Claim>()
             {
+                new Claim(ClaimTypes.Role, GetRoleName(patient.RoleId)),
                 new Claim("PatientId", patient.Id.ToString())
             },
             expires: DateTime.UtcNow.AddMinutes(_jwtSettings.ExpiryMinutes ?? 15),
@@ -31,6 +36,10 @@ public class TokenService
 
         return tokenString;
     }
+    /// <summary>
+    /// Generates a refresh token that can be used to generate new access tokens
+    /// </summary>
+    /// <param name="patient"></param>
     public string GenerateRefreshToken(Patient patient)
     {
         var token = new JwtSecurityToken(
@@ -47,5 +56,15 @@ public class TokenService
         var tokenString = new JwtSecurityTokenHandler().WriteToken(token);
 
         return tokenString;
+    }
+
+    private string GetRoleName(int roleId)
+    {
+        return roleId switch
+        {
+            1 => "Patient",
+            2 => "Admin",
+            _ => "Patient"
+        };
     }
 }

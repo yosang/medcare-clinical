@@ -28,13 +28,16 @@ If you need help with any instructions for the course assignment, contact your t
 ### ENDPOINTS
 
 #### Auth
-- POST `api/Auth/login` - Logs in with an existing account to return a token.
-- POST `api/Auth/register` - Registers a new account, returns a token on success.
+- POST `api/Auth/login` - Logs in with an existing account to return an access token and a refresh token cookie.
+- POST `api/Auth/register` - Registers a new account.
+- POST `api/Auth/refresh` - Uses a refresh token cookie to issue a new access token.
+- POST `api/Auth/logout` - Logs out the frontend.
+
 
 #### Appointments
-- GET `api/appointments` - Returns a list of appointments.
+- GET `api/appointments` - Returns a list of appointments for a logged in patient.
 - GET `api/appointments/:id` - Returns a single appointment.
-- POST `api/appointments` - Creates a new appointment.
+- POST `api/appointments` - Create a new appointment (Frontend must provide a PatientId for Guests).
 - PUT `api/appointments/:id` - Updates an existing appointment.
 - DELETE `api/appointments/:id` - Deletes an existing appointment.
 

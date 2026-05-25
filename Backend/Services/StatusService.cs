@@ -13,6 +13,8 @@ public class StatusService
         _ctx = context;
     }
 
+    /// <summary> Reads statuses from the database without tracking for reduced performance overhead </summary>
+    /// <returns> List of statuses </returns>
     public async Task<IEnumerable<StatusDTO>> GetStatuses()
     {
 
@@ -23,6 +25,9 @@ public class StatusService
         return statuses;
     }
 
+    /// <summary> Reads a single status from the database without tracking for reduced performance overhead </summary>
+    /// <param name="id"></param>
+    /// <returns> A single status </returns>
     public async Task<StatusDTO?> GetStatus(int id)
     {
         var status = await _ctx.Statuses.AsNoTracking()
@@ -32,6 +37,9 @@ public class StatusService
         return status;
     }
 
+    /// <summary> Writes a new status entity to the database </summary>
+    /// <param name="dto"></param>
+    /// <returns> Created status </returns>
     public async Task<StatusDTO> CreateStatus(CreateStatusDTO dto)
     {
         var newStatus = dto.ToStatus();
@@ -43,6 +51,10 @@ public class StatusService
         return newStatus.ToStatusDTO();
     }
 
+    /// <summary> Updates an existing status </summary>
+    /// <param name="id"></param>
+    /// <param name="dto"></param>
+    /// <returns> Updated status </returns>
     public async Task<StatusDTO?> UpdateStatus(int id, UpdateStatusDTO dto)
     {
         var existing = await _ctx.Statuses.FindAsync(id);
@@ -55,6 +67,10 @@ public class StatusService
         return existing.ToStatusDTO();
     }
 
+
+    /// <summary> Deletes an existing status </summary>
+    /// <param name="id"></param>
+    /// <returns> Boolean representation of deletion result </returns>
     public async Task<bool> DeleteStatus(int id)
     {
         var existing = await _ctx.Statuses.FindAsync(id);

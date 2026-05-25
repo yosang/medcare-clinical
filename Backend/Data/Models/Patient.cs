@@ -15,6 +15,9 @@ public class Patient
     public string? PasswordHash { get; set; }
     public bool IsRegistered { get; set; } = false;
 
+    public int RoleId { get; set; } = 1;
+
     // Nav props
+    public Role? Role { get; set; }
     public IEnumerable<Appointment>? Appointments { get; set; }
 }

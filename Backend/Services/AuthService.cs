@@ -17,6 +17,9 @@ public class AuthService
         _ts = tokenService;
     }
 
+    /// <summary> Authenticates an existing patient </summary>
+    /// <param name="dto"></param>
+    /// <returns> Access token </returns>
     public async Task<TokenDTO?> Login(LoginPatientDTO dto)
     {
         var existing = await _ctx.Patients.AsNoTracking()
@@ -34,6 +37,10 @@ public class AuthService
 
         return new TokenDTO { accessToken = access_token, refreshToken = refresh_token};
     }
+
+    /// <summary> Registers a new patient with credentials </summary>
+    /// <param name="dto"></param>
+    /// <returns> Boolean representation of registration result  </returns>
     public async Task<bool> Register(RegisterPatientDTO dto)
     {
         var existing = await _ctx.Patients.AsNoTracking()
@@ -53,6 +60,9 @@ public class AuthService
         return true;
     }
 
+    /// <summary> Generates a new access token for a specific patient </summary>
+    /// <param name="patientId"></param>
+    /// <returns> Access token </returns>
     public async Task<TokenDTO?> RefreshToken(int patientId)
     {
         var existing = await _ctx.Patients.AsNoTracking()

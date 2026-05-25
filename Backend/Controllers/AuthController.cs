@@ -20,7 +20,10 @@ public class AuthController : ControllerBase
     }
 
     /// <summary>
-    /// Login with an existing Patient account
+    /// Login with an existing account
+    /// Issues a short-lived access token for the frontend to store in memory / localstorage, this one expires quickly (15 mins)
+    /// - once expired the frontend must request a new access token using the refresh token, which has a longer lifespan.
+    /// Issues a refresh token as a httpOnly secure cookie to the browser, this cookie cannot be deleted or accessed by frontend code.
     /// </summary>
     /// <param name="dto"></param>
     /// <response code="200">Returns token on successful login</response>
@@ -42,7 +45,7 @@ public class AuthController : ControllerBase
        Response.Cookies.Append("refresh_token", token.refreshToken, new CookieOptions
        {
            HttpOnly = true,
-            // Secure = true, // When using HTTPS, we are not using https, so comment out for now
+            // Secure = true, // we are not using https, so comment out for now
             SameSite = SameSiteMode.Lax,
             Expires = DateTimeOffset.UtcNow.AddDays(7)
        });
@@ -55,7 +58,7 @@ public class AuthController : ControllerBase
     /// </summary>
     /// <param name="dto"></param>
     /// <response code="200">Returns token on successful registration</response>
-    /// <response code="400">Cannot register an account that exists already</response>
+    /// <response code="400">An account that exists already</response>
     [HttpPost("register")]
     [ProducesResponseType(typeof(TokenDTO), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -72,6 +75,13 @@ public class AuthController : ControllerBase
         return NoContent();
     }
 
+    /// <summary> 
+    /// Retrieves httpOnly cooke from browser.
+    /// Validates the refresh token
+    /// Issues a new access token on successful validation. 
+    /// </summary>
+    /// <response code="200">Returns new access token</response>
+    /// <response code="401">Unauthorized</response>
     [HttpPost("refresh")]
     public async Task<IActionResult> Refresh()
     {
@@ -100,6 +110,7 @@ public class AuthController : ControllerBase
         return Ok(new { token = token.accessToken});
     }
 
+    /// <summary> Deletes a refresh token cookie from the browser </summary>
     [HttpPost("logout")]
     public async Task<IActionResult> Logout()
     {

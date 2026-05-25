@@ -14,6 +14,7 @@ public class DatabaseContext : DbContext
     public DbSet<Status> Statuses { get; set; }
     public DbSet<Appointment> Appointments { get; set; }
     public DbSet<Patient> Patients { get; set; }
+    public DbSet<Role> Roles { get; set; }
 
     public DatabaseContext(DbContextOptions<DatabaseContext> options) : base(options) { }
 
@@ -32,11 +33,11 @@ public class DatabaseContext : DbContext
         modelBuilder.Entity<Category>().HasIndex(c => c.Name).IsUnique();
         modelBuilder.Entity<Status>().HasIndex(c => c.Name).IsUnique();
 
-        // Since we are using Email as an auth identifier, it must be unique
         modelBuilder.Entity<Patient>().HasIndex(c => c.Email).IsUnique();
         
-        // In most systems, a personal Id is also unique
         modelBuilder.Entity<Patient>().HasIndex(c => c.NationalIdentityNumber).IsUnique();
+
+        modelBuilder.Entity<Role>().HasIndex(c => c.Name).IsUnique();
 
         // Relationships
         modelBuilder.Entity<Clinic>()
@@ -87,7 +88,14 @@ public class DatabaseContext : DbContext
                     .HasForeignKey(ap => ap.ClinicId)
                     .OnDelete(DeleteBehavior.Restrict);
 
+        modelBuilder.Entity<Patient>()
+                    .HasOne<Role>(p => p.Role)
+                    .WithMany(r => r.Patients)
+                    .HasForeignKey(r => r.RoleId)
+                    .OnDelete(DeleteBehavior.Restrict);
+
         // Seeds
+        modelBuilder.Entity<Role>().HasData(SeedsData.Roles);
         modelBuilder.Entity<City>().HasData(SeedsData.Cities);
         modelBuilder.Entity<Clinic>().HasData(SeedsData.Clinics);
 

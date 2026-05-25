@@ -13,6 +13,8 @@ public class CityService
         _ctx = context;
     }
 
+    /// <summary> Reads cities from the database without tracking for reduced performance overhead </summary>
+    /// <returns>List of cities</returns>
     public async Task<IEnumerable<CityWithDetailsDTO>> GetCities()
     {
 
@@ -24,6 +26,9 @@ public class CityService
         return cities;
     }
 
+    /// <summary> Reads a single city from the database without tracking for reduced performance overhead </summary>
+    /// <param name="id"></param>
+    /// <returns>A single city</returns>
     public async Task<CityWithDetailsDTO?> GetCity(int id)
     {
         var city = await _ctx.Cities.AsNoTracking()
@@ -34,6 +39,9 @@ public class CityService
         return city;
     }
 
+    /// <summary> Writes a new city entity to the database </summary>
+    /// <param name="dto"></param>
+    /// <returns>Created city</returns>
     public async Task<CityDTO> CreateCity(CreateCityDTO dto)
     {
         var newCity = dto.ToCity();
@@ -44,6 +52,10 @@ public class CityService
         return newCity.ToCityDTO();;
     }
 
+    /// <summary> Updates an existing city </summary>
+    /// <param name="id"></param>
+    /// <param name="dto"></param>
+    /// <returns>Updated city</returns>
     public async Task<CityDTO?> UpdateCity(int id, UpdateCityDTO dto)
     {
         var existing = await _ctx.Cities.FindAsync(id);
@@ -56,6 +68,9 @@ public class CityService
         return existing.ToCityDTO();
     }
 
+    /// <summary> Deletes an existing city </summary>
+    /// <param name="id"></param>
+    /// <returns>Boolean representation of deletion result</returns>
     public async Task<bool> DeleteCity(int id)
     {
         var existing = await _ctx.Cities.FindAsync(id);

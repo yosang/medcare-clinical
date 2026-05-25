@@ -112,7 +112,7 @@ export default function BookingPage() {
             getPatient(token);
         }
 
-    }, [])
+    }, [token])
 
     return (
     <>

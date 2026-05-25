@@ -14,6 +14,9 @@ public class PatientService
         _ctx = context;
     }
 
+    /// <summary> Reads a single patient from the database without tracking for reduced performance overhead </summary>
+    /// <param name="id"></param>
+    /// <returns>A single patient with details</returns>
     public async Task<PatientWithDetailsDTO?> GetPatient(int id)
     {
         var patient = await _ctx.Patients.AsNoTracking()
@@ -23,6 +26,12 @@ public class PatientService
         return patient;
     }
 
+    /// <summary> 
+    /// Writes a new patient entity to the database. This service is used to create guest patients with limited personal details.
+    /// If an entity matching firstname / lastname is found in the database, return the entity to prevent duplicate records.
+    /// </summary>
+    /// <param name="dto"></param>
+    /// <returns>Created patient</returns>
     public async Task<GuestPatientDTO> CreatePatient(CreateGuestPatientDTO dto)
     {
         var existing = await _ctx.Patients.AsNoTracking()
@@ -44,6 +53,10 @@ public class PatientService
         return newP.ToGuestPatientDTO();
     }
 
+    /// <summary> Updates an existing patient </summary>
+    /// <param name="patientId"></param>
+    /// <param name="dto"></param>
+    /// <returns>Updated patient</returns>
     public async Task<PatientDTO?> UpdatePatient(int patientId, UpdatePatientDTO dto)
     {
         var existing = await _ctx.Patients.FindAsync(patientId);
@@ -56,6 +69,9 @@ public class PatientService
         return existing.ToPatientDTO();
     }
 
+    /// <summary> Deletes an existing patient </summary>
+    /// <param name="patientId"></param>
+    /// <returns>Boolean representation of deletion result</returns>
     public async Task<bool> DeletePatient(int patientId)
     {
         var existing = await _ctx.Patients.FindAsync(patientId);

@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace booking_rest_api.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20260524171020_fresh")]
-    partial class fresh
+    [Migration("20260525091656_freshMigration")]
+    partial class freshMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -345,6 +345,9 @@ namespace booking_rest_api.Migrations
                     b.Property<string>("Phone")
                         .HasColumnType("longtext");
 
+                    b.Property<int>("RoleId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.HasIndex("Email")
@@ -352,6 +355,8 @@ namespace booking_rest_api.Migrations
 
                     b.HasIndex("NationalIdentityNumber")
                         .IsUnique();
+
+                    b.HasIndex("RoleId");
 
                     b.ToTable("Patients");
 
@@ -366,7 +371,8 @@ namespace booking_rest_api.Migrations
                             LastName = "Johanson",
                             NationalIdentityNumber = "524231231",
                             PasswordHash = "FAKEHASH",
-                            Phone = "24242424"
+                            Phone = "24242424",
+                            RoleId = 1
                         },
                         new
                         {
@@ -378,7 +384,8 @@ namespace booking_rest_api.Migrations
                             LastName = "Karevik",
                             NationalIdentityNumber = "66666666",
                             PasswordHash = "FAKEHASH",
-                            Phone = "555555"
+                            Phone = "555555",
+                            RoleId = 1
                         },
                         new
                         {
@@ -390,7 +397,8 @@ namespace booking_rest_api.Migrations
                             LastName = "Thomson",
                             NationalIdentityNumber = "878787878",
                             PasswordHash = "FAKEHASH",
-                            Phone = "333222333"
+                            Phone = "333222333",
+                            RoleId = 1
                         },
                         new
                         {
@@ -400,7 +408,8 @@ namespace booking_rest_api.Migrations
                             FirstName = "Carlos",
                             IsRegistered = false,
                             LastName = "Rodriguez",
-                            Phone = "777788877"
+                            Phone = "777788877",
+                            RoleId = 1
                         },
                         new
                         {
@@ -410,7 +419,18 @@ namespace booking_rest_api.Migrations
                             FirstName = "Jan",
                             IsRegistered = false,
                             LastName = "Dan",
-                            Phone = "222777722"
+                            Phone = "222777722",
+                            RoleId = 1
+                        },
+                        new
+                        {
+                            Id = 6,
+                            Email = "dev@dev.com",
+                            FirstName = "Admin",
+                            IsRegistered = false,
+                            LastName = "Admin",
+                            PasswordHash = "AQAAAAIAAYagAAAAEBoc7/xHyQ88YJ7b5/fvDDkFTAH6GmsiH03ouiYgQWUEx1zu7NsSDmTeHrcdsHHyxg==",
+                            RoleId = 2
                         });
                 });
 
@@ -489,6 +509,36 @@ namespace booking_rest_api.Migrations
                         });
                 });
 
+            modelBuilder.Entity("Role", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("varchar(255)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Name")
+                        .IsUnique();
+
+                    b.ToTable("Roles");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Name = "Patient"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Name = "Admin"
+                        });
+                });
+
             modelBuilder.Entity("Models.Appointment", b =>
                 {
                     b.HasOne("Models.Category", "Category")
@@ -562,6 +612,17 @@ namespace booking_rest_api.Migrations
                     b.Navigation("Specialty");
                 });
 
+            modelBuilder.Entity("Models.Patient", b =>
+                {
+                    b.HasOne("Role", "Role")
+                        .WithMany("Patients")
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Role");
+                });
+
             modelBuilder.Entity("Models.Category", b =>
                 {
                     b.Navigation("Appointments");
@@ -597,6 +658,11 @@ namespace booking_rest_api.Migrations
             modelBuilder.Entity("Models.Status", b =>
                 {
                     b.Navigation("Appointments");
+                });
+
+            modelBuilder.Entity("Role", b =>
+                {
+                    b.Navigation("Patients");
                 });
 #pragma warning restore 612, 618
         }
