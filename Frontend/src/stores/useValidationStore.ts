@@ -18,6 +18,7 @@ export const useValidationStore = create<ValidationState>((set) => ({
                 validationErrors: validation.error.issues.map(err => `${err.path}: ${err.message} `),
                 inputsWithErrors: validation.error.issues.map(err => String(err.path[0])),
             })
+            return;
         }
     },
     clearErrors: () => {
