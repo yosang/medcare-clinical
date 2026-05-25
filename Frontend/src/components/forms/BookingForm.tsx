@@ -34,7 +34,7 @@ export default function BookingForm() {
     const [duration, setDuration] = useState("30");
     const [appointmentDateAndTime, setAppointmentDateAndTime] = useState("");
     
-    const { validationErrors, inputsWithErrors, validate, clearErrors} = useValidationStore()
+    const { validationErrors, validate, clearErrors} = useValidationStore()
 
     const clearInputs = () => {
             setFirstname("");
