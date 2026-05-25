@@ -1,14 +1,18 @@
-import { useEffect, useState, type ChangeEvent } from "react"
-import styles from "./AppointmentsTable.module.css"
-import { Drawer } from "./Drawer"
-import { useAppointmentsStore } from "../../stores/useAppointmentsStore"
-import Button from "./Button";
+import { lazy, Suspense, useEffect, useState, type ChangeEvent } from "react"
 
+import { useAppointmentsStore } from "../../stores/useAppointmentsStore"
 import { useLoginStore } from "../../stores/useLoginStore";
-import type { AppointmentUpdateForm } from "../../types/Appointments";
-import { toast } from "sonner";
+
+import styles from "./AppointmentsTable.module.css"
+
 import LoadingSpinner from "../layout/LoadingSpinner";
-import UpdateAppointmentForm from "../forms/UpdateAppointmentForm";
+import { Drawer } from "./Drawer"
+import Button from "./Button";
+import { toast } from "sonner";
+
+import type { AppointmentUpdateForm } from "../../types/Appointments";
+
+const UpdateAppointmentForm = lazy(() => import("../forms/UpdateAppointmentForm"))
 
 export default function AppointmentsTable() {
     const {token } = useLoginStore();
@@ -118,14 +122,16 @@ export default function AppointmentsTable() {
     <Drawer title="Appointment" isOpen={open} onClose={handleDrawerClose}>
         {loading ? (<LoadingSpinner />):(
             <>
-            <UpdateAppointmentForm
-                submitHandler={handleSubmit}
-                formState={form}
-                formSetter={setForm}
-                cancelledState={isCancelled}
-                error={error}
-                errorMessage={errorMessage}
-            />
+            <Suspense fallback={<LoadingSpinner />}>
+                <UpdateAppointmentForm
+                    submitHandler={handleSubmit}
+                    formState={form}
+                    formSetter={setForm}
+                    cancelledState={isCancelled}
+                    error={error}
+                    errorMessage={errorMessage}
+                />
+            </Suspense>
         
         <div style={{ display: "flex", justifyContent: "center" }}>
             <Button  disabled={isCancelled} onClick={handleCancel} style={{ backgroundColor: "red" }}>Cancel Appointment</Button>
