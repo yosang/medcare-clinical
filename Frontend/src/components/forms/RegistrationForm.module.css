@@ -1,4 +1,5 @@
 .formLayout {
+    border-radius: var(--radius);
     background-color: var(--brand-secondary);
     color: var(--bg-dark);
     height: 100%;
@@ -23,6 +24,7 @@
 }
 
 .personalDetails, .sensitiveDetails {
+    width: 100%;
     height: 100%;
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -37,10 +39,16 @@
 }
 
 @media (min-width: 900px) {
+    .formLayout {
+        border-top-left-radius: 0;
+        border-bottom-left-radius: 0;
+        border-top-right-radius: var(--radius);
+        border-bottom-right-radius: var(--radius);
+    }
     .inputs {
         flex-direction: row;
     }
-
+    
     .personalDetails, .sensitiveDetails {
         padding: var(--spacing-lg);
     }
@@ -49,4 +57,5 @@
         display: flex;
         flex-direction: column;
     }
+
 }

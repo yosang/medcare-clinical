@@ -17,6 +17,10 @@
     padding: var(--spacing-sm) 10vw;
 }
 
+.navLayout button {
+    width: 100%;
+}
+
 .logo {
     display: none;
 }

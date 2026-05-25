@@ -1,17 +1,22 @@
 .search {
     display: flex;
     flex-direction: column;
-    width: 100%;
     height: 70vh;
+    gap: 20px;
+    padding: var(--spacing-lg);
 }
 .formLayout {
     display: flex;
     gap: 20px;
-    width: 100%;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    padding: var(--spacing-sm) var(--spacing-md);
+}
+
+.formLayout input {
+    width: 50vw;
+}
+
+
+.formLayout {
+    width: 90vw;
 }
 
 .formLayout button {
@@ -21,27 +26,21 @@
 .formLayout input {
     padding: var(--spacing-sm) var(--spacing-sm);
     border-radius: var(--radius);
-    width: 30vw;
     transition: width 0.8s ease-in-out;
-}
-
-.formLayout input:focus  {
-    width: 60vw;
 }
 
 .searchResult {
     flex: 1;
 }
+
 @media (min-width: 900px) {
     .formLayout {
         flex-direction: row;
     }
 
     .formLayout input {
-        width: 10vw;
+        width: 40vw;
     }
 
-    .formLayout input:focus  {
-        width: 20vw;
-    }
+
 }

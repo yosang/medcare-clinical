@@ -46,6 +46,10 @@ export default function SearchPage() {
     return (
         <>
         <div className={styles.search}>
+            <div>
+                <h1>Find a doctor</h1>
+                <p>Search our network of world-class specialists.</p>
+            </div>
             <form onSubmit={handleSubmit} className={styles.formLayout}>
                 <input 
                     aria-label="Doctor search"

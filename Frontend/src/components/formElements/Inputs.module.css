@@ -1,5 +1,9 @@
 .layout {
     display: flex;
-    width: 70%;
+    width: 100%;
     flex-direction: column;
+}
+
+.layout input {
+    padding: var(--spacing-sm);
 }

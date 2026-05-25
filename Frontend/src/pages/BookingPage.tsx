@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState, type ChangeEvent, type SyntheticEvent } from "react"
-import DoctorSelection from "../components/forms/DoctorSelection";
-import CategorySelection from "../components/forms/CategorySelection";
+import DoctorSelection from "../components/formElements/DoctorSelection";
+import CategorySelection from "../components/formElements/CategorySelection";
 import { usePatientStore } from "../stores/usePatientStore";
 import LoadingSpinner from "../components/layout/LoadingSpinner";
 import { useDoctorsStore } from "../stores/useDoctorsStore";
@@ -14,8 +14,8 @@ import { ClipboardClock, Info } from "lucide-react";
 import { useLoginStore } from "../stores/useLoginStore";
 import AppointmentsTable from "../components/elements/AppointmentsTable";
 import TextInput from "../components/formElements/TextInput";
-import DateTimeSelector from "../components/forms/DateTimeSelector";
-import DurationSelection from "../components/forms/DurationSelection";
+import DateTimeSelector from "../components/formElements/DateTimeSelector";
+import DurationSelection from "../components/formElements/DurationSelection";
 import { PatientSchema } from "../schemas/patientSchema";
 
 export default function BookingPage() {

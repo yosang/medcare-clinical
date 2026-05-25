@@ -3,14 +3,12 @@ import styles from "./AppointmentsTable.module.css"
 import { Drawer } from "./Drawer"
 import { useAppointmentsStore } from "../../stores/useAppointmentsStore"
 import Button from "./Button";
-import CategorySelection from "../forms/CategorySelection";
-import DurationSelection from "../forms/DurationSelection";
-import DateTimeSelector from "../forms/DateTimeSelector";
-import TextArea from "../forms/TextArea";
+
 import { useLoginStore } from "../../stores/useLoginStore";
 import type { AppointmentUpdateForm } from "../../types/Appointments";
 import { toast } from "sonner";
 import LoadingSpinner from "../layout/LoadingSpinner";
+import UpdateAppointmentForm from "../forms/UpdateAppointmentForm";
 
 export default function AppointmentsTable() {
     const {token } = useLoginStore();
@@ -108,56 +106,27 @@ export default function AppointmentsTable() {
     })()
 
 
-        useEffect(() => {
-    
-            if(token) {
-                getAppointments(token);
-            }
-    
-        }, [])
+    useEffect(() => {
+
+        if(token) {
+            getAppointments(token);
+        }
+
+    }, [token])
 
     return  <>
     <Drawer title="Appointment" isOpen={open} onClose={handleDrawerClose}>
         {loading ? (<LoadingSpinner />):(
             <>
-            
-        <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", height: "85vh"}}>
-            <div style={{ display: "flex", flexDirection: "column", flex: 1 }}>
-                <br />
-
-                <DateTimeSelector 
-                    disabled={isCancelled}
-                    value={form?.appointmentDate}
-                    onChange={(e:ChangeEvent<HTMLSelectElement>) => setForm(prev => prev ? {...prev, appointmentDate: e.target.value}:prev)}
-                />
-
-                <DurationSelection  
-                    disabled={isCancelled}
-                    value={form?.duration} 
-                    onChange={(e: ChangeEvent<HTMLSelectElement>) => setForm(prev => prev ? {...prev, duration: +e.target.value}:prev)}  
-                />
-
-
-                <CategorySelection 
-                    disabled={isCancelled}
-                    value={form?.categoryId}
-                    onChange={(e: ChangeEvent<HTMLSelectElement>) => setForm(prev => prev ? {...prev, categoryId: +e.target.value}:prev)}
-                />
-                <br />
-
-                <TextArea 
-                    disabled={isCancelled}
-                    value={form?.note}
-                    onChange={(e: ChangeEvent<HTMLSelectElement>) => setForm(prev => prev ? {...prev, note: e.target.value}: prev)}
-                />
-                <br />
-                {error && <p style={{ color: "red" }}>{errorMessage}</p>}
-            </div>
-
-            <div style={{ display: "flex", justifyContent: "center", padding: "var(--spacing-md) 0"}}>
-                <Button disabled={isCancelled} type="submit" >Save</Button>
-            </div>
-        </form>
+            <UpdateAppointmentForm
+                submitHandler={handleSubmit}
+                formState={form}
+                formSetter={setForm}
+                cancelledState={isCancelled}
+                error={error}
+                errorMessage={errorMessage}
+            />
+        
         <div style={{ display: "flex", justifyContent: "center" }}>
             <Button  disabled={isCancelled} onClick={handleCancel} style={{ backgroundColor: "red" }}>Cancel Appointment</Button>
         </div>
