@@ -61,14 +61,14 @@ public class AppointmentService
         // If existing.Start <= New.End = overlap
         var doctorOverlap = await _ctx.Appointments.AsNoTracking().AnyAsync(ap => 
                                                                             ap.DoctorId == dto.DoctorId && ap.StatusId != 3 &&
-                                                                            ap.AppointmentDate.AddMinutes(ap.Duration) >= dto.AppointmentDate &&
-                                                                            ap.AppointmentDate <= dto.AppointmentDate.AddMinutes(dto.Duration)
+                                                                            ap.AppointmentDate.AddMinutes(ap.Duration) > dto.AppointmentDate &&
+                                                                            ap.AppointmentDate < dto.AppointmentDate.AddMinutes(dto.Duration)
                                                                         );
 
         var patientOverlap = await _ctx.Appointments.AsNoTracking().AnyAsync(ap => 
                                                                             ap.PatientId == dto.PatientId && ap.StatusId != 3 &&                                      
-                                                                            ap.AppointmentDate.AddMinutes(ap.Duration) >= dto.AppointmentDate &&
-                                                                            ap.AppointmentDate <= dto.AppointmentDate.AddMinutes(dto.Duration)
+                                                                            ap.AppointmentDate.AddMinutes(ap.Duration) > dto.AppointmentDate &&
+                                                                            ap.AppointmentDate < dto.AppointmentDate.AddMinutes(dto.Duration)
                                                                         );
 
         if (patientOverlap || doctorOverlap) return null;
