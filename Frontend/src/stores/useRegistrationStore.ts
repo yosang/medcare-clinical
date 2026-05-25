@@ -16,5 +16,6 @@ export const useRegistrationStore = create<RegistrationState>((set) => ({
             set({ error: true, errorMessage: err.message, loading: false })
             throw err;
         }
-    }
+    },
+    clearErrors: () => set({ error: false, errorMessage: null})
 }))

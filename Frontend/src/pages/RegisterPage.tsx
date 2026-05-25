@@ -5,22 +5,25 @@ import { toast } from "sonner";
 import styles from "./RegisterPage.module.css"
 
 import { useRegistrationStore } from "../stores/useRegistrationStore";
-import RegistrationForm from "../components/forms/RegistrationForm";
-import SideCard from "../components/elements/SideCard";
 import { RegistrationSchema } from "../schemas/registrationSchema";
 import { useValidationStore } from "../stores/useValidationStore";
+
+import RegistrationForm from "../components/forms/RegistrationForm";
+import SideCard from "../components/elements/SideCard";
+
 
 export default function RegisterPage() {
     
     const inputRef = useRef<HTMLInputElement | null>(null);
     const formRef = useRef<HTMLFormElement | null>(null);
 
-    const { loading,  registerPatient, errorMessage } = useRegistrationStore();
-    const { validationErrors, inputsWithErrors, validate, clearErrors } = useValidationStore();
+    const { registerPatient, clearErrors: clearBackendErrors } = useRegistrationStore();
+    const { validate, clearErrors } = useValidationStore();
 
     const handleSubmit = async(e: SyntheticEvent<HTMLFormElement>) => {
         e.preventDefault();
         clearErrors();
+        clearBackendErrors();
         
         const formData = new FormData(e.currentTarget);
         
@@ -37,9 +40,11 @@ export default function RegisterPage() {
             isRegistered: true
         }), {
             position: "top-center",
-            loading: "Registering...",
+            loading: "Creating account...",
             success: () => {
                 formRef.current?.reset();
+                clearErrors();
+                clearBackendErrors();
                 return "Registration successful!"
             },
             error: (err) => {
@@ -62,11 +67,6 @@ export default function RegisterPage() {
                     footerText="Secure Data Encryption"
                 />
                 
-                <RegistrationForm
-                    submitHandler={handleSubmit}
-                    validationErrors={validationErrors}
-                    backendError={errorMessage}
-                    loading={loading} 
-                    errors={inputsWithErrors} />
+                <RegistrationForm submitHandler={handleSubmit} />
             </div>
 }

@@ -37,7 +37,7 @@ export default function LoginPage() {
     
     return <div className={styles.mainLayout}>
                 <SideCard 
-                    imageLink="https://i.imgur.com/8WNM1hA.png"
+                    imageLink="https://i.imgur.com/QckLTs9.jpeg"
                     headerText="MedCare Clinical"
                     contentText="Access, manage and review your clinical appointments with ease."
                     footerText="Secure Healthcare Certified"

@@ -1,0 +1,26 @@
+.layout {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 35px;
+    padding: var(--spacing-md) var(--spacing-md);
+}
+
+.header {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.headerTextFirst {
+    color: var(--brand-primary);
+    text-transform: uppercase;
+}
+
+.headerTextSecond {
+    font-weight: 700;
+    line-height: 56px;
+    font-size: 50px;
+    letter-spacing: -0.02em;
+}

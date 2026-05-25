@@ -17,7 +17,8 @@ export interface RegistrationState {
     loading: boolean,
     error: boolean,
     errorMessage: string | null,
-    registerPatient: (payload: Registration) => Promise<void>
+    registerPatient: (payload: Registration) => Promise<void>,
+    clearErrors: () => void
 }
 
 export interface Login {

@@ -7,16 +7,17 @@ import TextInput from "../formElements/TextInput";
 import LoadingSpinner from "../layout/LoadingSpinner";
 
 import styles from "./RegistrationForm.module.css"
+import { useValidationStore } from "../../stores/useValidationStore";
+import { useRegistrationStore } from "../../stores/useRegistrationStore";
 
 type Props = { 
-    errors: string[], 
-    validationErrors: string[],
-    backendError: string | null,
-    loading: boolean 
     submitHandler: (e: SyntheticEvent<HTMLFormElement>) => void
 }
 
-const RegistrationForm = forwardRef(({ errors, loading, validationErrors, backendError, submitHandler, }:Props, ref: Ref<HTMLFormElement>) => {
+const RegistrationForm = forwardRef(({ submitHandler, }:Props, ref: Ref<HTMLFormElement>) => {
+
+    const { loading,  errorMessage } = useRegistrationStore();
+    const { validationErrors, inputsWithErrors } = useValidationStore();
 
     return <form onSubmit={submitHandler} className={styles.formLayout} ref={ref}>
                 <div className={styles.header}>
@@ -29,24 +30,24 @@ const RegistrationForm = forwardRef(({ errors, loading, validationErrors, backen
                             labelText="Firstname"
                             name="firstName"
                             placeholder="John"
-                            className={errors.includes("firstName") ? styles.errorInput : ""}
+                            className={inputsWithErrors.includes("firstName") ? styles.errorInput : ""}
                         />
                         <TextInput 
                             labelText="Lastname"
                             name="lastName"
                             placeholder="Doe"
-                            className={errors.includes("lastName") ? styles.errorInput : ""}
+                            className={inputsWithErrors.includes("lastName") ? styles.errorInput : ""}
                         />
                         <TextInput 
                             labelText="Phone number"
                             name="phone"
                             placeholder="462 00 264"
-                            className={errors.includes("phone") ? styles.errorInput : ""}
+                            className={inputsWithErrors.includes("phone") ? styles.errorInput : ""}
                             />
                         <DateInput 
                             labelText="Date of birth"
                             name="dateOfBirth"
-                            className={errors.includes("dateOfBirth") ? styles.errorInput : ""}
+                            className={inputsWithErrors.includes("dateOfBirth") ? styles.errorInput : ""}
                         />
                     </div>
                     <div className={styles.sensitiveDetails}>
@@ -54,19 +55,19 @@ const RegistrationForm = forwardRef(({ errors, loading, validationErrors, backen
                             labelText="Email"
                             name="email"
                             placeholder="example@domain.com"
-                            className={errors.includes("email") ? styles.errorInput : ""}
+                            className={inputsWithErrors.includes("email") ? styles.errorInput : ""}
                         />
 
                         <TextInput 
                             labelText="National Identity Number"
                             name="nationalIdentityNumber"
                             placeholder="DDMMÅÅXXXXX"
-                            className={errors.includes("nationalIdentityNumber") ? styles.errorInput : ""}
+                            className={inputsWithErrors.includes("nationalIdentityNumber") ? styles.errorInput : ""}
                         />
                         <PasswordInput 
                             labelText="Password"
                             name="password"
-                            className={errors.includes("password") ? styles.errorInput : ""}
+                            className={inputsWithErrors.includes("password") ? styles.errorInput : ""}
                         />
                     </div>
                 </div>
@@ -78,7 +79,7 @@ const RegistrationForm = forwardRef(({ errors, loading, validationErrors, backen
                     )
                 }
 
-                {backendError && <p style={{ color: "red" }}>{backendError}</p>}
+                {errorMessage && <p style={{ color: "red" }}>{errorMessage}</p>}
             </div>
 
             <Button type="submit" disabled={loading} >{loading ? (<LoadingSpinner />):"Register"}</Button>

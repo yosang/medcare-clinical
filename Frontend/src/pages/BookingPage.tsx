@@ -17,6 +17,7 @@ import TextInput from "../components/formElements/TextInput";
 import DateTimeSelector from "../components/formElements/DateTimeSelector";
 import DurationSelection from "../components/formElements/DurationSelection";
 import { PatientSchema } from "../schemas/patientSchema";
+import SideInfo from "../components/elements/SideInfo";
 
 export default function BookingPage() {
 
@@ -117,17 +118,15 @@ export default function BookingPage() {
     return (
     <>
     <div className={styles.mainLayout}>
-        {!token && (<div className={styles.sideInfo}>
-            <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
-                <h3 style={{ color: "var(--brand-primary)", textTransform: "uppercase"}}>professional healthcare</h3>
-                <h1 style={{ fontWeight: "700", lineHeight: "56px", fontSize: "50px", letterSpacing: "-0.02em" }}>Expert Medical Care at Your Fingertips.</h1>
-            </div>
+        {!token && 
+        (<SideInfo 
+            firstHeaderText="professional healthcare"
+            secondHeaderText="Expert Medical Care at Your Fingertips."
+            infoText="Register to track your history. Log in to manage past appointments effortlessly."
+        >
             <p> Schedule your visit with our world-class specialists in just a few clicks. Your health is our primary mission, supported by precision and absolute trust.</p>
-            <div className={styles.infoCard}>
-                <Info size={40} fill="var(--color-primary)" style={{ color: "var(--color-primary-text)" }} />
-                <p><strong>Register to track your history.</strong> Log in to manage past appointments effortlessly. </p>
-            </div>
-        </div>)}
+        </SideInfo>)
+        }
         
         <form onSubmit={handleSubmit} className={styles.formLayout}>
             <div style={{ display: "flex", alignItems: "center", gap: "5px", padding: "var(--spacing-md)" }}>
