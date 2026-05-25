@@ -2,7 +2,7 @@ import { forwardRef, type InputHTMLAttributes, type Ref } from "react"
 import styles from "./Inputs.module.css"
 
 type Props = {
-    labelText: string,
+    labelText?: string,
     name?: string
 } & InputHTMLAttributes<HTMLInputElement>
 

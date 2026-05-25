@@ -1,18 +1,20 @@
-import { useEffect, useRef, useState,  type ChangeEvent,  type SyntheticEvent } from "react"
+import { lazy, Suspense, useEffect, useRef, useState,  type ChangeEvent,  type SyntheticEvent } from "react"
 import type { Doctor } from "../types/Doctors";
 import { fetchDoctorsBySearch } from "../api/shared";
 import LoadingSpinner from "../components/layout/LoadingSpinner";
-import DoctorList from "../components/layout/DoctorList";
 import Button from "../components/elements/Button";
 import styles from "./SearchPage.module.css";
+import TextInput from "../components/formElements/TextInput";
+
+const DoctorList = lazy(() => import("../components/layout/DoctorList"))
 
 export default function SearchPage() {
     const inputRef = useRef<HTMLInputElement | null>(null);
 
     const [term, setTerm] = useState("");
-        const [doctors, setDoctors] = useState<Doctor[] | null>(null)
-        const [error, setError] = useState(false);
-        const [isLoading, setIsLoading] = useState(false);
+    const [doctors, setDoctors] = useState<Doctor[] | null>(null)
+    const [error, setError] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
 
     const handleSubmit = async (e: SyntheticEvent) => {
         e.preventDefault();
@@ -48,15 +50,12 @@ export default function SearchPage() {
         <div className={styles.search}>
             <div>
                 <h1>Find a doctor</h1>
-                <p>Search our network of world-class specialists.</p>
             </div>
             <form onSubmit={handleSubmit} className={styles.formLayout}>
-                <input 
-                    aria-label="Doctor search"
+                <TextInput 
                     ref={inputRef}
-                    name="name"
-                    value={term}
                     placeholder="Enter firstname or lastname"
+                    value={term}
                     onChange={handleChange}
                 />
                 <Button type="submit">Search</Button>
@@ -67,7 +66,11 @@ export default function SearchPage() {
 
                 {doctors && doctors.length < 1 && <p>No match</p>}
 
-                {doctors && <DoctorList data={doctors}/>}
+                {doctors && (
+                    <Suspense fallback={<LoadingSpinner />}>
+                        <DoctorList data={doctors}/>
+                    </Suspense>
+                )}
 
                 {error && <p style={{ color: "red" }}>Internal Server Error</p>}
             </div>

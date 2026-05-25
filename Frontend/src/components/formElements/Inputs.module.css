@@ -1,9 +1,12 @@
 .layout {
     display: flex;
-    width: 100%;
+    padding: var(--spacing-md);
+    gap: 5px;
     flex-direction: column;
 }
 
 .layout input {
+    border: 1px solid var(--color-muted);
+    border-radius: var(--radius);
     padding: var(--spacing-sm);
 }

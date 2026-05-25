@@ -1,13 +1,13 @@
 .search {
     display: flex;
     flex-direction: column;
-    height: 70vh;
     gap: 20px;
     padding: var(--spacing-lg);
+    height: 70vh;
 }
 .formLayout {
     display: flex;
-    gap: 20px;
+    justify-content: flex-start;
 }
 
 .formLayout input {
