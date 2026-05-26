@@ -6,6 +6,7 @@ import { useLoginStore } from "../../stores/useLoginStore"
 import { usePatientStore } from "../../stores/usePatientStore";
 import { useValidationStore } from "../../stores/useValidationStore";
 import { useAppointmentsStore } from "../../stores/useAppointmentsStore";
+import { useDoctorsStore } from "../../stores/useDoctorsStore";
 
 import styles from "./BookingForm.module.css"
 
@@ -16,9 +17,9 @@ import CategorySelection from "../formElements/CategorySelection";
 import DateTimeSelector from "../formElements/DateTimeSelector";
 import DurationSelection from "../formElements/DurationSelection";
 import LoadingSpinner from "../layout/LoadingSpinner";
+
 import { toast } from "sonner";
 import { PatientSchema } from "../../schemas/patientSchema";
-import { useDoctorsStore } from "../../stores/useDoctorsStore";
 
 export default function BookingForm() {
 
@@ -26,23 +27,17 @@ export default function BookingForm() {
     const { getClinicId } = useDoctorsStore();
     const { error, errorMessage, clearErrors: clearBackendErrors, loading: loadingAppointment, createAppointment, getAppointments} = useAppointmentsStore();
     const { loading: loadingPatient, patient, createPatient } = usePatientStore();
-
-    const [firstname, setFirstname] = useState("");
-    const [lastname, setLastname] = useState("");
-    const [phone, setPhone] = useState("");
-    const [note, setNote] = useState("");
-    const [duration, setDuration] = useState("30");
-    const [appointmentDateAndTime, setAppointmentDateAndTime] = useState("");
     
-    const { validationErrors, validate, clearErrors} = useValidationStore()
+    const [form, setForm] = useState({
+        firstname: "",
+        lastname: "",
+        phone: "",
+        note: "",
+        duration: "30",
+        appointmentDateAndTime: ""
+    })
 
-    const clearInputs = () => {
-            setFirstname("");
-            setLastname("");
-            setPhone("");
-            setNote("");
-            clearErrors();
-    }
+    const { validationErrors, inputsWithErrors, validate, clearErrors} = useValidationStore()
 
     const handleSubmit = async(e: SyntheticEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -51,15 +46,17 @@ export default function BookingForm() {
 
         const formData = new FormData(e.currentTarget);
         const docId = formData.get("DoctorId") as string;
+        const clinicId = getClinicId(docId) as string;
+        const categoryId = formData.get("CategoryId") as string;
 
         const patientData = token && patient ? { 
             firstname: patient.firstName,
             lastname: patient.lastName,
             phone: patient.phone
          }:{
-            firstname,
-            lastname,
-            phone
+            firstname: form.firstname,
+            lastname: form.lastname,
+            phone: form.phone
         }
 
         validate(PatientSchema, patientData)
@@ -68,19 +65,18 @@ export default function BookingForm() {
             const newPatient = await createPatient(patientData)
     
             toast.promise(createAppointment({
-                AppointmentDate: appointmentDateAndTime,
-                Duration: Number(duration),
+                AppointmentDate: form.appointmentDateAndTime,
+                Duration: Number(form.duration),
                 
-                Note: note,
+                Note: form.note,
                 PatientId: Number(newPatient.id),
                 DoctorId: Number(docId),
-                ClinicId: Number(getClinicId(docId)),
-                CategoryId: Number(formData.get("CategoryId")),
+                ClinicId: Number(clinicId),
+                CategoryId: Number(categoryId),
                 StatusId: 1
             }), {
                 loading: "Creating your ppointment...",
                 success: () => {
-                    clearInputs();
                     clearErrors();
                     clearBackendErrors();
 
@@ -97,7 +93,7 @@ export default function BookingForm() {
         } catch(err)
         {
             console.log("Something went wrong during patient creation", err)
-            toast.error("Failed to save patient data")
+            toast.error("Failed to save patient data, please check your details and try again.")
         }
 
     }
@@ -111,24 +107,27 @@ export default function BookingForm() {
             {!token && (<div className={styles.personalDetails}>
                 <TextInput 
                     labelText="Firstname"
-                    value={token && patient?.firstName || firstname}
+                    value={token && patient?.firstName || form.firstname}
                     placeholder={token && patient ? patient.firstName:"John"}
                     disabled={!!token}
-                    onChange={(e) => setFirstname(e.target.value)}
+                    onChange={(e) => setForm(prev => ({ ...prev, firstname: e.target.value }))}
+                    style={inputsWithErrors.includes("firstname") ? { border: "1px solid red"}:{}}
                     />
                 <TextInput 
                     labelText="Lastname"
-                    value={token && patient?.lastName || lastname}
+                    value={token && patient?.lastName || form.lastname}
                     placeholder={token && patient ? patient.lastName:"Doe"}
                     disabled={!!token}
-                    onChange={(e) => setLastname(e.target.value)}
+                    onChange={(e) => setForm(prev => ({ ...prev, lastname: e.target.value}))}
+                    style={inputsWithErrors.includes("lastname") ? { border: "1px solid red"}:{}}
                 />
                 <TextInput 
                     labelText="Phone number"
-                    value={token && patient?.phone || phone}
+                    value={token && patient?.phone || form.phone}
                     placeholder={token && patient ? patient.phone:"912 34 567"}
                     disabled={!!token}
-                    onChange={(e) => setPhone(e.target.value)}
+                    onChange={(e) => setForm(prev => ({ ...prev, phone: e.target.value }))}
+                    style={inputsWithErrors.includes("phone") ? { border: "1px solid red"}:{}}
                 />
             </div>)}
             
@@ -139,8 +138,8 @@ export default function BookingForm() {
                     Want to leave a note to your doctor?
                     <textarea 
                         name="Note"
-                        value={note}
-                        onChange={e => setNote(e.target.value)}
+                        value={form.note}
+                        onChange={e => setForm(prev => ({ ...prev, note: e.target.value}))}
                     />
                 </label>
             </div>
@@ -149,12 +148,12 @@ export default function BookingForm() {
                 <DateTimeSelector 
                     required
                     type="datetime-local"
-                    value={appointmentDateAndTime}
-                    onChange={(e: ChangeEvent<HTMLInputElement>) => setAppointmentDateAndTime(e.target.value)}
+                    value={form.appointmentDateAndTime}
+                    onChange={(e: ChangeEvent<HTMLInputElement>) => setForm(prev => ({ ...prev, appointmentDateAndTime: e.target.value}))}
                     min={new Date().toISOString().slice(0, 16)}
                 />
                 <DurationSelection 
-                    value={duration} onChange={(e: ChangeEvent<HTMLSelectElement>) => setDuration(e.target.value)}
+                    value={form.duration} onChange={(e: ChangeEvent<HTMLSelectElement>) => setForm(prev => ({ ...prev, duration: e.target.value}))}
                 />
             </div>
             
@@ -163,8 +162,8 @@ export default function BookingForm() {
             <div className={styles.messages}>
 
                 {validationErrors && validationErrors.length > 0 && (
-                        validationErrors.map((error => (
-                            <p style={{ color: "red" }}>{error}</p>
+                        validationErrors.map(((error, index) => (
+                            <p key={index} style={{ color: "red" }}>{error}</p>
                         )))
                     )
                 }

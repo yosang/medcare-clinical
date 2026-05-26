@@ -28,31 +28,29 @@ export default function BookingPage() {
 
     }, [token])
 
-    return (
-    <>
-    <div className={styles.mainLayout}>
-        {!token && 
-        (<SideInfo 
-            firstHeaderText="professional healthcare"
-            secondHeaderText="Expert Medical Care at Your Fingertips."
-            infoText="Register to track your history. Log in to manage past appointments effortlessly."
-        >
-            <p> Schedule your visit with our world-class specialists in just a few clicks. Your health is our primary mission, supported by precision and absolute trust.</p>
-        </SideInfo>)
-        }
-        <Suspense fallback={<LoadingSpinner />}>
-            <BookingForm />
-        </Suspense>
-
-        {token && 
-            <div className={styles.appointmentHistory}>
-                <h1>My appointments</h1>
-                <Suspense fallback={<LoadingSpinner />}>
-                    <AppointmentsTable />
-                </Suspense>
-            </div>
-        }
-    </div>
-    </>
-    )
+    return <div className={styles.mainLayout}>
+            
+               {!token && 
+                   (<SideInfo 
+                       firstHeaderText="professional healthcare"
+                       secondHeaderText="Expert Medical Care at Your Fingertips."
+                       infoText="Register to track your history. Log in to manage past appointments effortlessly."
+                   >
+                       <p> Schedule your visit with our world-class specialists in just a few clicks. Your health is our primary mission, supported by precision and absolute trust.</p>
+                   </SideInfo>)
+               }
+        
+               <Suspense fallback={<LoadingSpinner />}>
+                   <BookingForm />
+               </Suspense>
+           
+               {token && 
+                   <div className={styles.appointmentHistory}>
+                       <h1>My appointments</h1>
+                       <Suspense fallback={<LoadingSpinner />}>
+                           <AppointmentsTable />
+                       </Suspense>
+                   </div>
+               }
+           </div>
 }
