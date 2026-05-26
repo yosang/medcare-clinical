@@ -15,7 +15,7 @@ export const useValidationStore = create<ValidationState>((set) => ({
         const validation = schema.safeParse(data);
         if(!validation.success) {
             set({
-                validationErrors: validation.error.issues.map(err => `${err.path}: ${err.message} `),
+                validationErrors: validation.error.issues.map(err => err.message),
                 inputsWithErrors: validation.error.issues.map(err => String(err.path[0])),
             })
             return;
