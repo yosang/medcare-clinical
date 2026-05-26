@@ -7,7 +7,6 @@ import styles from "./BookingPage.module.css"
 import { useLoginStore } from "../stores/useLoginStore";
 
 import SideInfo from "../components/elements/SideInfo";
-import LoadingSpinner from "../components/layout/LoadingSpinner";
 import BookingFormSkeleton from "../components/skeletons/BookingFormSkeleton";
 import AppointmentsTableSkeleton from "../components/skeletons/AppointmentsTableSkeleton";
 
