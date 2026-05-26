@@ -8,6 +8,14 @@
 
     cursor: pointer;
     animation: appear 0.8s ease-in-out forwards;
+    border: 1px solid transparent;
+    border-radius: var(--radius);
+    transition: background-color 0.3s ease-in-out;
+}
+
+.switcher:hover {
+    border: 1px solid var(--color-muted);
+    background-color: rgba(255,255,255,0.3)
 }
 
 .sun, .moon {
