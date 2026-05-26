@@ -23,19 +23,21 @@ import { PatientSchema } from "../../schemas/patientSchema";
 
 export default function BookingForm() {
 
-    const { token } = useLoginStore();
-    const { getClinicId } = useDoctorsStore();
-    const { error, errorMessage, clearErrors: clearBackendErrors, loading: loadingAppointment, createAppointment, getAppointments} = useAppointmentsStore();
-    const { loading: loadingPatient, patient, createPatient } = usePatientStore();
-    
-    const [form, setForm] = useState({
+    const initialState = {
         firstname: "",
         lastname: "",
         phone: "",
         note: "",
         duration: "30",
         appointmentDateAndTime: ""
-    })
+    }
+
+    const { token } = useLoginStore();
+    const { getClinicId } = useDoctorsStore();
+    const { error, errorMessage, clearErrors: clearBackendErrors, loading: loadingAppointment, createAppointment, getAppointments} = useAppointmentsStore();
+    const { loading: loadingPatient, patient, createPatient } = usePatientStore();
+    
+    const [form, setForm] = useState(initialState)
 
     const { validationErrors, inputsWithErrors, validate, clearErrors} = useValidationStore()
 
@@ -79,6 +81,7 @@ export default function BookingForm() {
                 success: () => {
                     clearErrors();
                     clearBackendErrors();
+                    setForm(initialState);
 
                     if(token) getAppointments(token);
 
@@ -151,6 +154,7 @@ export default function BookingForm() {
                     value={form.appointmentDateAndTime}
                     onChange={(e: ChangeEvent<HTMLInputElement>) => setForm(prev => ({ ...prev, appointmentDateAndTime: e.target.value}))}
                     min={new Date().toISOString().slice(0, 16)}
+                    style={error ? { border: "1px solid red"}:{}}
                 />
                 <DurationSelection 
                     value={form.duration} onChange={(e: ChangeEvent<HTMLSelectElement>) => setForm(prev => ({ ...prev, duration: e.target.value}))}

@@ -1,4 +1,4 @@
-import { useEffect, useRef, type SyntheticEvent } from "react"
+import { lazy, Suspense, type SyntheticEvent } from "react"
 
 import { toast } from "sonner";
 
@@ -8,15 +8,12 @@ import { useRegistrationStore } from "../stores/useRegistrationStore";
 import { RegistrationSchema } from "../schemas/registrationSchema";
 import { useValidationStore } from "../stores/useValidationStore";
 
-import RegistrationForm from "../components/forms/RegistrationForm";
+const RegistrationForm = lazy(() => import("../components/forms/RegistrationForm"))
 import SideCard from "../components/elements/SideCard";
-
+import LoadingSpinner from "../components/layout/LoadingSpinner";
 
 export default function RegisterPage() {
     
-    const inputRef = useRef<HTMLInputElement | null>(null);
-    const formRef = useRef<HTMLFormElement | null>(null);
-
     const { registerPatient, clearErrors: clearBackendErrors } = useRegistrationStore();
     const { validate, clearErrors } = useValidationStore();
 
@@ -42,7 +39,6 @@ export default function RegisterPage() {
             position: "top-center",
             loading: "Creating account...",
             success: () => {
-                formRef.current?.reset();
                 clearErrors();
                 clearBackendErrors();
                 return "Registration successful!"
@@ -55,10 +51,6 @@ export default function RegisterPage() {
 
     }
 
-    useEffect(() => {
-        inputRef.current?.focus();
-    }, [])
-
     return <div className={styles.mainLayout}>
                 <SideCard 
                     imageLink="https://i.imgur.com/8WNM1hA.png"
@@ -67,6 +59,8 @@ export default function RegisterPage() {
                     footerText="Secure Data Encryption"
                 />
                 
-                <RegistrationForm submitHandler={handleSubmit} />
+                <Suspense fallback={<LoadingSpinner />}>
+                    <RegistrationForm submitHandler={handleSubmit} />
+                </Suspense>
             </div>
 }

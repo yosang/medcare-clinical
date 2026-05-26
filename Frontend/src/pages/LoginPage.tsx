@@ -1,12 +1,14 @@
-import { type ChangeEvent } from "react";
+import { lazy, Suspense, type ChangeEvent } from "react";
 import { useLoginStore } from "../stores/useLoginStore";
 import { toast } from "sonner"
 import { useNavigate } from "react-router";
-import LoginForm from "../components/forms/LoginForm";
+
+const LoginForm = lazy(() => import("../components/forms/LoginForm"))
 
 import styles from "./LoginPage.module.css"
 
 import SideCard from "../components/elements/SideCard";
+import LoadingSpinner from "../components/layout/LoadingSpinner";
 
 export default function LoginPage() {
 
@@ -42,6 +44,8 @@ export default function LoginPage() {
                     contentText="Access, manage and review your clinical appointments with ease."
                     footerText="Secure Healthcare Certified"
                 />
-                <LoginForm submitHandler={handleSubmit} />
+                <Suspense fallback={<LoadingSpinner />}>
+                    <LoginForm submitHandler={handleSubmit} />
+                </Suspense>
             </div>
 }

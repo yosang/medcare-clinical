@@ -30,24 +30,24 @@ const RegistrationForm = forwardRef(({ submitHandler, }:Props, ref: Ref<HTMLForm
                             labelText="Firstname"
                             name="firstName"
                             placeholder="John"
-                            className={inputsWithErrors.includes("firstName") ? styles.errorInput : ""}
+                            style={inputsWithErrors.includes("firstName") ? { border: "1px solid red"}:{}}
                         />
                         <TextInput 
                             labelText="Lastname"
                             name="lastName"
                             placeholder="Doe"
-                            className={inputsWithErrors.includes("lastName") ? styles.errorInput : ""}
+                            style={inputsWithErrors.includes("lastName") ? { border: "1px solid red"}:{}}
                         />
                         <TextInput 
                             labelText="Phone number"
                             name="phone"
                             placeholder="462 00 264"
-                            className={inputsWithErrors.includes("phone") ? styles.errorInput : ""}
+                            style={inputsWithErrors.includes("phone") ? { border: "1px solid red"}:{}}
                             />
                         <DateInput 
                             labelText="Date of birth"
                             name="dateOfBirth"
-                            className={inputsWithErrors.includes("dateOfBirth") ? styles.errorInput : ""}
+                            style={inputsWithErrors.includes("dateOfBirth") ? { border: "1px solid red"}:{}}
                         />
                     </div>
                     <div className={styles.sensitiveDetails}>
@@ -55,19 +55,19 @@ const RegistrationForm = forwardRef(({ submitHandler, }:Props, ref: Ref<HTMLForm
                             labelText="Email"
                             name="email"
                             placeholder="example@domain.com"
-                            className={inputsWithErrors.includes("email") ? styles.errorInput : ""}
-                        />
+                            style={inputsWithErrors.includes("email") ? { border: "1px solid red"}:{}}
+                            />
 
                         <TextInput 
                             labelText="National Identity Number"
                             name="nationalIdentityNumber"
                             placeholder="DDMMÅÅXXXXX"
-                            className={inputsWithErrors.includes("nationalIdentityNumber") ? styles.errorInput : ""}
-                        />
+                            style={inputsWithErrors.includes("nationalIdentityNumber") ? { border: "1px solid red"}:{}}
+                            />
                         <PasswordInput 
                             labelText="Password"
                             name="password"
-                            className={inputsWithErrors.includes("password") ? styles.errorInput : ""}
+                            style={inputsWithErrors.includes("password") ? { border: "1px solid red"}:{}}
                         />
                     </div>
                 </div>
