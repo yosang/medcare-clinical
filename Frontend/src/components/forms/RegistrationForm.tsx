@@ -7,8 +7,10 @@ import TextInput from "../formElements/TextInput";
 import LoadingSpinner from "../layout/LoadingSpinner";
 
 import styles from "./RegistrationForm.module.css"
+
 import { useValidationStore } from "../../stores/useValidationStore";
 import { useRegistrationStore } from "../../stores/useRegistrationStore";
+import { useShallow } from "zustand/shallow";
 
 type Props = { 
     submitHandler: (e: SyntheticEvent<HTMLFormElement>) => void
@@ -16,8 +18,16 @@ type Props = {
 
 const RegistrationForm = forwardRef(({ submitHandler, }:Props, ref: Ref<HTMLFormElement>) => {
 
-    const { loading,  errorMessage } = useRegistrationStore();
-    const { validationErrors, inputsWithErrors } = useValidationStore();
+    // Zustand states
+    const { loading,  errorMessage } = useRegistrationStore(useShallow(s => ({
+        loading: s.loading,
+        errorMessage: s.errorMessage
+    })));
+    
+    const { validationErrors, inputsWithErrors } = useValidationStore(useShallow(s => ({
+        validationErrors: s.validationErrors,
+        inputsWithErrors: s.inputsWithErrors
+    })));
 
     return <form onSubmit={submitHandler} className={styles.formLayout} ref={ref}>
                 <div className={styles.header}>

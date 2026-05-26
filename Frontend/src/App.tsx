@@ -18,7 +18,7 @@ import LoadingSpinner from "./components/layout/LoadingSpinner"
 
 function App() {
 
-  const { refreshAccessToken } = useLoginStore();
+  const refreshAccessToken = useLoginStore(s => s.refreshAccessToken);
 
   useEffect(() => {
 

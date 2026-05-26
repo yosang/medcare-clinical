@@ -5,17 +5,22 @@ import LoadingSpinner from "../components/layout/LoadingSpinner";
 import Button from "../components/elements/Button";
 import styles from "./SearchPage.module.css";
 import TextInput from "../components/formElements/TextInput";
+import DoctorListSkeleton from "../components/skeletons/DoctorListSkeleton";
 
 const DoctorList = lazy(() => import("../components/layout/DoctorList"))
 
 export default function SearchPage() {
+    
+    // refs
     const inputRef = useRef<HTMLInputElement | null>(null);
 
+    // Local states
     const [term, setTerm] = useState("");
     const [doctors, setDoctors] = useState<Doctor[] | null>(null)
     const [error, setError] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
 
+    // handlers
     const handleSubmit = async (e: SyntheticEvent) => {
         e.preventDefault();
         if(!term.trim()) return;
@@ -41,6 +46,7 @@ export default function SearchPage() {
         setTerm(e.target.value)
     }
 
+    // effects
     useEffect(() => {
         inputRef.current?.focus();
     }, [])
@@ -67,7 +73,7 @@ export default function SearchPage() {
                 {doctors && doctors.length < 1 && <p>No match</p>}
 
                 {doctors && (
-                    <Suspense fallback={<LoadingSpinner />}>
+                    <Suspense fallback={<DoctorListSkeleton />}>
                         <DoctorList data={doctors}/>
                     </Suspense>
                 )}

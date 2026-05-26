@@ -11,12 +11,19 @@ import styles from "./Header.module.css";
 import logo from "../../assets/logo.png"
 import Button from "../elements/Button";
 import ThemeSwitch from "../elements/ThemSwitch";
+import { useShallow } from "zustand/shallow";
 
 export default function Header() {
 
     const navigate = useNavigate();
-    const { token, logout } = useLoginStore();
 
+    // Zustand states
+    const { token, logout } = useLoginStore(useShallow(s => ({
+        token: s.token,
+        logout: s.logout
+    })));
+
+    // handlers
     const handleLogout = () => {
         navigate("/");
         logout();

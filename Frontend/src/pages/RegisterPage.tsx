@@ -8,15 +8,27 @@ import { useRegistrationStore } from "../stores/useRegistrationStore";
 import { RegistrationSchema } from "../schemas/registrationSchema";
 import { useValidationStore } from "../stores/useValidationStore";
 
-const RegistrationForm = lazy(() => import("../components/forms/RegistrationForm"))
 import SideCard from "../components/elements/SideCard";
-import LoadingSpinner from "../components/layout/LoadingSpinner";
+import { useShallow } from "zustand/shallow";
+import RegistrationSkeleton from "../components/skeletons/RegistrationSkeleton";
+
+// lazy loaded component
+const RegistrationForm = lazy(() => import("../components/forms/RegistrationForm"))
 
 export default function RegisterPage() {
     
-    const { registerPatient, clearErrors: clearBackendErrors } = useRegistrationStore();
-    const { validate, clearErrors } = useValidationStore();
+    // Zustand states
+    const { registerPatient, clearErrors: clearBackendErrors } = useRegistrationStore(useShallow(s => ({
+        registerPatient: s.registerPatient,
+        clearErrors: s.clearErrors
+    })));
 
+    const { validate, clearErrors } = useValidationStore(useShallow(s => ({
+        validate: s.validate,
+        clearErrors: s.clearErrors
+    })));
+
+    // handlers
     const handleSubmit = async(e: SyntheticEvent<HTMLFormElement>) => {
         e.preventDefault();
         clearErrors();
@@ -59,7 +71,7 @@ export default function RegisterPage() {
                     footerText="Secure Data Encryption"
                 />
                 
-                <Suspense fallback={<LoadingSpinner />}>
+                <Suspense fallback={<RegistrationSkeleton />}>
                     <RegistrationForm submitHandler={handleSubmit} />
                 </Suspense>
             </div>

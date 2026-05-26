@@ -3,9 +3,16 @@ import LoadingSpinner from "../layout/LoadingSpinner";
 import { useCategoriesStore } from "../../stores/useCategoriesStore";
 
 import styles from "./SelectElement.module.css"
+import { useShallow } from "zustand/shallow";
 
 export default function CategorySelection({...props}) {
-        const { categories, loading, error, fetchCategories } = useCategoriesStore();
+   
+        const { categories, loading, error, fetchCategories } = useCategoriesStore(useShallow(s => ({
+            categories: s.categories,
+            loading: s.loading,
+            error: s.error,
+            fetchCategories: s.fetchCategories
+        })));
 
         useEffect(() => {
            if(!categories) fetchCategories();

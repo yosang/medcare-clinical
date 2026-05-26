@@ -7,12 +7,21 @@ import Button from "../elements/Button";
 import LoadingSpinner from "../layout/LoadingSpinner";
 import EmailInput from "../formElements/EmailInput";
 import PasswordInput from "../formElements/PasswordInput";
+import { useShallow } from "zustand/shallow";
 
 export default function LoginForm({ submitHandler }:{ submitHandler: (e: ChangeEvent<HTMLFormElement>) => void }) {
 
-    const { loading, error, errorMessage } = useLoginStore();
+    // Zustands tates
+    const { loading, error, errorMessage } = useLoginStore(useShallow(s => ({
+        loading: s.loading,
+        error: s.error,
+        errorMessage: s.errorMessage
+    })));
+    
+    // refs
     const emailref = useRef<HTMLInputElement | null>(null);
 
+    // effects
     useEffect(() => {
         emailref.current?.focus();
     }, [])

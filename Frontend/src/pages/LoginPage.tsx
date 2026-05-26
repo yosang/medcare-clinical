@@ -3,19 +3,21 @@ import { useLoginStore } from "../stores/useLoginStore";
 import { toast } from "sonner"
 import { useNavigate } from "react-router";
 
-const LoginForm = lazy(() => import("../components/forms/LoginForm"))
-
 import styles from "./LoginPage.module.css"
 
 import SideCard from "../components/elements/SideCard";
-import LoadingSpinner from "../components/layout/LoadingSpinner";
+import LoginSkeleton from "../components/skeletons/LoginSkeleton";
+
+// lazy loaded
+const LoginForm = lazy(() => import("../components/forms/LoginForm"))
 
 export default function LoginPage() {
 
+    // Zustand states
     const navigate = useNavigate();
+    const loginPatient = useLoginStore((s) => s.loginPatient);
 
-    const { loginPatient} = useLoginStore();
-
+    // handlers
     const handleSubmit = (e: ChangeEvent<HTMLFormElement>) => {
         e.preventDefault();
 
@@ -44,7 +46,7 @@ export default function LoginPage() {
                     contentText="Access, manage and review your clinical appointments with ease."
                     footerText="Secure Healthcare Certified"
                 />
-                <Suspense fallback={<LoadingSpinner />}>
+                <Suspense fallback={<LoginSkeleton />}>
                     <LoginForm submitHandler={handleSubmit} />
                 </Suspense>
             </div>

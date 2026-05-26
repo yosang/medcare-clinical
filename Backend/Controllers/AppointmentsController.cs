@@ -96,7 +96,7 @@ public class AppointmentsController : ControllerBase
         if (result == null) return BadRequest(new ProblemDetails
         {
             Title = "Date overlap",
-            Detail = "Provided date and time overlaps with an existing active appointment",
+            Detail = "The selected time overlaps with an existing appointment. Please choose a different time slot.",
             Status = StatusCodes.Status400BadRequest
         });
 
@@ -142,7 +142,7 @@ public class AppointmentsController : ControllerBase
         if (result.overlap) return BadRequest(new ProblemDetails
         {
             Title = "Date overlap",
-            Detail = "Provided date and time overlaps with an existing appointment",
+            Detail = "The selected time overlaps with an existing appointment. Please choose a different time slot.",
             Status = StatusCodes.Status400BadRequest
         });
 

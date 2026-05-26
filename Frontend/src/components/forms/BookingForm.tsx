@@ -20,9 +20,37 @@ import LoadingSpinner from "../layout/LoadingSpinner";
 
 import { toast } from "sonner";
 import { PatientSchema } from "../../schemas/patientSchema";
+import { useShallow } from "zustand/shallow";
 
 export default function BookingForm() {
 
+    // Zustand states
+    const token = useLoginStore(s => s.token)
+    const getClinicId = useDoctorsStore(s => s.getClinicId);
+
+    const { error, errorMessage, clearErrors: clearBackendErrors, loading: loadingAppointment, createAppointment, getAppointments} = useAppointmentsStore(useShallow(s => ({
+        error: s.error,
+        errorMessage: s.errorMessage,
+        clearErrors: s.clearErrors,
+        loading: s.loading,
+        createAppointment: s.createAppointment,
+        getAppointments: s.getAppointments
+    })));
+
+    const { loading: loadingPatient, patient, createPatient } = usePatientStore(useShallow(s => ({
+        loading: s.loading,
+        patient: s.patient,
+        createPatient: s.createPatient
+    })));
+
+    const { validationErrors, inputsWithErrors, validate, clearErrors} = useValidationStore(useShallow(s => ({
+        validationErrors: s.validationErrors,
+        inputsWithErrors: s.inputsWithErrors,
+        validate: s.validate,
+        clearErrors: s.clearErrors
+    })))
+    
+    // Local states
     const initialState = {
         firstname: "",
         lastname: "",
@@ -32,15 +60,9 @@ export default function BookingForm() {
         appointmentDateAndTime: ""
     }
 
-    const { token } = useLoginStore();
-    const { getClinicId } = useDoctorsStore();
-    const { error, errorMessage, clearErrors: clearBackendErrors, loading: loadingAppointment, createAppointment, getAppointments} = useAppointmentsStore();
-    const { loading: loadingPatient, patient, createPatient } = usePatientStore();
-    
     const [form, setForm] = useState(initialState)
-
-    const { validationErrors, inputsWithErrors, validate, clearErrors} = useValidationStore()
-
+    
+    // Handlers
     const handleSubmit = async(e: SyntheticEvent<HTMLFormElement>) => {
         e.preventDefault();
         clearErrors();
@@ -89,7 +111,7 @@ export default function BookingForm() {
                 },
                 error: (err) => {
                     console.log("Something went wrong during appointment creation", err)
-                    return "Appointment creation failed"
+                    return "Appointment creation failed, please check your details and try again."
                 }
             })
 
