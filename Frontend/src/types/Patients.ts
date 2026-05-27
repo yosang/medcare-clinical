@@ -20,11 +20,3 @@ export interface GuestPatient {
     lastname: string,
     phone: string
 }
-
-export interface PatientState {
-    patient: Patient | null,
-    loading: boolean,
-    error: boolean,
-    createPatient: (payload: GuestPatientPayload) => Promise<GuestPatient>,
-    getPatient: (token: string) => Promise<void>
-}

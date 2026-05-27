@@ -1,35 +1,28 @@
-import { useEffect } from "react";
-import LoadingSpinner from "../layout/LoadingSpinner";
-import { useDoctorsStore } from "../../stores/useDoctorsStore";
-
 import styles from "./SelectElement.module.css"
+import { useDoctors } from "../../queries/useLookupQueries";
+import Skeleton from "react-loading-skeleton";
 
-export default function DoctorSelection() {
-        const { doctors, loading, error, fetchDoctors } = useDoctorsStore();
+export default function DoctorSelection({...props}) {
 
-        useEffect(() => {
-            if(!doctors) {
-                const fetchDocs = async() => {
-                    try {
-                        await fetchDoctors();
-                    } catch(err) {
-                        console.log("Something went wrong during fetch of doctors", err)
-                    }
-                }
-                fetchDocs();
-            }
-        }, [doctors, fetchDoctors])
+        const { data, isLoading, isError } = useDoctors();
 
-
-        if(error) return <p style={{ color: "red" }}>Unable to load doctors</p>
-        if(!doctors || loading ) return <LoadingSpinner />
+        if(isLoading ) return <Skeleton width={200} height={18}/>
+        if(isError || !data) return <p style={{ color: "red" }}>Unable to reach server</p>
 
         return (
             <>
             <label>
-                Select your doctor
-                <select name="DoctorId" className={styles.layout}>
-                            {doctors.map(d => <option key={d.id} value={d.id}>{d.firstName} {d.lastName}</option>)}
+                Doctor
+                <select 
+                    name="DoctorId" 
+                    className={styles.layout}
+                    defaultValue=""
+                    {...props}
+                >
+                        <option value="" disabled hidden>
+                            -- Select a doctor --
+                        </option>
+                            {data.map(d => <option key={d.id} value={d.id}>{d.firstName} {d.lastName}</option>)}
                 </select>             
             </label>
             </>

@@ -1,30 +1,20 @@
-import { useEffect } from "react";
-import LoadingSpinner from "../layout/LoadingSpinner";
-import { useCategoriesStore } from "../../stores/useCategoriesStore";
-
 import styles from "./SelectElement.module.css"
-import { useShallow } from "zustand/shallow";
+import { useCategories } from "../../queries/useLookupQueries";
+import Skeleton from "react-loading-skeleton";
 
 export default function CategorySelection({...props}) {
-   
-        const { categories, loading, error, fetchCategories } = useCategoriesStore(useShallow(s => ({
-            categories: s.categories,
-            loading: s.loading,
-            error: s.error,
-            fetchCategories: s.fetchCategories
-        })));
+    const { data, isLoading, isError } = useCategories();
 
-        useEffect(() => {
-           if(!categories) fetchCategories();
-        }, [categories, fetchCategories])
-
-        if(error) return <p style={{ color: "red" }}>Unable to load categories</p>
-        if(!categories || loading ) return <LoadingSpinner />
+        if(isLoading) return <Skeleton width={200} height={18}/>
+        if(isError || !data ) return <p style={{ color: "red" }}>Unable to reach server</p>
 
         return <label style={{ display: "flex", flexDirection:"column", gap: "5px", padding:"var(--spacing-sm)" }}>
                Category
-               <select name="CategoryId" {...props} className={styles.layout}>
-                        {categories.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
+               <select name="CategoryId" defaultValue="" {...props} className={styles.layout}>
+                        <option value="" disabled hidden>
+                            -- Select a category --
+                        </option>
+                        {data.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
                </select>                
                </label>
 }

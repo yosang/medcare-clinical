@@ -4,22 +4,26 @@ import { create } from "zustand"
 type ValidationState = {
     validationErrors: string[],
     inputsWithErrors: string[],
-    validate: (schema: ZodObject, data: { [key:string]: FormDataEntryValue;} ) => void,
+    validate: (schema: ZodObject, data: { [key:string]: FormDataEntryValue;} ) => boolean,
     clearErrors: () => void
 }
 
 export const useValidationStore = create<ValidationState>((set) => ({
     validationErrors: [],
     inputsWithErrors: [],
-    validate: (schema, data) => {
+    validate: (schema, data): boolean => {
         const validation = schema.safeParse(data);
+        
         if(!validation.success) {
             set({
                 validationErrors: validation.error.issues.map(err => err.message),
                 inputsWithErrors: validation.error.issues.map(err => String(err.path[0])),
             })
-            return;
+            return false
         }
+        
+        set({ validationErrors: [], inputsWithErrors: [] });
+        return true;
     },
     clearErrors: () => {
         set({

@@ -9,21 +9,16 @@ import LoadingSpinner from "../layout/LoadingSpinner";
 import styles from "./RegistrationForm.module.css"
 
 import { useValidationStore } from "../../stores/useValidationStore";
-import { useRegistrationStore } from "../../stores/useRegistrationStore";
 import { useShallow } from "zustand/shallow";
+import type { useRegisterPatient } from "../../queries/usePatients";
 
 type Props = { 
     submitHandler: (e: SyntheticEvent<HTMLFormElement>) => void
+    mutation: ReturnType<typeof useRegisterPatient>
 }
 
-const RegistrationForm = forwardRef(({ submitHandler, }:Props, ref: Ref<HTMLFormElement>) => {
+const RegistrationForm = forwardRef(({ submitHandler, mutation}:Props, ref: Ref<HTMLFormElement>) => {
 
-    // Zustand states
-    const { loading,  errorMessage } = useRegistrationStore(useShallow(s => ({
-        loading: s.loading,
-        errorMessage: s.errorMessage
-    })));
-    
     const { validationErrors, inputsWithErrors } = useValidationStore(useShallow(s => ({
         validationErrors: s.validationErrors,
         inputsWithErrors: s.inputsWithErrors
@@ -89,10 +84,10 @@ const RegistrationForm = forwardRef(({ submitHandler, }:Props, ref: Ref<HTMLForm
                     )
                 }
 
-                {errorMessage && <p style={{ color: "red" }}>{errorMessage}</p>}
+                {mutation.error && <p style={{ color: "red" }}>{mutation.error.message}</p>}
             </div>
 
-            <Button type="submit" disabled={loading} >{loading ? (<LoadingSpinner />):"Register"}</Button>
+            <Button type="submit" disabled={mutation.isPending} >{mutation.isPending ? (<LoadingSpinner />):"Register"}</Button>
         </form>
 })
 

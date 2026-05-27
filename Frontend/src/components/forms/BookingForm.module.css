@@ -30,6 +30,7 @@
     padding: var(--spacing-sm);
     border-radius: var(--radius);
     font:inherit;
+    text-wrap: nowrap;
 }
 
 .formLayout textarea, input, select {

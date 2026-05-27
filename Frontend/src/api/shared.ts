@@ -1,3 +1,6 @@
+import type { Categories } from "../types/Appointments";
+import type { Doctor } from "../types/Doctors";
+
 const statusUrl = import.meta.env.VITE_STATUS;
 const categoriesUrl = import.meta.env.VITE_CATEGORIES;
 const doctorsUrl = import.meta.env.VITE_DOCTORS;
@@ -17,7 +20,7 @@ export async function fetchStatus() {
 }
 
 // GET Categories: Public
-export async function fetchCategories() {
+export async function fetchCategories(): Promise<Categories[]> {
     if(!categoriesUrl) {
         throw new Error("VITE_CATEGORIES url is not defined in .env")
     }
@@ -30,7 +33,7 @@ export async function fetchCategories() {
 }
 
 // GET Doctors: Public
-export async function fetchDoctors() {
+export async function fetchDoctors(): Promise<Doctor[]> {
     if(!doctorsUrl) {
         throw new Error("VITE_DOCTORS url is not defined in .env")
     }

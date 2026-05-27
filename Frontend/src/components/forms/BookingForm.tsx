@@ -3,11 +3,10 @@ import { ClipboardClock } from "lucide-react"
 import { useState, type ChangeEvent, type SyntheticEvent } from "react";
 
 import { useLoginStore } from "../../stores/useLoginStore"
-import { usePatientStore } from "../../stores/usePatientStore";
 import { useValidationStore } from "../../stores/useValidationStore";
-import { useDoctorsStore } from "../../stores/useDoctorsStore";
 
 import { useCreateAppointment } from "../../queries/useAppointments";
+import { usePatient, useCreatePatient } from "../../queries/usePatients";
 
 import styles from "./BookingForm.module.css"
 
@@ -20,23 +19,23 @@ import DurationSelection from "../formElements/DurationSelection";
 import LoadingSpinner from "../layout/LoadingSpinner";
 
 import { toast } from "sonner";
-import { PatientSchema } from "../../schemas/patientSchema";
 import { useShallow } from "zustand/shallow";
+import { AppointmentSchema } from "../../schemas/appointmentSchema";
+import TextArea from "../formElements/TextArea";
+import { findClinicIdByDoctorId, useDoctors } from "../../queries/useLookupQueries";
 
 export default function BookingForm() {
 
+    // Tanstack reading queries
+    const { data: patient } = usePatient();
+    const { data: doctors } = useDoctors();
+    
     // TaStack mutations
-    const createMutation = useCreateAppointment();
+    const createAppointmentMutation = useCreateAppointment();
+    const createPatientMutation = useCreatePatient();
 
     // Zustand states
     const token = useLoginStore(s => s.token)
-    const getClinicId = useDoctorsStore(s => s.getClinicId);
-
-    const { patient, createPatient } = usePatientStore(useShallow(s => ({
-        loading: s.loading,
-        patient: s.patient,
-        createPatient: s.createPatient
-    })));
 
     const { validationErrors, inputsWithErrors, validate, clearErrors} = useValidationStore(useShallow(s => ({
         validationErrors: s.validationErrors,
@@ -51,7 +50,7 @@ export default function BookingForm() {
         lastname: "",
         phone: "",
         note: "",
-        duration: "30",
+        duration: "",
         appointmentDateAndTime: ""
     }
 
@@ -64,33 +63,42 @@ export default function BookingForm() {
 
         const formData = new FormData(e.currentTarget);
         const docId = formData.get("DoctorId") as string;
-        const clinicId = getClinicId(docId) as string;
-        const categoryId = formData.get("CategoryId") as string;
-
-        const patientData = token && patient ? { 
-            firstname: patient.firstName,
-            lastname: patient.lastName,
-            phone: patient.phone
-         }:{
-            firstname: form.firstname,
-            lastname: form.lastname,
-            phone: form.phone
-        }
-
-        validate(PatientSchema, patientData)
 
         try {
-            const newPatient = await createPatient(patientData)
+            const appointmentData = { 
+                firstname: token && patient ? patient.firstName: form.firstname,
+                lastname: token && patient ? patient.lastName: form.lastname,
+                phone: token && patient ? patient.phone: form.phone,
+                DoctorId: docId,
+                ClinicId: findClinicIdByDoctorId(doctors, docId) || "",
+                CategoryId: formData.get("CategoryId") as string,
+                AppointmentDate: form.appointmentDateAndTime,
+                Duration: form.duration,
+                Note: form.note
+            }
+
+            const dataIsValid = validate(AppointmentSchema, appointmentData)
+            if(!dataIsValid) return;
+
+            let newPatient = patient;
+
+            // If this is an unregistered user, we create a simple patient with minimal sensitive data and use it's id to create the appointment
+            if(!token) newPatient = await createPatientMutation.mutateAsync({
+                firstname: appointmentData.firstname,
+                lastname: appointmentData.lastname,
+                phone: appointmentData.phone
+            })
+
+            if(!newPatient?.id) throw new Error("Unable to map the newly created patient")
     
-            toast.promise(createMutation.mutateAsync({
+            toast.promise(createAppointmentMutation.mutateAsync({
                 AppointmentDate: form.appointmentDateAndTime,
                 Duration: Number(form.duration),
-                
                 Note: form.note,
                 PatientId: Number(newPatient.id),
-                DoctorId: Number(docId),
-                ClinicId: Number(clinicId),
-                CategoryId: Number(categoryId),
+                DoctorId: Number(appointmentData.DoctorId),
+                ClinicId: Number(appointmentData.ClinicId),
+                CategoryId: Number(appointmentData.CategoryId),
                 StatusId: 1
             }), {
                 loading: "Creating your ppointment...",
@@ -148,16 +156,15 @@ export default function BookingForm() {
             </div>)}
             
             <div className={styles.selection}>
-                <DoctorSelection/>
-                <CategorySelection />
-                <label>
-                    Want to leave a note to your doctor?
-                    <textarea 
-                        name="Note"
-                        value={form.note}
-                        onChange={e => setForm(prev => ({ ...prev, note: e.target.value}))}
-                    />
-                </label>
+
+                <DoctorSelection style={inputsWithErrors.includes("DoctorId") ? { border: "1px solid red"}:{}} />
+                <CategorySelection style={inputsWithErrors.includes("CategoryId") ? { border: "1px solid red"}:{}} />
+
+                <TextArea
+                    name="Note"
+                    value={form.note}
+                    onChange={(e: ChangeEvent<HTMLInputElement>) => setForm(prev => ({ ...prev, note: e.target.value}))}
+                />
             </div>
 
             <div className={styles.dateTimeDetails}>
@@ -167,14 +174,22 @@ export default function BookingForm() {
                     value={form.appointmentDateAndTime}
                     onChange={(e: ChangeEvent<HTMLInputElement>) => setForm(prev => ({ ...prev, appointmentDateAndTime: e.target.value}))}
                     min={new Date().toISOString().slice(0, 16)}
-                    style={createMutation.isError ? { border: "1px solid red"}:{}}
+                    style={createAppointmentMutation.isError ? { border: "1px solid red"}:{}}
                 />
                 <DurationSelection 
-                    value={form.duration} onChange={(e: ChangeEvent<HTMLSelectElement>) => setForm(prev => ({ ...prev, duration: e.target.value}))}
+                    value={form.duration} 
+                    onChange={(e: ChangeEvent<HTMLSelectElement>) => setForm(prev => ({ ...prev, duration: e.target.value}))}
+                    style={inputsWithErrors.includes("Duration") ? { border: "1px solid red"}:{}}
                 />
             </div>
             
-            <Button style={{ width: "50%", height: "50px" }} type="submit" disabled={createMutation.isPending} >{createMutation.isPending ? (<LoadingSpinner />):"Book appointment"}</Button>
+            <Button 
+                    style={{ width: "50%", height: "50px" }} 
+                    type="submit" 
+                    disabled={createAppointmentMutation.isPending || createPatientMutation.isPending} 
+                >
+                    {createAppointmentMutation.isPending || createPatientMutation.isPending ? (<LoadingSpinner />):"Book appointment"}
+            </Button>
 
             <div className={styles.messages}>
 
@@ -185,7 +200,7 @@ export default function BookingForm() {
                     )
                 }
 
-                {createMutation.isError && <p style={{ color: "red" }}>{createMutation.error?.message}</p>}
+                {createAppointmentMutation.isError && <p style={{ color: "red" }}>{createAppointmentMutation.error?.message}</p>}
 
             </div>
         </form>

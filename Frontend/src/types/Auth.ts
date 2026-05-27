@@ -13,14 +13,6 @@ export interface Token {
     token: string
 }
 
-export interface RegistrationState {
-    loading: boolean,
-    error: boolean,
-    errorMessage: string | null,
-    registerPatient: (payload: Registration) => Promise<void>,
-    clearErrors: () => void
-}
-
 export interface Login {
     email: string,
     password: string

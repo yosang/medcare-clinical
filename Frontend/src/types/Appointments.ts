@@ -51,17 +51,3 @@ export interface Status {
     id: number,
     name: string
 }
-
-export interface CategoriesState {
-    categories: Categories[] | null,
-    loading: boolean,
-    error: boolean,
-    fetchCategories: () => Promise<void>
-}
-
-export interface StatusState {
-    status: Status[] | null,
-    loading: boolean,
-    error: boolean,
-    fetchStatus: () => Promise<void>
-}

@@ -1,9 +1,10 @@
-import { lazy, Suspense, useEffect } from "react"
-import { usePatientStore } from "../stores/usePatientStore";
+import { lazy, Suspense } from "react"
 
 import styles from "./BookingPage.module.css"
 
 import { useLoginStore } from "../stores/useLoginStore";
+
+import { usePatient } from "../queries/usePatients";
 
 import SideInfo from "../components/elements/SideInfo";
 import BookingFormSkeleton from "../components/skeletons/BookingFormSkeleton";
@@ -17,18 +18,9 @@ export default function BookingPage() {
 
     // Zustand states
     const token = useLoginStore((s) => s.token);
-    const getPatient = usePatientStore(s => s.getPatient);
 
-    // effects
-    useEffect(() => {
-        // clearErrors();
-
-        if(token) {
-            // getAppointments(token);
-            getPatient(token);
-        }
-
-    }, [token])
+    // fetches patient details, only fires if user is logged in and there is a token present (this is configured in the query)
+    usePatient();
 
     return <div className={styles.mainLayout}>
             

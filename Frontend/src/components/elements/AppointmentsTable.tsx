@@ -15,6 +15,7 @@ import { toast } from "sonner";
 const UpdateAppointmentForm = lazy(() => import("../forms/UpdateAppointmentForm"))
 
 import type { AppointmentUpdateForm } from "../../types/Appointments";
+import UpdateAppointmentSkeleton from "../skeletons/UpdateAppointmentSkeleton";
 
 export default function AppointmentsTable() {
 
@@ -94,9 +95,9 @@ export default function AppointmentsTable() {
     }
 
     const handleAppointmentClick = async (id:number) => {
-        updateMutation.reset();
-        setApId(id);
         setOpen(true)
+        setApId(id);
+        updateMutation.reset(); // This clearns the internal state of updateMutation, which allows us to get rid of previous stale error states when opening a new appointment
     }
     
     const handleDrawerClose = () => {
@@ -109,7 +110,7 @@ export default function AppointmentsTable() {
     <Drawer title="Appointment" isOpen={open} onClose={handleDrawerClose}>
         {!selectedAppointment ? (<LoadingSpinner />):(
             <>
-            <Suspense fallback={<LoadingSpinner />}>
+            <Suspense fallback={<UpdateAppointmentSkeleton />}>
                 <UpdateAppointmentForm
                     key={apId}
                     appointment={selectedAppointment}
@@ -118,11 +119,11 @@ export default function AppointmentsTable() {
                     error={updateMutation.isError}
                     errorMessage={updateMutation.error?.message || ""}
                 />
-            </Suspense>
         
-        <div style={{ display: "flex", justifyContent: "center" }}>
-            <Button  disabled={isCancelled} onClick={handleCancel} style={{ backgroundColor: "red" }}>Cancel Appointment</Button>
-        </div>
+            <div style={{ display: "flex", justifyContent: "center" }}>
+                <Button  disabled={isCancelled} onClick={handleCancel} style={{ backgroundColor: "red" }}>Cancel Appointment</Button>
+            </div>
+            </Suspense>
             </>
         )}
     </Drawer>

@@ -1,11 +1,11 @@
-import type { GuestPatientPayload } from "../types/Patients";
+import type { GuestPatientPayload, Patient } from "../types/Patients";
 import { UnauthorizedError } from "./auth";
 
 const patientsMeUrl = import.meta.env.VITE_PATIENTS_ME;
 const patientsGuestUrl = import.meta.env.VITE_PATIENTS_GUEST;
 
 // GET: Private
-export async function getPatientDetails(token: string) {
+export async function getPatientDetails(token: string): Promise<Patient> {
     if(!patientsMeUrl) {
         throw new Error("patientsGuestUrl url is not defined in .env")
     }
@@ -27,7 +27,7 @@ export async function getPatientDetails(token: string) {
 }
 
 // POST: Public
-export async function createGuestPatient(payload: GuestPatientPayload) {
+export async function createGuestPatient(payload: GuestPatientPayload): Promise<Patient> {
     if(!patientsGuestUrl) {
         throw new Error("patientsGuestUrl url is not defined in .env")
     }

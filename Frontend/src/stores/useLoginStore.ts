@@ -8,7 +8,7 @@ export const useLoginStore = create<LoginState>((set) => ({
     error: false,
     errorMessage: null,
     loginPatient: async (payload: Login) => {
-        set({ loading: false})
+        set({ loading: true})
         try { 
             const result = await login(payload)
             set({loading: false, token: result.token })
@@ -18,7 +18,7 @@ export const useLoginStore = create<LoginState>((set) => ({
         }
     },
     refreshAccessToken: async() => {
-        set({ loading: false})
+        set({ loading: true})
         try { 
             const result = await refreshToken()
             set({loading: false, token: result.token })

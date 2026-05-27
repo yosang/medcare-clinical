@@ -4,24 +4,24 @@ import { toast } from "sonner";
 
 import styles from "./RegisterPage.module.css"
 
-import { useRegistrationStore } from "../stores/useRegistrationStore";
 import { RegistrationSchema } from "../schemas/registrationSchema";
 import { useValidationStore } from "../stores/useValidationStore";
 
 import SideCard from "../components/elements/SideCard";
 import { useShallow } from "zustand/shallow";
 import RegistrationSkeleton from "../components/skeletons/RegistrationSkeleton";
+import { useRegisterPatient } from "../queries/usePatients";
+import { useNavigate } from "react-router";
 
 // lazy loaded component
 const RegistrationForm = lazy(() => import("../components/forms/RegistrationForm"))
 
 export default function RegisterPage() {
+    const navigate = useNavigate();
+
+    // Tanstack mutations
+    const registerMutation = useRegisterPatient();
     
-    // Zustand states
-    const { registerPatient, clearErrors: clearBackendErrors } = useRegistrationStore(useShallow(s => ({
-        registerPatient: s.registerPatient,
-        clearErrors: s.clearErrors
-    })));
 
     const { validate, clearErrors } = useValidationStore(useShallow(s => ({
         validate: s.validate,
@@ -32,13 +32,13 @@ export default function RegisterPage() {
     const handleSubmit = async(e: SyntheticEvent<HTMLFormElement>) => {
         e.preventDefault();
         clearErrors();
-        clearBackendErrors();
         
         const formData = new FormData(e.currentTarget);
         
-        validate(RegistrationSchema, Object.fromEntries(formData))
+        const dataIsValid = validate(RegistrationSchema, Object.fromEntries(formData))
+        if(!dataIsValid) return;
 
-        toast.promise(registerPatient({
+        toast.promise(registerMutation.mutateAsync({
             firstName: String(formData.get("firstName")),
             lastName: String(formData.get("lastName")),
             phone: String(formData.get("phone")),
@@ -52,7 +52,7 @@ export default function RegisterPage() {
             loading: "Creating account...",
             success: () => {
                 clearErrors();
-                clearBackendErrors();
+                navigate("/login")
                 return "Registration successful!"
             },
             error: (err) => {
@@ -72,7 +72,7 @@ export default function RegisterPage() {
                 />
                 
                 <Suspense fallback={<RegistrationSkeleton />}>
-                    <RegistrationForm submitHandler={handleSubmit} />
+                    <RegistrationForm submitHandler={handleSubmit} mutation={registerMutation}/>
                 </Suspense>
             </div>
 }
