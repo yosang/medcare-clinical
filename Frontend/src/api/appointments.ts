@@ -1,10 +1,10 @@
-import type { AppointmentPayload, AppointmentUpdatePayload } from "../types/Appointments";
+import type { Appointment, AppointmentPayload, AppointmentUpdatePayload } from "../types/Appointments";
 import { UnauthorizedError } from "./auth";
 
 const appointmentsUrl = import.meta.env.VITE_APPOINTMENTS
 
 // GET appointments: Private
-export async function fetchAppointments(token:string) {
+export async function fetchAppointments(token:string): Promise<Appointment []> {
     if(!appointmentsUrl) {
         throw new Error("VITE_APPOINTMENTS url is not defined in .env")
     }
@@ -24,7 +24,7 @@ export async function fetchAppointments(token:string) {
 }
 
 // GET appointment: Private
-export async function fetchAppointment(token:string, apId:number) {
+export async function fetchAppointment(token:string, apId:number): Promise<Appointment> {
     if(!appointmentsUrl) {
         throw new Error("VITE_APPOINTMENTS url is not defined in .env")
     }
@@ -43,7 +43,7 @@ export async function fetchAppointment(token:string, apId:number) {
 }
 
 // POST appointments: Public + Private
-export async function createAppointment(payload:AppointmentPayload) {
+export async function createAppointment(payload:AppointmentPayload): Promise<boolean> {
     if(!appointmentsUrl) {
         throw new Error("VITE_APPOINTMENTS url is not defined in .env")
     }
@@ -67,7 +67,7 @@ export async function createAppointment(payload:AppointmentPayload) {
 }
 
 // POST appointments: Private
-export async function updateAppointment(payload:AppointmentUpdatePayload, token: string, apId: number) {
+export async function updateAppointment(payload:AppointmentUpdatePayload, token: string, apId: number): Promise<void> {
     if(!appointmentsUrl) {
         throw new Error("VITE_APPOINTMENTS url is not defined in .env")
     }
@@ -90,7 +90,7 @@ export async function updateAppointment(payload:AppointmentUpdatePayload, token:
 }
 
 // POST appointments: Private
-export async function cancelAppointment(token: string, apId: number) {
+export async function cancelAppointment(token: string, apId: number): Promise<void> {
     if(!appointmentsUrl) {
         throw new Error("VITE_APPOINTMENTS url is not defined in .env")
     }

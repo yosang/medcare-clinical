@@ -1,7 +1,8 @@
-import { lazy, Suspense, useEffect, useMemo, useState, type ChangeEvent } from "react"
+import { lazy, Suspense,  useMemo, useState } from "react"
 
-import { useAppointmentsStore } from "../../stores/useAppointmentsStore"
 import { useLoginStore } from "../../stores/useLoginStore";
+
+import { useAppointments, useAppointment, useUpdateAppointment, useCancelAppointment } from "../../queries/useAppointments";
 
 import styles from "./AppointmentsTable.module.css"
 
@@ -10,32 +11,27 @@ import Button from "./Button";
 import { Drawer } from "./Drawer"
 import { toast } from "sonner";
 
-import type { AppointmentUpdateForm } from "../../types/Appointments";
-import { useShallow } from "zustand/shallow";
-
 // Lazy loading
 const UpdateAppointmentForm = lazy(() => import("../forms/UpdateAppointmentForm"))
 
+import type { AppointmentUpdateForm } from "../../types/Appointments";
+
 export default function AppointmentsTable() {
 
-    // Zustand states
-    const token = useLoginStore(s => s.token)
-    const { loading, error, errorMessage, clearErrors, appointments, getAppointments, getAppointment, updateAppointment, cancelAppointment } = useAppointmentsStore(useShallow(s => ({
-        loading: s.loading,
-        error: s.error,
-        errorMessage: s.errorMessage,
-        clearErrors: s.clearErrors,
-        appointments: s.appointments,
-        getAppointments: s.getAppointments,
-        getAppointment: s.getAppointment,
-        updateAppointment: s.updateAppointment,
-        cancelAppointment: s.cancelAppointment
-    })));
-    
     // Local states
     const [open, setOpen] = useState(false)
     const[apId, setApId] = useState<number | null>(null);
-    const[form, setForm] = useState<AppointmentUpdateForm | null>(null);
+    
+    // TanStack queries
+    const { data: appointments } = useAppointments(); 
+    const { data: selectedAppointment } = useAppointment(apId);
+    
+    // TanStack mutations
+    const updateMutation = useUpdateAppointment();
+    const cancelMutation = useCancelAppointment();
+
+    // Zustand states
+    const token = useLoginStore(s => s.token)   
     
     // Memoized operations
     const sortedAppointments = useMemo(() => {
@@ -49,15 +45,13 @@ export default function AppointmentsTable() {
     }, [appointments, apId])
 
     // Handlers
-    const handleSubmit  = (e: ChangeEvent<HTMLFormElement>) => {
-        e.preventDefault();
-        if(!token || !form || !apId) return
+    const handleSubmit  = (formData: AppointmentUpdateForm) => {
+        if(!token || !apId) return
 
-        toast.promise(updateAppointment(form, token, apId), {
+        toast.promise(updateMutation.mutateAsync({ payload: formData, apId }), {
             position: "top-center",
             loading: "Updating appointment...",
             success: () => {
-                getAppointments(token);
                 setOpen(false);
                 setApId(null);
                 return "Update successful!"
@@ -77,11 +71,10 @@ export default function AppointmentsTable() {
             action: {
                 label: "Yes",
                 onClick: () => {
-                    toast.promise(cancelAppointment(token, apId), {
+                    toast.promise(cancelMutation.mutateAsync(apId), {
                         position: "top-center",
                         loading: "Cancelling appointment...",
                         success: () => {
-                            getAppointments(token);
                             setOpen(false);
                             setApId(null);
                             return "Appointment cancelled!"
@@ -101,58 +94,29 @@ export default function AppointmentsTable() {
     }
 
     const handleAppointmentClick = async (id:number) => {
-
-        clearErrors()
-        if(!token) return
-        
-        const appointment = await getAppointment(token, id)
-        if(!appointment) return;
-
-        setApId(appointment.id);
-
-        setForm({
-            appointmentDate: appointment.appointmentDate,
-            duration: appointment.duration,
-            note: appointment.note,
-            doctorId: appointment.doctor.id,
-            clinicId: appointment.clinic.id,
-            categoryId: appointment.category.id,
-        })
-
+        updateMutation.reset();
+        setApId(id);
         setOpen(true)
     }
     
     const handleDrawerClose = () => {
         setOpen(false);
         setApId(null);
-        clearErrors();
+        updateMutation.reset();
     }
-
-    useEffect(() => {
-
-        if(token) {
-            getAppointments(token);
-        }
-
-        // Im disabling the exhaustive-deps rule here intentionally to prevent an infinite loop as getAppointments handles 401 Unauthorized errors and executes an async token refresh.
-        // When a new access token is fetched the Zustand store updates, which results in recreating the object returned by useShallow, which changes the functional reference of getAppointments.
-        // Including getAppointments in this array will re-trigger this effect every time a token refresh cycle happens. I only want this effect to react to changes in the token.
-
-        // eslint-disable-next-line
-    }, [token])
 
     return  <>
     <Drawer title="Appointment" isOpen={open} onClose={handleDrawerClose}>
-        {loading ? (<LoadingSpinner />):(
+        {!selectedAppointment ? (<LoadingSpinner />):(
             <>
             <Suspense fallback={<LoadingSpinner />}>
                 <UpdateAppointmentForm
+                    key={apId}
+                    appointment={selectedAppointment}
                     submitHandler={handleSubmit}
-                    formState={form}
-                    formSetter={setForm}
                     cancelledState={isCancelled}
-                    error={error}
-                    errorMessage={errorMessage}
+                    error={updateMutation.isError}
+                    errorMessage={updateMutation.error?.message || ""}
                 />
             </Suspense>
         

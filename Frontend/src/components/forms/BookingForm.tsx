@@ -5,8 +5,9 @@ import { useState, type ChangeEvent, type SyntheticEvent } from "react";
 import { useLoginStore } from "../../stores/useLoginStore"
 import { usePatientStore } from "../../stores/usePatientStore";
 import { useValidationStore } from "../../stores/useValidationStore";
-import { useAppointmentsStore } from "../../stores/useAppointmentsStore";
 import { useDoctorsStore } from "../../stores/useDoctorsStore";
+
+import { useCreateAppointment } from "../../queries/useAppointments";
 
 import styles from "./BookingForm.module.css"
 
@@ -24,20 +25,14 @@ import { useShallow } from "zustand/shallow";
 
 export default function BookingForm() {
 
+    // TaStack mutations
+    const createMutation = useCreateAppointment();
+
     // Zustand states
     const token = useLoginStore(s => s.token)
     const getClinicId = useDoctorsStore(s => s.getClinicId);
 
-    const { error, errorMessage, clearErrors: clearBackendErrors, loading: loadingAppointment, createAppointment, getAppointments} = useAppointmentsStore(useShallow(s => ({
-        error: s.error,
-        errorMessage: s.errorMessage,
-        clearErrors: s.clearErrors,
-        loading: s.loading,
-        createAppointment: s.createAppointment,
-        getAppointments: s.getAppointments
-    })));
-
-    const { loading: loadingPatient, patient, createPatient } = usePatientStore(useShallow(s => ({
+    const { patient, createPatient } = usePatientStore(useShallow(s => ({
         loading: s.loading,
         patient: s.patient,
         createPatient: s.createPatient
@@ -50,7 +45,7 @@ export default function BookingForm() {
         clearErrors: s.clearErrors
     })))
     
-    // Local states
+    // Local form states
     const initialState = {
         firstname: "",
         lastname: "",
@@ -66,7 +61,6 @@ export default function BookingForm() {
     const handleSubmit = async(e: SyntheticEvent<HTMLFormElement>) => {
         e.preventDefault();
         clearErrors();
-        clearBackendErrors();
 
         const formData = new FormData(e.currentTarget);
         const docId = formData.get("DoctorId") as string;
@@ -88,7 +82,7 @@ export default function BookingForm() {
         try {
             const newPatient = await createPatient(patientData)
     
-            toast.promise(createAppointment({
+            toast.promise(createMutation.mutateAsync({
                 AppointmentDate: form.appointmentDateAndTime,
                 Duration: Number(form.duration),
                 
@@ -102,10 +96,7 @@ export default function BookingForm() {
                 loading: "Creating your ppointment...",
                 success: () => {
                     clearErrors();
-                    clearBackendErrors();
                     setForm(initialState);
-
-                    if(token) getAppointments(token);
 
                     return "Appointment created!"
                 },
@@ -176,14 +167,14 @@ export default function BookingForm() {
                     value={form.appointmentDateAndTime}
                     onChange={(e: ChangeEvent<HTMLInputElement>) => setForm(prev => ({ ...prev, appointmentDateAndTime: e.target.value}))}
                     min={new Date().toISOString().slice(0, 16)}
-                    style={error ? { border: "1px solid red"}:{}}
+                    style={createMutation.isError ? { border: "1px solid red"}:{}}
                 />
                 <DurationSelection 
                     value={form.duration} onChange={(e: ChangeEvent<HTMLSelectElement>) => setForm(prev => ({ ...prev, duration: e.target.value}))}
                 />
             </div>
             
-            <Button style={{ width: "50%", height: "50px" }} type="submit" disabled={loadingAppointment || loadingPatient} >{loadingPatient || loadingAppointment ? (<LoadingSpinner />):"Book appointment"}</Button>
+            <Button style={{ width: "50%", height: "50px" }} type="submit" disabled={createMutation.isPending} >{createMutation.isPending ? (<LoadingSpinner />):"Book appointment"}</Button>
 
             <div className={styles.messages}>
 
@@ -194,7 +185,7 @@ export default function BookingForm() {
                     )
                 }
 
-                {error && <p style={{ color: "red" }}>{errorMessage}</p>}
+                {createMutation.isError && <p style={{ color: "red" }}>{createMutation.error?.message}</p>}
 
             </div>
         </form>

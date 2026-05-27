@@ -3,48 +3,62 @@ import DurationSelection from "../formElements/DurationSelection";
 import DateTimeSelector from "../formElements/DateTimeSelector";
 import TextArea from "../formElements/TextArea";
 
-import type { ChangeEvent, Dispatch, SetStateAction } from "react";
-import type { AppointmentUpdateForm } from "../../types/Appointments";
+import { useState, type ChangeEvent } from "react";
+import type { Appointment, AppointmentUpdateForm } from "../../types/Appointments";
 import Button from "../elements/Button";
 
 type Props = {
-    submitHandler: (e:ChangeEvent<HTMLFormElement>) => void
-    formState: AppointmentUpdateForm | null
-    formSetter: Dispatch<SetStateAction<AppointmentUpdateForm | null>>
+    appointment: Appointment
+    submitHandler: (formData: AppointmentUpdateForm) => void
     cancelledState: boolean | undefined
     error: boolean,
     errorMessage: string | null
 }
 
-export default function UpdateAppointmentForm( { submitHandler, formState, formSetter, cancelledState, error, errorMessage }:Props ) {
-    return <form onSubmit={submitHandler} style={{ display: "flex", flexDirection: "column", height: "85vh"}}>
+export default function UpdateAppointmentForm( { appointment, submitHandler, cancelledState, error, errorMessage }:Props ) {
+
+    const[form, setForm] = useState<AppointmentUpdateForm>({
+            appointmentDate: appointment?.appointmentDate,
+            duration: appointment?.duration,
+            note: appointment?.note,
+            doctorId: appointment?.doctor.id,
+            clinicId: appointment?.clinic.id,
+            categoryId: appointment?.category.id,
+    });
+
+    const onSubmitHandler = (e: ChangeEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        submitHandler(form)
+    }
+
+    return <form onSubmit={onSubmitHandler} style={{ display: "flex", flexDirection: "column", height: "85vh"}}>
             <div style={{ display: "flex", flexDirection: "column", flex: 1 }}>
                 <br />
 
                 <DateTimeSelector 
                     disabled={cancelledState}
-                    value={formState?.appointmentDate}
-                    onChange={(e:ChangeEvent<HTMLSelectElement>) => formSetter(prev => prev ? {...prev, appointmentDate: e.target.value}:prev)}
+                    value={form?.appointmentDate}
+                    onChange={(e:ChangeEvent<HTMLSelectElement>) => setForm(prev => prev ? {...prev, appointmentDate: e.target.value}:prev)}
                 />
 
                 <DurationSelection  
                     disabled={cancelledState}
-                    value={formState?.duration} 
-                    onChange={(e: ChangeEvent<HTMLSelectElement>) => formSetter(prev => prev ? {...prev, duration: +e.target.value}:prev)}  
+                    value={form?.duration} 
+                    onChange={(e: ChangeEvent<HTMLSelectElement>) => setForm(prev => prev ? {...prev, duration: +e.target.value}:prev)}  
                 />
 
 
                 <CategorySelection 
                     disabled={cancelledState}
-                    value={formState?.categoryId}
-                    onChange={(e: ChangeEvent<HTMLSelectElement>) => formSetter(prev => prev ? {...prev, categoryId: +e.target.value}:prev)}
+                    value={form?.categoryId}
+                    onChange={(e: ChangeEvent<HTMLSelectElement>) => setForm(prev => prev ? {...prev, categoryId: +e.target.value}:prev)}
                 />
                 <br />
 
                 <TextArea 
                     disabled={cancelledState}
-                    value={formState?.note}
-                    onChange={(e: ChangeEvent<HTMLSelectElement>) => formSetter(prev => prev ? {...prev, note: e.target.value}: prev)}
+                    value={form?.note}
+                    onChange={(e: ChangeEvent<HTMLSelectElement>) => setForm(prev => prev ? {...prev, note: e.target.value}: prev)}
                 />
                 <br />
                 {error && <p style={{ color: "red" }}>{errorMessage}</p>}
