@@ -26,5 +26,6 @@ export interface LoginState {
     loginPatient: (payload: Login) => Promise<void>,
     refreshAccessToken: () => Promise<void>,
     setToken: (token: string) => void,
-    logout: () => void
+    logout: () => void,
+    clearErrors: () => void
 }

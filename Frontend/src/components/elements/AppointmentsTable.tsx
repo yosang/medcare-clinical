@@ -139,7 +139,7 @@ export default function AppointmentsTable() {
             </tr>
         </thead>
         <tbody>
-            {sortedAppointments.map((ap) => (
+            {sortedAppointments.length > 0 ? sortedAppointments.map((ap) => (
                 <tr key={ap.id} onClick={() => handleAppointmentClick(ap.id)}>
                     <td>{ap.category.name}</td>
                     <td>{new Date(ap.appointmentDate).toLocaleDateString("no-NO")}</td>
@@ -156,7 +156,7 @@ export default function AppointmentsTable() {
 
                         }} >{ap.status.name}</td>
                 </tr>
-            ))}
+            )):(<p>No appointments registered yet...</p>)}
         </tbody>
     </table>
     </>

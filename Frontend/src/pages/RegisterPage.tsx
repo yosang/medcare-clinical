@@ -52,7 +52,7 @@ export default function RegisterPage() {
             loading: "Creating account...",
             success: () => {
                 clearErrors();
-                navigate("/login")
+                navigate("/login", { state: { email: formData.get("email")} })
                 return "Registration successful!"
             },
             error: (err) => {
