@@ -116,6 +116,7 @@ If you need help with any instructions for the course assignment, contact your t
 - [ASP.NET Core Error Handling](https://learn.microsoft.com/en-us/aspnet/core/fundamentals/error-handling?view=aspnetcore-10.0) - Microsoft 
 - [Extension Members/Methods](https://learn.microsoft.com/en-us/dotnet/csharp/programming-guide/classes-and-structs/extension-methods)
 - [Nullable ints, DateTime and using .HasValue](https://learn.microsoft.com/en-us/dotnet/api/system.nullable-1.hasvalue?view=netframework-4.8.1&viewFallbackFrom=net-10.0)
+- [Setting secure cookies in .NET ASP.NET Core](https://learn.microsoft.com/en-us/aspnet/core/security/samesite?view=aspnetcore-9.0&utm_source=chatgpt.com)
 
 #### Tutorials and Learning resources
 - [Normalization](https://www.youtube.com/watch?v=ABwD8IYByfk) - YouTube tutorial
@@ -131,6 +132,7 @@ If you need help with any instructions for the course assignment, contact your t
 - [Version Control](https://github.com/) - Git + Github
 - [Notes on Feature branches workflow](https://gist.github.com/yosang/ff9fba77bc317562aa955b76a2c54c3a) - Github feature branches workflow
 - [AI for sample seed generation and questions around specific assumptions and implementation feedback](https://grok.com/) - Grok
+- [AI for stock image generation](https://grok.com/) - Grok
 
 #### Articles and Posts
 - [Using AsNoTracking for read-only queries](https://learn.microsoft.com/en-us/ef/core/querying/tracking)
