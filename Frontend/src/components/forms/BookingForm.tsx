@@ -24,6 +24,8 @@ import { AppointmentSchema } from "../../schemas/appointmentSchema";
 import TextArea from "../formElements/TextArea";
 import { findClinicIdByDoctorId, useDoctors } from "../../queries/useLookupQueries";
 
+import { type Patient } from "../../types/Patients";
+
 export default function BookingForm() {
 
     // Tanstack reading queries
@@ -80,16 +82,16 @@ export default function BookingForm() {
             const dataIsValid = validate(AppointmentSchema, appointmentData)
             if(!dataIsValid) return;
 
-            let newPatient = patient;
+            let newPatient: Patient | null = null;
 
-            // If this is an unregistered user, we create a simple patient with minimal sensitive data and use it's id to create the appointment
+            // If this is an unregistered user, we create a guest patient and use it's id to create the appointment
             if(!token) newPatient = await createPatientMutation.mutateAsync({
                 firstname: appointmentData.firstname,
                 lastname: appointmentData.lastname,
                 phone: appointmentData.phone
             })
 
-            if(!newPatient?.id) throw new Error("Unable to map the newly created patient")
+            if(!newPatient || createPatientMutation.error) throw new Error("Unable to map the newly created patient")
     
             toast.promise(createAppointmentMutation.mutateAsync({
                 AppointmentDate: form.appointmentDateAndTime,
