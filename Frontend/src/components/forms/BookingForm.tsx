@@ -76,7 +76,7 @@ export default function BookingForm( { patient }:{ patient?: Patient}) {
                 Duration: form.duration,
                 Note: form.note
             }
-            console.log(appointmentData)
+            
             const dataIsValid = validate(AppointmentSchema, appointmentData)
             if(!dataIsValid) return;
 

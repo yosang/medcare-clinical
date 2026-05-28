@@ -7,7 +7,7 @@ type Props = {
 }
 
 export default function DoctorList({data}:Props) {
-    console.log(data)
+    
     return (
         <div className={styles.layout}>
             {data.map(d => (

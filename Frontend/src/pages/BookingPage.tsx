@@ -29,10 +29,10 @@ export default function BookingPage() {
 
     useEffect(() => {
 
-        if(!token) {
+        if(!token && upcoming) {
             clearUpcomingAppointment(); // clear out upcomingAppointments so it doesnt leak into a different user
         }
-    }, [token, clearUpcomingAppointment])
+    }, [token, upcoming, clearUpcomingAppointment])
 
     return <div className={styles.mainLayout}>
             {token ? (

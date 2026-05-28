@@ -17,6 +17,11 @@
 
 .docDetails {
     padding: var(--spacing-md) var(--spacing-sm);
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    justify-content: flex-start;
+    width: 100%;
 }
 
 .specialty {

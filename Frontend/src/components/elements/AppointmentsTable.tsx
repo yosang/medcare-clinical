@@ -1,4 +1,4 @@
-import { lazy, Suspense,  useMemo, useState } from "react"
+import { lazy, Suspense,  useEffect,  useMemo, useState } from "react"
 
 import { useLoginStore } from "../../stores/useLoginStore";
 
@@ -49,13 +49,9 @@ export default function AppointmentsTable() {
 
         // We spread appointments to avoid mutating the original state
         const sorted = [...appointments].sort((a, b) => new Date(a.appointmentDate).getTime() - new Date(b.appointmentDate).getTime()) // sorts appointments by calculating the data in a single milliseconds value
-        
-        // This is setting the first upcoming appointment with status pending to the zustand store, whichis used in bookingPage
-        const pending = sorted.find(a => a.status.id == 1);
-        if(pending) setUpcomingAppointment(pending)
 
         return filter ? sorted.filter(a => a.status.id == Number(filter)): sorted; // If a filter is provided we return a filtered array, otherwise just show the sorted list
-    }, [appointments, filter, setUpcomingAppointment])
+    }, [appointments, filter])
 
     const isCancelled = useMemo(() => {
         if(!appointments || !apId) return false;
@@ -122,6 +118,15 @@ export default function AppointmentsTable() {
         setApId(null);
         updateMutation.reset();
     }
+
+    useEffect(() => {
+        if(!sortedAppointments.length) return;
+
+        // This is setting the first upcoming appointment with status pending to the zustand store, whichis used in bookingPage
+        const pending = sortedAppointments.find(a => a.status.id == 1);
+        if(pending) setUpcomingAppointment(pending)
+            
+    }, [sortedAppointments, setUpcomingAppointment])
 
     return  <>
     <Drawer title="Appointment" isOpen={open} onClose={handleDrawerClose}>
