@@ -1,4 +1,4 @@
-import { lazy, Suspense } from "react"
+import { lazy, Suspense, useEffect } from "react"
 
 import styles from "./BookingPage.module.css"
 
@@ -10,6 +10,7 @@ import SideInfo from "../components/elements/SideInfo";
 import BookingFormSkeleton from "../components/skeletons/BookingFormSkeleton";
 import AppointmentsTableSkeleton from "../components/skeletons/AppointmentsTableSkeleton";
 import { MessageSquareText, NotebookPen, NotepadText } from "lucide-react";
+import { useAppointmentStore } from "../stores/useAppointmentsStore";
 
 // lazy loaded components
 const BookingForm = lazy(() => import("../components/forms/BookingForm"))
@@ -22,6 +23,16 @@ export default function BookingPage() {
 
     // Zustand states
     const token = useLoginStore((s) => s.token);
+
+    const upcoming = useAppointmentStore(s => s.upcomingAppointment);
+    const clearUpcomingAppointment = useAppointmentStore(s => s.clearUpcomingAppointment);
+
+    useEffect(() => {
+
+        if(!token) {
+            clearUpcomingAppointment(); // clear out upcomingAppointments so it doesnt leak into a different user
+        }
+    }, [token, clearUpcomingAppointment])
 
     return <div className={styles.mainLayout}>
             {token ? (
@@ -38,11 +49,17 @@ export default function BookingPage() {
                             <div className={styles.upComingAppointmentCard}>
                                 <p style={{ color: "var(--color-muted)" }}>Next appointment</p>
                                 <div className={styles.upComingAppointmentCardContent}>
-                                    <p>12</p>
-                                    <div>
-                                        <p>MAY 2024</p>
-                                        <p style={{ color: "var(--color-muted)" }}>General Consultation</p>
-                                    </div>
+                                    {upcoming ? (
+                                    <>
+                                        <p>{new Date(upcoming.appointmentDate).getDate()}</p>
+                                        <div>
+                                            <p style={{ textTransform: "uppercase" }}>{new Date(upcoming.appointmentDate).toLocaleString("no-NO", { month: "long" })} {new Date(upcoming.appointmentDate).toLocaleString("no-NO", { year: "numeric" })}</p>
+                                            <p style={{ color: "var(--color-muted)" }}>{upcoming.category.name}</p>
+                                        </div>
+                                    </>
+                                    ):(
+                                        <p>No upcoming appointments...</p>
+                                    )}
                                 </div>
                             </div>
                             <div className={styles.linksLayout}>

@@ -17,6 +17,8 @@ const UpdateAppointmentForm = lazy(() => import("../forms/UpdateAppointmentForm"
 import type { AppointmentUpdateForm } from "../../types/Appointments";
 import UpdateAppointmentSkeleton from "../skeletons/UpdateAppointmentSkeleton";
 import { History } from "lucide-react";
+import { useAppointmentStore } from "../../stores/useAppointmentsStore";
+import { useShallow } from "zustand/shallow";
 
 export default function AppointmentsTable() {
 
@@ -34,12 +36,26 @@ export default function AppointmentsTable() {
 
     // Zustand states
     const token = useLoginStore(s => s.token)   
+
+    const { setUpcomingAppointment } = useAppointmentStore(useShallow(s => ({
+        setUpcomingAppointment: s.setUpcomingAppointment
+    })))
     
+    const [filter, setFilter] = useState("");
+
     // Memoized operations
     const sortedAppointments = useMemo(() => {
         if(!appointments) return [];
-        return [...appointments].sort((a, b) => new Date(b.appointmentDate).getTime() - new Date(a.appointmentDate).getTime()) // sorts appointments by calculating the data in a singular milliseconds value
-    }, [appointments])
+
+        // We spread appointments to avoid mutating the original state
+        const sorted = [...appointments].sort((a, b) => new Date(a.appointmentDate).getTime() - new Date(b.appointmentDate).getTime()) // sorts appointments by calculating the data in a single milliseconds value
+        
+        // This is setting the first upcoming appointment with status pending to the zustand store, whichis used in bookingPage
+        const pending = sorted.find(a => a.status.id == 1);
+        if(pending) setUpcomingAppointment(pending)
+
+        return filter ? sorted.filter(a => a.status.id == Number(filter)): sorted; // If a filter is provided we return a filtered array, otherwise just show the sorted list
+    }, [appointments, filter, setUpcomingAppointment])
 
     const isCancelled = useMemo(() => {
         if(!appointments || !apId) return false;
@@ -129,8 +145,19 @@ export default function AppointmentsTable() {
         )}
     </Drawer>
     <div className={styles.header}>
-        <History color="var(--color-primary)" />
-        <h1 style={{ color: "var(--color-secondary-text)"}}>My Appointments</h1>
+        <div className={styles.headerElements}>
+            <History color="var(--color-primary)" />
+            <h1 style={{ color: "var(--color-secondary-text)"}}>My Appointments</h1>
+        </div>
+        <div className={styles.headerElements}>
+            <p>Filter by: </p>
+            <select value={filter} onChange={(e) => setFilter(e.target.value)} >
+                <option value="" >All appointments</option>
+                <option value="1" >Pending</option>
+                <option value="2" >Completed</option>
+                <option value="3" >Cancelled</option>
+            </select>
+        </div>
     </div>
     <table className={styles.layout}>
         <thead>
@@ -164,6 +191,6 @@ export default function AppointmentsTable() {
             ))}
         </tbody>
     </table>
-    {sortedAppointments.length < 1 && <p>No appointments registered yet...</p>}
+    {sortedAppointments.length < 1 && <p>No appointments to show...</p>}
     </>
 }

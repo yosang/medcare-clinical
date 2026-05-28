@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace booking_rest_api.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20260525091656_freshMigration")]
+    [Migration("20260528183607_freshMigration")]
     partial class freshMigration
     {
         /// <inheritdoc />
@@ -430,6 +430,7 @@ namespace booking_rest_api.Migrations
                             IsRegistered = false,
                             LastName = "Admin",
                             PasswordHash = "AQAAAAIAAYagAAAAEBoc7/xHyQ88YJ7b5/fvDDkFTAH6GmsiH03ouiYgQWUEx1zu7NsSDmTeHrcdsHHyxg==",
+                            Phone = "99999999",
                             RoleId = 2
                         });
                 });

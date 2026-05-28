@@ -11,7 +11,7 @@ export function useAppointments() {
     const token = useLoginStore(s => s.token);
     
     return useQuery({
-        queryKey: ["appointments", token],
+        queryKey: ["appointments", token], // This key combination provides caching safety, since every token is unique to each user, no appointments from user A will leak to user B
         queryFn: () => withAuth((currentToken) => fetchAppointments(currentToken)),
         enabled: !!token // only fires the queryFn if there is a token
     })

@@ -9,6 +9,7 @@ public class Doctor
     public required string FirstName { get; set; }
     public required string LastName { get; set; }
     public string? Email { get; set; }
+    public string? Image { get; set; }
 
     // Foreign Keys
     public int SpecialtyId { get; set; }

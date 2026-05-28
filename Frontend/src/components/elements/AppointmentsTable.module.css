@@ -39,6 +39,20 @@
     align-items: center;
     gap: 5px;
     padding: var(--spacing-md);
+    justify-content: space-between;
+    width: 100%;
+}
+
+.headerElements {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.headerElements select {
+    padding: var(--spacing-sm);
+    border-radius: var(--radius);
+    border: none;
 }
 
 @media (min-width: 900px) {

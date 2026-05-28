@@ -38,6 +38,9 @@ If you need help with any instructions for the course assignment, contact your t
 - **Patients** - Consits of `CRUD`endpoints. The frontend must provide an access token in the header when perforimg `GET`, `PUT` or `DELETE` operations. Like appointments, the `POST` endpoint does not require authorization, however only a limited set of data is saved in the databae when a patient is created. If a returning patient creates an appoint based on their `Firstname + Lastname` combination, we will use that existing record instead of creating a new patient. Patients with a full set of sensitive data can only be created through the `/register` endpoint.
 - **Lookup tables** - Entities such as specialties, status, clinics, cities, categories and doctors are considered lookup tables or reference tables. We only need to read data from them that the frontend UI relies on and at the current state of the application they are not used for much else.
 
+#### Backend Authentication
+I implemented Role Based Access Control (RBAC) on the backend for future implementation, and since Patient users shouldn't be able to write to the database, some of the endpoints are to be used by is an `Admin` role only. I created a seed for a Patient with an `Admin` role, in case we would want to test those endpoints. To retrieve a token with `Admin` access, simply login with the user `dev@dev.com` and password `p@ssword`. 
+
 #### Auth
 - POST `api/Auth/login` - Logs in with an existing account.
 - POST `api/Auth/register` - Registers a new account.

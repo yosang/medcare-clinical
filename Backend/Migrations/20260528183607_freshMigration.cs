@@ -293,7 +293,7 @@ namespace booking_rest_api.Migrations
                     { 3, new DateTime(1982, 8, 4, 0, 0, 0, 0, DateTimeKind.Unspecified), "danny@mail.com", "Daniela", true, "Thomson", "878787878", "FAKEHASH", "333222333", 1 },
                     { 4, new DateTime(1986, 10, 7, 0, 0, 0, 0, DateTimeKind.Unspecified), "carlos@mail.com", "Carlos", false, "Rodriguez", null, null, "777788877", 1 },
                     { 5, new DateTime(1984, 3, 22, 0, 0, 0, 0, DateTimeKind.Unspecified), "jandan@mail.com", "Jan", false, "Dan", null, null, "222777722", 1 },
-                    { 6, null, "dev@dev.com", "Admin", false, "Admin", null, "AQAAAAIAAYagAAAAEBoc7/xHyQ88YJ7b5/fvDDkFTAH6GmsiH03ouiYgQWUEx1zu7NsSDmTeHrcdsHHyxg==", null, 2 }
+                    { 6, null, "dev@dev.com", "Admin", false, "Admin", null, "AQAAAAIAAYagAAAAEBoc7/xHyQ88YJ7b5/fvDDkFTAH6GmsiH03ouiYgQWUEx1zu7NsSDmTeHrcdsHHyxg==", "99999999", 2 }
                 });
 
             migrationBuilder.InsertData(

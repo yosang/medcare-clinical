@@ -58,12 +58,7 @@ public static class SeedsData
     // Mixed list of patients, registered and guests
     public static List<Patient> Patients { get; } = new List<Patient>()
     {
-        new Patient { Id = 1, FirstName = "Mark", LastName = "Johanson", Phone = "24242424", Email = "mark.j@mail.com", DateOfBirth = new DateTime(1992, 05, 24), NationalIdentityNumber = "524231231", PasswordHash = "FAKEHASH", IsRegistered = true, RoleId = 1},
-        new Patient { Id = 2, FirstName = "Tobias", LastName = "Karevik", Phone = "555555", Email = "tobben@mail.com", DateOfBirth = new DateTime(1991, 02, 13), NationalIdentityNumber = "66666666", PasswordHash = "FAKEHASH", IsRegistered = true, RoleId = 1},
-        new Patient { Id = 3, FirstName = "Daniela", LastName = "Thomson", Phone = "333222333", Email = "danny@mail.com", DateOfBirth = new DateTime(1982, 08, 04), NationalIdentityNumber = "878787878", PasswordHash = "FAKEHASH", IsRegistered = true, RoleId = 1},
-        new Patient { Id = 4, FirstName = "Carlos", LastName = "Rodriguez", Phone = "777788877", Email = "carlos@mail.com", DateOfBirth = new DateTime(1986, 10, 07), NationalIdentityNumber = null, PasswordHash = null, IsRegistered = false, RoleId = 1},
-        new Patient { Id = 5, FirstName = "Jan", LastName = "Dan", Phone = "222777722", Email = "jandan@mail.com", DateOfBirth = new DateTime(1984, 03, 22), NationalIdentityNumber = null, PasswordHash = null, IsRegistered = false, RoleId = 1},
-        new Patient { Id = 6, FirstName = "Admin", LastName = "Admin", Phone = null, Email = "dev@dev.com", DateOfBirth = null, NationalIdentityNumber = null, PasswordHash = "AQAAAAIAAYagAAAAEBoc7/xHyQ88YJ7b5/fvDDkFTAH6GmsiH03ouiYgQWUEx1zu7NsSDmTeHrcdsHHyxg==", IsRegistered = false, RoleId = 2}
+        new Patient { Id = 1, FirstName = "Admin", LastName = "Admin", Phone = "99999999", Email = "dev@dev.com", DateOfBirth = null, NationalIdentityNumber = null, PasswordHash = "AQAAAAIAAYagAAAAEBoc7/xHyQ88YJ7b5/fvDDkFTAH6GmsiH03ouiYgQWUEx1zu7NsSDmTeHrcdsHHyxg==", IsRegistered = false, RoleId = 2}
     };
 
     public static List<Appointment> Appointments { get; } = new List<Appointment>()
