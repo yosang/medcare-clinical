@@ -6,7 +6,7 @@ import { useLoginStore } from "../../stores/useLoginStore"
 import { useValidationStore } from "../../stores/useValidationStore";
 
 import { useCreateAppointment } from "../../queries/useAppointments";
-import { usePatient, useCreatePatient } from "../../queries/usePatients";
+import { useCreatePatient } from "../../queries/usePatients";
 
 import styles from "./BookingForm.module.css"
 
@@ -23,13 +23,11 @@ import { useShallow } from "zustand/shallow";
 import { AppointmentSchema } from "../../schemas/appointmentSchema";
 import TextArea from "../formElements/TextArea";
 import { findClinicIdByDoctorId, useDoctors } from "../../queries/useLookupQueries";
+import type { Patient } from "../../types/Patients";
 
-import { type Patient } from "../../types/Patients";
-
-export default function BookingForm() {
+export default function BookingForm( { patient }:{ patient?: Patient}) {
 
     // Tanstack reading queries
-    const { data: patient } = usePatient();
     const { data: doctors } = useDoctors();
     
     // TaStack mutations
@@ -82,22 +80,29 @@ export default function BookingForm() {
             const dataIsValid = validate(AppointmentSchema, appointmentData)
             if(!dataIsValid) return;
 
-            let newPatient: Patient | null = null;
+            let patientId: number
 
-            // If this is an unregistered user, we create a guest patient and use it's id to create the appointment
-            if(!token) newPatient = await createPatientMutation.mutateAsync({
-                firstname: appointmentData.firstname,
-                lastname: appointmentData.lastname,
-                phone: appointmentData.phone
-            })
+            // If unregistered user, we create a guest patient and use the new patient id to create the appointment
+            // If registered user, we use the logged in patient's id on every appointment creation
+            if(!token) {
+                const newPatient = await createPatientMutation.mutateAsync({
+                    firstname: appointmentData.firstname,
+                    lastname: appointmentData.lastname,
+                    phone: appointmentData.phone
+                })
 
-            if(!newPatient || createPatientMutation.error) throw new Error("Unable to map the newly created patient")
-    
+                if(!newPatient || createPatientMutation.error) throw new Error("Something went wrong when trying to create a new guest patient")
+                patientId = Number(newPatient.id)
+            } else {
+                if(!patient) throw new Error("Something when wrong when trying to retrieve logged inn patient details")
+                patientId = patient.id
+            }
+
             toast.promise(createAppointmentMutation.mutateAsync({
                 AppointmentDate: form.appointmentDateAndTime,
                 Duration: Number(form.duration),
                 Note: form.note,
-                PatientId: Number(newPatient.id),
+                PatientId: patientId,
                 DoctorId: Number(appointmentData.DoctorId),
                 ClinicId: Number(appointmentData.ClinicId),
                 CategoryId: Number(appointmentData.CategoryId),

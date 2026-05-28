@@ -3,6 +3,7 @@
     flex-direction: column;
     padding: 20px 50px;
     gap: 20px;
+    width: 100%;
 }
 
 .sideInfo {
@@ -25,21 +26,90 @@
     border: 1px solid rgba(0, 0, 0, 0.1)
 }
 
+.loggedInLayout {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 25px;
+    padding: var(--spacing-sm);
+    width: 100%;
+}
+
 .appointmentHistory {
     display: flex;
     flex-direction: column;
     gap: 20px;
     align-items: center;
-    height: 100vh;
+    height: 60vh;
     width: 100%;
     font-size: 0.8rem;
-    padding: 0 var(--spacing-sm);
     overflow: scroll;
+    background-color: var(--color-secondary);
+    color: var(--color-secondary-text);
+    border-radius: var(--radius);
+    padding: var(--spacing-md);
+    align-items: flex-start;
 }
 
+.loggedInBookingLayout {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    width: 100%;
+    align-items: flex-start;
+}
+
+.sideCards {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.upComingAppointmentCard {
+    display: flex;
+    flex-direction: column;
+    background-color: var(--color-primary);
+    color: var(--color-primary-text);
+    height: fit-content;
+    width: 300px;
+    border-radius: var(--radius);
+    padding: var(--spacing-sm) var(--spacing-md);
+    gap: 10px;
+}
+
+.upComingAppointmentCardContent{
+    display: flex;
+    gap: 20px;
+}
+
+.upComingAppointmentCardContent > p {
+    height: 100%;
+    font-size: 30px;
+}
+
+.linksLayout {
+    display: flex;
+    flex-direction: column;
+    background-color: var(--color-muted);
+    color: black;
+    height: fit-content;
+    width: 300px;
+    border-radius: var(--radius);
+    padding: var(--spacing-sm) var(--spacing-md);
+    gap: 10px;
+}
+
+.linksLayout a {
+    color: var(--color-primary);
+    text-decoration: none;
+}
 
 @media (min-width: 900px) {
     .mainLayout {
+        flex-direction: row;
+    }
+
+    .loggedInBookingLayout {
         flex-direction: row;
     }
 }

@@ -2,7 +2,8 @@
 .layout {
     background: var(--bg);
     border-radius: var(--radius);
-    color: var(--color-text);
+    color: var(--color-secondary-text);
+    width: 100%;
 }
 
 .layout thead th {
@@ -12,13 +13,11 @@
     z-index: 10;
     background-color: var(--color-primary);
     color: var(--color-primary-text);
-    padding: var(--spacing-sm);
 }
 
 .layout th, td {
     text-align: left;
     padding: var(--spacing-sm);
-    color: var(--color-text);
 }
 
 .layout th {
@@ -34,6 +33,13 @@
     background-color: rgba(0, 0, 0, 0.3);
     cursor: pointer;
  }
+
+.header {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    padding: var(--spacing-md);
+}
 
 @media (min-width: 900px) {
     .layout th, td {

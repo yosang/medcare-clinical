@@ -16,6 +16,7 @@ const UpdateAppointmentForm = lazy(() => import("../forms/UpdateAppointmentForm"
 
 import type { AppointmentUpdateForm } from "../../types/Appointments";
 import UpdateAppointmentSkeleton from "../skeletons/UpdateAppointmentSkeleton";
+import { History } from "lucide-react";
 
 export default function AppointmentsTable() {
 
@@ -127,6 +128,10 @@ export default function AppointmentsTable() {
             </>
         )}
     </Drawer>
+    <div className={styles.header}>
+        <History color="var(--color-primary)" />
+        <h1 style={{ color: "var(--color-secondary-text)"}}>My Appointments</h1>
+    </div>
     <table className={styles.layout}>
         <thead>
             <tr>
@@ -139,7 +144,7 @@ export default function AppointmentsTable() {
             </tr>
         </thead>
         <tbody>
-            {sortedAppointments.length > 0 ? sortedAppointments.map((ap) => (
+            {sortedAppointments.map((ap) => (
                 <tr key={ap.id} onClick={() => handleAppointmentClick(ap.id)}>
                     <td>{ap.category.name}</td>
                     <td>{new Date(ap.appointmentDate).toLocaleDateString("no-NO")}</td>
@@ -153,11 +158,12 @@ export default function AppointmentsTable() {
                             : ap?.status.id === 2 
                             ? "green"
                             : "red"
-
+                            
                         }} >{ap.status.name}</td>
                 </tr>
-            )):(<p>No appointments registered yet...</p>)}
+            ))}
         </tbody>
     </table>
+    {sortedAppointments.length < 1 && <p>No appointments registered yet...</p>}
     </>
 }
