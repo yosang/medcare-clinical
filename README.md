@@ -25,34 +25,42 @@ If you need help with any instructions for the course assignment, contact your t
 
 **REMEMBER** Your Moodle LMS submission must have your repository link **AND** your Github username in the text file.
 
+### Installation and Configuration
+
+#### Backend
+#### Frontend
+
 ### ENDPOINTS
 
+#### Overview:
+- **Auth** - Consits `POST` endpoints to authenticate, register or logout a user as well as refreshing access token.
+- **Appointments** - Consists `CRUD`endpoints. The frontend must provide an access token in the header when perforimg `GET`, `PUT` or `DELETE` (soft delete) operations. The `POST` endpoint does not require authorization, since we want to allow guests to create appointments, however the frontend must provide the `PatientId`, which has to be retrieved from creating a guest patient before creating the appointment. If the client however sends an access token in the header when performing a `POST` operation, the backend will retrieve the `PatientId` from the token claims and use it during creation.
+- **Patients** - Consits of `CRUD`endpoints. The frontend must provide an access token in the header when perforimg `GET`, `PUT` or `DELETE` operations. Like appointments, the `POST` endpoint does not require authorization, however only a limited set of data is saved in the databae when a patient is created. If a returning patient creates an appoint based on their `Firstname + Lastname` combination, we will use that existing record instead of creating a new patient. Patients with a full set of sensitive data can only be created through the `/register` endpoint.
+- **Lookup tables** - Entities such as specialties, status, clinics, cities, categories and doctors are considered lookup tables or reference tables. We only need to read data from them that the frontend UI relies on and at the current state of the application they are not used for much else.
+
 #### Auth
-- POST `api/Auth/login` - Logs in with an existing account to return an access token and a refresh token cookie.
+- POST `api/Auth/login` - Logs in with an existing account.
 - POST `api/Auth/register` - Registers a new account.
 - POST `api/Auth/refresh` - Uses a refresh token cookie to issue a new access token.
-- POST `api/Auth/logout` - Logs out the frontend.
-
+- POST `api/Auth/logout` - Logs out the frontend client by removing the refresh cookie from the browser.
 
 #### Appointments
 - GET `api/appointments` - Returns a list of appointments for a logged in patient.
 - GET `api/appointments/:id` - Returns a single appointment.
-- POST `api/appointments` - Create a new appointment (Frontend must provide a PatientId for Guests).
+- POST `api/appointments` - Create a new appointment as a guest or registered user.
 - PUT `api/appointments/:id` - Updates an existing appointment.
 - DELETE `api/appointments/:id` - Deletes an existing appointment.
 
 #### Patients
-- GET `api/patients` - Returns a list of patients.
-- GET `api/patients/:id` - Returns a single patient.
-- GET `api/patients/:id/appointments` - Returns a list of appointments for patient id.
-- POST `api/patients` - Creates a new patient.
-- PUT `api/patients/:id` - Updates an existing patient.
-- DELETE `api/patients/:id` - Deletes an existing patient.
+- GET `api/patients/me` - Returns patient details as a logged in patient.
+- POST `api/patients/guest` - Creates a new guest patient.
+- PUT `api/patients/me` - Updates patient details as a logged in patient.
+- DELETE `api/patients/me` - Deletes patient profile as a logged in patient.
 
 #### Doctors
 - GET `api/doctors` - Returns a list of doctors.
 - GET `api/doctors/:id` - Returns a single doctor.
-- GET `api/doctors/:id/appointments` - Returns a list of appointments for doctor id.
+- GET `api/doctors//search` - Returns a list of doctors based on search term.
 - POST `api/doctors` - Creates a new doctor.
 - PUT `api/doctors/:id` - Updates an existing doctor.
 - DELETE `api/doctors/:id` - Deletes an existing doctor.
@@ -60,7 +68,6 @@ If you need help with any instructions for the course assignment, contact your t
 #### Statuses
 - GET `api/status` - Returns a list of statuses.
 - GET `api/status/:id` - Returns a single status.
-- GET `api/status/:id/appointments` - Returns a list of appointments for status id.
 - POST `api/status` - Creates a new status.
 - PUT `api/status/:id` - Updates an existing status.
 - DELETE `api/status/:id` - Deletes an existing status.
@@ -68,7 +75,6 @@ If you need help with any instructions for the course assignment, contact your t
 #### Specialties
 - GET `api/specialties` - Returns a list of specialties.
 - GET `api/specialties/:id` - Returns a single specialty.
-- GET `api/specialties/:id/doctors` - Returns a list of doctors for specialty id.
 - POST `api/specialties` - Creates a new specialty.
 - PUT `api/specialties/:id` - Updates an existing specialty.
 - DELETE `api/specialties/:id` - Deletes an existing specialty.
@@ -76,7 +82,6 @@ If you need help with any instructions for the course assignment, contact your t
 #### Categories
 - GET `api/categories` - Returns a list of categories.
 - GET `api/categories/:id` - Returns a single category.
-- GET `api/categories/:id/appointments` - Returns a list of appointments for category id.
 - POST `api/categories` - Creates a new category.
 - PUT `api/categories/:id` - Updates an existing category.
 - DELETE `api/categories/:id` - Deletes an existing category.
@@ -84,7 +89,6 @@ If you need help with any instructions for the course assignment, contact your t
 #### Cities
 - GET `api/cities` - Returns a list of cities.
 - GET `api/cities/:id` - Returns a single city.
-- GET `api/cities/:id/clinics` - Returns a list of clinics for city id.
 - POST `api/cities` - Creates a new city.
 - PUT `api/cities/:id` - Updates an existing city.
 - DELETE `api/cities/:id` - Deletes an existing city.
@@ -93,7 +97,6 @@ If you need help with any instructions for the course assignment, contact your t
 - GET `api/clinics` - Returns a list of clinics.
 - GET `api/clinics/:id` - Returns a single clinic.
 - GET `api/clinics/:id/doctors` - Returns a list of doctors for clinic id.
-- GET `api/clinics/:id/appointments` - Returns a list of appointments for clinic id.
 - POST `api/clinics` - Creates a new clinic.
 - PUT `api/clinics/:id` - Updates an existing clinic.
 - DELETE `api/clinics/:id` - Deletes an existing clinic.
