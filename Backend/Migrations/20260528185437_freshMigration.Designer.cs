@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace booking_rest_api.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20260528183607_freshMigration")]
+    [Migration("20260528185437_freshMigration")]
     partial class freshMigration
     {
         /// <inheritdoc />
@@ -65,41 +65,6 @@ namespace booking_rest_api.Migrations
                     b.HasIndex("StatusId");
 
                     b.ToTable("Appointments");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            AppointmentDate = new DateTime(2026, 5, 24, 8, 15, 0, 0, DateTimeKind.Unspecified),
-                            CategoryId = 1,
-                            ClinicId = 1,
-                            DoctorId = 1,
-                            Duration = 30,
-                            PatientId = 1,
-                            StatusId = 1
-                        },
-                        new
-                        {
-                            Id = 2,
-                            AppointmentDate = new DateTime(2026, 5, 24, 10, 30, 0, 0, DateTimeKind.Unspecified),
-                            CategoryId = 1,
-                            ClinicId = 1,
-                            DoctorId = 1,
-                            Duration = 30,
-                            PatientId = 2,
-                            StatusId = 1
-                        },
-                        new
-                        {
-                            Id = 3,
-                            AppointmentDate = new DateTime(2026, 5, 24, 12, 30, 0, 0, DateTimeKind.Unspecified),
-                            CategoryId = 1,
-                            ClinicId = 1,
-                            DoctorId = 1,
-                            Duration = 30,
-                            PatientId = 3,
-                            StatusId = 1
-                        });
                 });
 
             modelBuilder.Entity("Models.Category", b =>
@@ -265,6 +230,9 @@ namespace booking_rest_api.Migrations
                         .IsRequired()
                         .HasColumnType("varchar(255)");
 
+                    b.Property<string>("Image")
+                        .HasColumnType("longtext");
+
                     b.Property<string>("LastName")
                         .IsRequired()
                         .HasColumnType("varchar(255)");
@@ -290,6 +258,7 @@ namespace booking_rest_api.Migrations
                             ClinicId = 1,
                             Email = "mb@klinikken.no",
                             FirstName = "Mathias",
+                            Image = "https://i.imgur.com/CeGHXlw.jpeg",
                             LastName = "Bekkemellem",
                             SpecialtyId = 1
                         },
@@ -299,6 +268,7 @@ namespace booking_rest_api.Migrations
                             ClinicId = 2,
                             Email = "cj@klinikken.no",
                             FirstName = "Carina",
+                            Image = "https://i.imgur.com/3WobpO1.jpeg",
                             LastName = "Johansen",
                             SpecialtyId = 2
                         },
@@ -308,6 +278,7 @@ namespace booking_rest_api.Migrations
                             ClinicId = 3,
                             Email = "jc@klinikken.no",
                             FirstName = "John",
+                            Image = "https://i.imgur.com/sPiOLsv.jpeg",
                             LastName = "Carlsen",
                             SpecialtyId = 1
                         });
@@ -364,67 +335,6 @@ namespace booking_rest_api.Migrations
                         new
                         {
                             Id = 1,
-                            DateOfBirth = new DateTime(1992, 5, 24, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Email = "mark.j@mail.com",
-                            FirstName = "Mark",
-                            IsRegistered = true,
-                            LastName = "Johanson",
-                            NationalIdentityNumber = "524231231",
-                            PasswordHash = "FAKEHASH",
-                            Phone = "24242424",
-                            RoleId = 1
-                        },
-                        new
-                        {
-                            Id = 2,
-                            DateOfBirth = new DateTime(1991, 2, 13, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Email = "tobben@mail.com",
-                            FirstName = "Tobias",
-                            IsRegistered = true,
-                            LastName = "Karevik",
-                            NationalIdentityNumber = "66666666",
-                            PasswordHash = "FAKEHASH",
-                            Phone = "555555",
-                            RoleId = 1
-                        },
-                        new
-                        {
-                            Id = 3,
-                            DateOfBirth = new DateTime(1982, 8, 4, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Email = "danny@mail.com",
-                            FirstName = "Daniela",
-                            IsRegistered = true,
-                            LastName = "Thomson",
-                            NationalIdentityNumber = "878787878",
-                            PasswordHash = "FAKEHASH",
-                            Phone = "333222333",
-                            RoleId = 1
-                        },
-                        new
-                        {
-                            Id = 4,
-                            DateOfBirth = new DateTime(1986, 10, 7, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Email = "carlos@mail.com",
-                            FirstName = "Carlos",
-                            IsRegistered = false,
-                            LastName = "Rodriguez",
-                            Phone = "777788877",
-                            RoleId = 1
-                        },
-                        new
-                        {
-                            Id = 5,
-                            DateOfBirth = new DateTime(1984, 3, 22, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Email = "jandan@mail.com",
-                            FirstName = "Jan",
-                            IsRegistered = false,
-                            LastName = "Dan",
-                            Phone = "222777722",
-                            RoleId = 1
-                        },
-                        new
-                        {
-                            Id = 6,
                             Email = "dev@dev.com",
                             FirstName = "Admin",
                             IsRegistered = false,

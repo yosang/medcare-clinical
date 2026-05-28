@@ -106,6 +106,5 @@ public class DatabaseContext : DbContext
         modelBuilder.Entity<Status>().HasData(SeedsData.Statuses);
 
         modelBuilder.Entity<Patient>().HasData(SeedsData.Patients);
-        modelBuilder.Entity<Appointment>().HasData(SeedsData.Appointments);
     }
 }

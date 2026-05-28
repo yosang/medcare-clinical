@@ -19,4 +19,5 @@ export interface Doctor {
     email: string,
     specialty: Specialty,
     clinic: Clinic
+    image: string
 }

@@ -46,7 +46,7 @@ export async function fetchDoctors(): Promise<Doctor[]> {
 }
 
 // Get Doctors search: Public
-export async function fetchDoctorsBySearch(name: string ) {
+export async function fetchDoctorsBySearch(name: string ): Promise<Doctor[]> {
     if(!searchUrl) {
         throw new Error("VITE_DOCTOR_SEARCH url is not defined in .env")
     }

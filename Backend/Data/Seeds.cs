@@ -34,9 +34,9 @@ public static class SeedsData
 
     public static List<Doctor> Doctors { get; } = new List<Doctor>()
     {
-        new Doctor { Id = 1, FirstName = "Mathias", LastName = "Bekkemellem", Email = "mb@klinikken.no", SpecialtyId = 1, ClinicId = 1},
-        new Doctor { Id = 2, FirstName = "Carina", LastName = "Johansen", Email = "cj@klinikken.no", SpecialtyId = 2, ClinicId = 2},
-        new Doctor { Id = 3, FirstName = "John", LastName = "Carlsen", Email = "jc@klinikken.no", SpecialtyId = 1, ClinicId = 3},
+        new Doctor { Id = 1, FirstName = "Mathias", LastName = "Bekkemellem", Email = "mb@klinikken.no", SpecialtyId = 1, ClinicId = 1, Image = "https://i.imgur.com/CeGHXlw.jpeg"},
+        new Doctor { Id = 2, FirstName = "Carina", LastName = "Johansen", Email = "cj@klinikken.no", SpecialtyId = 2, ClinicId = 2, Image = "https://i.imgur.com/3WobpO1.jpeg"},
+        new Doctor { Id = 3, FirstName = "John", LastName = "Carlsen", Email = "jc@klinikken.no", SpecialtyId = 1, ClinicId = 3, Image = "https://i.imgur.com/sPiOLsv.jpeg"},
     };
 
     public static List<Category> Categories { get; } = new List<Category>()
@@ -61,10 +61,4 @@ public static class SeedsData
         new Patient { Id = 1, FirstName = "Admin", LastName = "Admin", Phone = "99999999", Email = "dev@dev.com", DateOfBirth = null, NationalIdentityNumber = null, PasswordHash = "AQAAAAIAAYagAAAAEBoc7/xHyQ88YJ7b5/fvDDkFTAH6GmsiH03ouiYgQWUEx1zu7NsSDmTeHrcdsHHyxg==", IsRegistered = false, RoleId = 2}
     };
 
-    public static List<Appointment> Appointments { get; } = new List<Appointment>()
-    {
-        new Appointment { Id = 1, AppointmentDate = new DateTime(2026, 05, 24, 08, 15, 0), Duration = 30, Note = null, PatientId = 1, DoctorId = 1, ClinicId = 1, CategoryId = 1, StatusId = 1 },
-        new Appointment { Id = 2, AppointmentDate = new DateTime(2026, 05, 24, 10, 30, 0), Duration = 30, Note = null, PatientId = 2, DoctorId = 1, ClinicId = 1, CategoryId = 1, StatusId = 1 },
-        new Appointment { Id = 3, AppointmentDate = new DateTime(2026, 05, 24, 12, 30, 0), Duration = 30, Note = null, PatientId = 3, DoctorId = 1, ClinicId = 1, CategoryId = 1, StatusId = 1 }
-    };
 }

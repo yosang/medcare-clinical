@@ -1,0 +1,11 @@
+{
+    "ConnectionStrings": {
+        "default": "server=localhost;database=bookingDb;user=bookingUser;password=password"
+    },
+    "JwtSettings": {
+        "Issuer": "medicalBookingApi",
+        "Audience": "Noroff",
+        "ExpiryMinutes": 15,
+        "SecretKey": "a-string-secret-at-least-256-bits-long"
+    }
+}

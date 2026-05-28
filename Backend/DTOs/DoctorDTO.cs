@@ -9,6 +9,7 @@ public class DoctorDTO
     public string FirstName { get; set; } = null!;
     public string LastName { get; set; } = null!;
     public string? Email { get; set; }
+    public string? Image { get; set; }
     public int SpecialtyId { get; set; }
     public int ClinicId { get; set; }
 
@@ -20,6 +21,7 @@ public class DoctorWithDetailsDTO
     public string FirstName { get; set; } = null!;
     public string LastName { get; set; } = null!;
     public string? Email { get; set; }
+    public string? Image { get; set; }
 
     public SpecialtyDTO? Specialty { get; set; }
     public ClinicDTO? Clinic { get; set; }
@@ -40,6 +42,9 @@ public class CreateDoctorDTO {
     [MinLength(2)]
     [MaxLength(100)]
     public string? Email { get; set; }
+    
+    [Url]
+    public string? Image { get; set; }
 
     [DefaultValue(1)]
     [Range(1, int.MaxValue)]
@@ -58,6 +63,9 @@ public class UpdateDoctorDTO
     [MinLength(2)]
     [MaxLength(100)]
     public string? LastName { get; set;}
+
+    [Url]
+    public string? Image { get; set; }
 
     [EmailAddress]
     [MinLength(2)]

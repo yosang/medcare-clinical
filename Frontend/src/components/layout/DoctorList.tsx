@@ -7,6 +7,7 @@ type Props = {
 }
 
 export default function DoctorList({data}:Props) {
+    console.log(data)
     return (
         <div className={styles.layout}>
             {data.map(d => (
@@ -15,6 +16,7 @@ export default function DoctorList({data}:Props) {
                         name={d.firstName + " " + d.lastName} 
                         specialty={d.specialty.name} 
                         clinic={d.clinic.name}
+                        image={d.image}
                     />
                 ))}
         </div>

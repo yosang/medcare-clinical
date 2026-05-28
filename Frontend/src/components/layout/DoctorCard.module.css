@@ -1,13 +1,22 @@
 .layout {
-    border: 1px solid gray;
     gap: 20px;
-    padding: var(--spacing-lg) var(--spacing-md);
     border-radius: var(--radius);
     display: flex;
     flex-direction: column;
     background-color: var(--color-secondary);
     color: var(--color-secondary-text);
-    justify-content: flex-start;
+    width: 300px;
+    align-items: center;
+    overflow: hidden;
+}
+
+.layout img {
+    height: 100%;
+    scale: scaleX(1.5);
+}
+
+.docDetails {
+    padding: var(--spacing-md) var(--spacing-sm);
 }
 
 .specialty {
@@ -21,4 +30,14 @@
     display: flex;
     align-items: center;
     gap: 5px;
+}
+
+@media (min-width: 900px) {
+    .layout {
+        flex-direction: row;
+        width: 500px;
+    }
+    .layout img {
+        scale: 1.1;
+    }
 }

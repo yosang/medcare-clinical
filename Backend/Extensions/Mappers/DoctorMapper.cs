@@ -13,6 +13,7 @@ public static class DoctorMapper
           FirstName = doctor.FirstName,
           LastName = doctor.LastName,
           Email = doctor.Email,
+          Image = doctor.Image,
           SpecialtyId = doctor.SpecialtyId,
           ClinicId = doctor.ClinicId  
         };
@@ -25,6 +26,7 @@ public static class DoctorMapper
           FirstName = doctor.FirstName,
           LastName = doctor.LastName,
           Email = doctor.Email,
+          Image = doctor.Image,
           Specialty = doctor.Specialty?.ToSpecialtyDTO(),
           Clinic = doctor.Clinic?.ToClinicDTO(),
         };
@@ -37,6 +39,7 @@ public static class DoctorMapper
             FirstName = dto.FirstName,
             LastName = dto.LastName,
             Email = dto.Email,
+            Image = dto.Image,
             SpecialtyId = dto.SpecialtyId,
             ClinicId = dto.ClinicId
         };
@@ -47,6 +50,7 @@ public static class DoctorMapper
         if(!string.IsNullOrWhiteSpace(dto.FirstName)) existing.FirstName = dto.FirstName; 
         if(!string.IsNullOrWhiteSpace(dto.LastName)) existing.LastName = dto.LastName; 
         if(!string.IsNullOrWhiteSpace(dto.Email)) existing.Email = dto.Email; 
+        if(!string.IsNullOrWhiteSpace(dto.Image)) existing.Image = dto.Image; 
         if(dto.SpecialtyId.HasValue) existing.SpecialtyId = dto.SpecialtyId.Value;
         if(dto.ClinicId.HasValue) existing.ClinicId = dto.ClinicId.Value;
     }

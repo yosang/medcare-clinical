@@ -149,6 +149,7 @@ namespace booking_rest_api.Migrations
                     FirstName = table.Column<string>(type: "varchar(255)", nullable: false),
                     LastName = table.Column<string>(type: "varchar(255)", nullable: false),
                     Email = table.Column<string>(type: "longtext", nullable: true),
+                    Image = table.Column<string>(type: "longtext", nullable: true),
                     SpecialtyId = table.Column<int>(type: "int", nullable: false),
                     ClinicId = table.Column<int>(type: "int", nullable: false)
                 },
@@ -286,34 +287,16 @@ namespace booking_rest_api.Migrations
             migrationBuilder.InsertData(
                 table: "Patients",
                 columns: new[] { "Id", "DateOfBirth", "Email", "FirstName", "IsRegistered", "LastName", "NationalIdentityNumber", "PasswordHash", "Phone", "RoleId" },
-                values: new object[,]
-                {
-                    { 1, new DateTime(1992, 5, 24, 0, 0, 0, 0, DateTimeKind.Unspecified), "mark.j@mail.com", "Mark", true, "Johanson", "524231231", "FAKEHASH", "24242424", 1 },
-                    { 2, new DateTime(1991, 2, 13, 0, 0, 0, 0, DateTimeKind.Unspecified), "tobben@mail.com", "Tobias", true, "Karevik", "66666666", "FAKEHASH", "555555", 1 },
-                    { 3, new DateTime(1982, 8, 4, 0, 0, 0, 0, DateTimeKind.Unspecified), "danny@mail.com", "Daniela", true, "Thomson", "878787878", "FAKEHASH", "333222333", 1 },
-                    { 4, new DateTime(1986, 10, 7, 0, 0, 0, 0, DateTimeKind.Unspecified), "carlos@mail.com", "Carlos", false, "Rodriguez", null, null, "777788877", 1 },
-                    { 5, new DateTime(1984, 3, 22, 0, 0, 0, 0, DateTimeKind.Unspecified), "jandan@mail.com", "Jan", false, "Dan", null, null, "222777722", 1 },
-                    { 6, null, "dev@dev.com", "Admin", false, "Admin", null, "AQAAAAIAAYagAAAAEBoc7/xHyQ88YJ7b5/fvDDkFTAH6GmsiH03ouiYgQWUEx1zu7NsSDmTeHrcdsHHyxg==", "99999999", 2 }
-                });
+                values: new object[] { 1, null, "dev@dev.com", "Admin", false, "Admin", null, "AQAAAAIAAYagAAAAEBoc7/xHyQ88YJ7b5/fvDDkFTAH6GmsiH03ouiYgQWUEx1zu7NsSDmTeHrcdsHHyxg==", "99999999", 2 });
 
             migrationBuilder.InsertData(
                 table: "Doctors",
-                columns: new[] { "Id", "ClinicId", "Email", "FirstName", "LastName", "SpecialtyId" },
+                columns: new[] { "Id", "ClinicId", "Email", "FirstName", "Image", "LastName", "SpecialtyId" },
                 values: new object[,]
                 {
-                    { 1, 1, "mb@klinikken.no", "Mathias", "Bekkemellem", 1 },
-                    { 2, 2, "cj@klinikken.no", "Carina", "Johansen", 2 },
-                    { 3, 3, "jc@klinikken.no", "John", "Carlsen", 1 }
-                });
-
-            migrationBuilder.InsertData(
-                table: "Appointments",
-                columns: new[] { "Id", "AppointmentDate", "CategoryId", "ClinicId", "DoctorId", "Duration", "Note", "PatientId", "StatusId" },
-                values: new object[,]
-                {
-                    { 1, new DateTime(2026, 5, 24, 8, 15, 0, 0, DateTimeKind.Unspecified), 1, 1, 1, 30, null, 1, 1 },
-                    { 2, new DateTime(2026, 5, 24, 10, 30, 0, 0, DateTimeKind.Unspecified), 1, 1, 1, 30, null, 2, 1 },
-                    { 3, new DateTime(2026, 5, 24, 12, 30, 0, 0, DateTimeKind.Unspecified), 1, 1, 1, 30, null, 3, 1 }
+                    { 1, 1, "mb@klinikken.no", "Mathias", "https://i.imgur.com/CeGHXlw.jpeg", "Bekkemellem", 1 },
+                    { 2, 2, "cj@klinikken.no", "Carina", "https://i.imgur.com/3WobpO1.jpeg", "Johansen", 2 },
+                    { 3, 3, "jc@klinikken.no", "John", "https://i.imgur.com/sPiOLsv.jpeg", "Carlsen", 1 }
                 });
 
             migrationBuilder.CreateIndex(
