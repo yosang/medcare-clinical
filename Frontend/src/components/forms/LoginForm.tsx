@@ -1,4 +1,4 @@
-import { useEffect, useRef, type ChangeEvent } from "react";
+import { useEffect, useRef, useState, type ChangeEvent } from "react";
 import { useLoginStore } from "../../stores/useLoginStore";
 
 import styles from "./LoginForm.module.css"
@@ -14,6 +14,8 @@ export default function LoginForm({ submitHandler }:{ submitHandler: (e: ChangeE
 
     const location = useLocation();
     const { email } = location.state || {};
+
+    const [emailInput, setEmailInput] = useState(email);
 
     // Zustands tates
     const { loading, error, errorMessage, clearErrors } = useLoginStore(useShallow(s => ({
@@ -45,7 +47,7 @@ export default function LoginForm({ submitHandler }:{ submitHandler: (e: ChangeE
                         <h2>Welcome back</h2>
                         <p style={{ color: "var(--text-muted"}}>Please enter your credentials to continue</p>
                     </div>
-                    <EmailInput name={"email"} ref={emailRef} labelText="Email" value={email ? email:""} />
+                    <EmailInput name={"email"} ref={emailRef} labelText="Email" value={emailInput} onChange={(e) => setEmailInput(e.target.value)} />
                     <PasswordInput name="password" ref={passwordRef} labelText="Password"/>
                     <Button type="submit" disabled={loading} >{loading ? (<LoadingSpinner />):"Login"}</Button>
                     <p style={{ color: "var(--text-muted"}}>Dont have an account? <a style={{ color: "var(--brand-primary)", textDecoration: "none" }} href="/register">Register</a></p>
