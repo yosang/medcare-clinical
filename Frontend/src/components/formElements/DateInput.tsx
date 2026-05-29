@@ -3,7 +3,7 @@ import styles from "./Inputs.module.css"
 
 type Props = {
     labelText: string,
-    name: string
+    name?: string
 } & InputHTMLAttributes<HTMLInputElement>
 
 const DateInput = forwardRef( ( { labelText, name, ...props}:Props, ref: Ref<HTMLInputElement> | undefined) => {

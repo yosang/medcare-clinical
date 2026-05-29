@@ -24,6 +24,7 @@ import { AppointmentSchema } from "../../schemas/appointmentSchema";
 import TextArea from "../formElements/TextArea";
 import { findClinicIdByDoctorId, useDoctors } from "../../queries/useLookupQueries";
 import type { Patient } from "../../types/Patients";
+import DateInput from "../formElements/DateInput";
 
 export default function BookingForm( { patient }:{ patient?: Patient}) {
 
@@ -48,6 +49,7 @@ export default function BookingForm( { patient }:{ patient?: Patient}) {
     const initialState = {
         firstname: "",
         lastname: "",
+        dateOfBirth: "",
         phone: "",
         note: "",
         duration: "",
@@ -68,6 +70,7 @@ export default function BookingForm( { patient }:{ patient?: Patient}) {
             const appointmentData = { 
                 firstname: token && patient ? patient.firstName: form.firstname,
                 lastname: token && patient ? patient.lastName: form.lastname,
+                dateOfBirth: token && patient ? patient.dateOfBirth: form.dateOfBirth,
                 phone: token && patient ? patient.phone: form.phone,
                 DoctorId: docId,
                 ClinicId: findClinicIdByDoctorId(doctors, docId) || "",
@@ -88,6 +91,7 @@ export default function BookingForm( { patient }:{ patient?: Patient}) {
                 const newPatient = await createPatientMutation.mutateAsync({
                     firstname: appointmentData.firstname,
                     lastname: appointmentData.lastname,
+                    dateOfBirth: appointmentData.dateOfBirth,
                     phone: appointmentData.phone
                 })
 
@@ -151,6 +155,13 @@ export default function BookingForm( { patient }:{ patient?: Patient}) {
                     disabled={!!token}
                     onChange={(e) => setForm(prev => ({ ...prev, lastname: e.target.value}))}
                     style={inputsWithErrors.includes("lastname") ? { border: "1px solid red"}:{}}
+                />
+                <DateInput 
+                    labelText="Date of birth"
+                    value={token && patient?.dateOfBirth || form.dateOfBirth}
+                    disabled={!!token}
+                    onChange={(e) => setForm(prev => ({ ...prev, dateOfBirth: e.target.value }))}
+                    style={inputsWithErrors.includes("dateOfBirth") ? { border: "1px solid red"}:{}}
                 />
                 <TextInput 
                     labelText="Phone number"

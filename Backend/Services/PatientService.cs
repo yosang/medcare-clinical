@@ -28,7 +28,7 @@ public class PatientService
 
     /// <summary> 
     /// Writes a new patient entity to the database. This service is used to create guest patients with limited personal details.
-    /// If an entity matching firstname / lastname is found in the database, return the entity to prevent duplicate records.
+    /// If an entity matching firstname / lastname / dateOfBirth is found in the database, return the entity to prevent duplicate records.
     /// </summary>
     /// <param name="dto"></param>
     /// <returns>Created patient</returns>
@@ -37,6 +37,7 @@ public class PatientService
         var existing = await _ctx.Patients.AsNoTracking()
                                             .Where(p => p.FirstName == dto.FirstName)
                                             .Where(p => p.LastName == dto.LastName)
+                                            .Where(p => p.DateOfBirth == dto.DateOfBirth)
                                             .FirstOrDefaultAsync();
 
         if(existing != null)

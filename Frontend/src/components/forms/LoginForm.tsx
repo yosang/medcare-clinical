@@ -38,7 +38,7 @@ export default function LoginForm({ submitHandler }:{ submitHandler: (e: ChangeE
         }
         
         clearErrors();
-    }, [])
+    }, [email, clearErrors])
 
     return <form onSubmit={submitHandler} className={styles.layout}>
             <div className={styles.loginCard}>

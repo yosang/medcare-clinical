@@ -58,7 +58,7 @@ public static class SeedsData
     // Mixed list of patients, registered and guests
     public static List<Patient> Patients { get; } = new List<Patient>()
     {
-        new Patient { Id = 1, FirstName = "Admin", LastName = "Admin", Phone = "99999999", Email = "dev@dev.com", DateOfBirth = null, NationalIdentityNumber = null, PasswordHash = "AQAAAAIAAYagAAAAEBoc7/xHyQ88YJ7b5/fvDDkFTAH6GmsiH03ouiYgQWUEx1zu7NsSDmTeHrcdsHHyxg==", IsRegistered = false, RoleId = 2}
+        new Patient { Id = 1, FirstName = "Admin", LastName = "Admin", Phone = "99999999", Email = "dev@dev.com", DateOfBirth = DateTime.MinValue, NationalIdentityNumber = null, PasswordHash = "AQAAAAIAAYagAAAAEBoc7/xHyQ88YJ7b5/fvDDkFTAH6GmsiH03ouiYgQWUEx1zu7NsSDmTeHrcdsHHyxg==", IsRegistered = false, RoleId = 2}
     };
 
 }

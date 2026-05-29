@@ -287,7 +287,7 @@ namespace booking_rest_api.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<DateTime?>("DateOfBirth")
+                    b.Property<DateTime>("DateOfBirth")
                         .HasColumnType("datetime(6)");
 
                     b.Property<string>("Email")
@@ -332,6 +332,7 @@ namespace booking_rest_api.Migrations
                         new
                         {
                             Id = 1,
+                            DateOfBirth = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "dev@dev.com",
                             FirstName = "Admin",
                             IsRegistered = false,

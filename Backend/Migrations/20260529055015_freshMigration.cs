@@ -120,9 +120,9 @@ namespace booking_rest_api.Migrations
                         .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
                     FirstName = table.Column<string>(type: "longtext", nullable: false),
                     LastName = table.Column<string>(type: "longtext", nullable: false),
+                    DateOfBirth = table.Column<DateTime>(type: "datetime(6)", nullable: false),
                     Phone = table.Column<string>(type: "longtext", nullable: true),
                     Email = table.Column<string>(type: "varchar(255)", nullable: true),
-                    DateOfBirth = table.Column<DateTime>(type: "datetime(6)", nullable: true),
                     NationalIdentityNumber = table.Column<string>(type: "varchar(255)", nullable: true),
                     PasswordHash = table.Column<string>(type: "longtext", nullable: true),
                     IsRegistered = table.Column<bool>(type: "tinyint(1)", nullable: false),
@@ -287,7 +287,7 @@ namespace booking_rest_api.Migrations
             migrationBuilder.InsertData(
                 table: "Patients",
                 columns: new[] { "Id", "DateOfBirth", "Email", "FirstName", "IsRegistered", "LastName", "NationalIdentityNumber", "PasswordHash", "Phone", "RoleId" },
-                values: new object[] { 1, null, "dev@dev.com", "Admin", false, "Admin", null, "AQAAAAIAAYagAAAAEBoc7/xHyQ88YJ7b5/fvDDkFTAH6GmsiH03ouiYgQWUEx1zu7NsSDmTeHrcdsHHyxg==", "99999999", 2 });
+                values: new object[] { 1, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "dev@dev.com", "Admin", false, "Admin", null, "AQAAAAIAAYagAAAAEBoc7/xHyQ88YJ7b5/fvDDkFTAH6GmsiH03ouiYgQWUEx1zu7NsSDmTeHrcdsHHyxg==", "99999999", 2 });
 
             migrationBuilder.InsertData(
                 table: "Doctors",

@@ -81,7 +81,7 @@
     grid-template-columns: repeat(2, minmax(100px, 1fr));
 }
 
-.selection label:last-child, .personalDetails label:last-child {
+.selection label:last-child {
     grid-column: 1 / -1;
 }
 

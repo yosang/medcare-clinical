@@ -45,6 +45,7 @@ public class PatientsController : ControllerBase
     ///     {
     ///       "firstName": "Carina",
     ///       "lastName": "Bebek",
+    ///       "dateOfBirth": "1992-05-29",
     ///       "phone": "24242424"
     ///     }
     /// 
@@ -69,9 +70,9 @@ public class PatientsController : ControllerBase
     ///     {
     ///       "firstName": "Markus",
     ///       "lastName": "Hakon",
+    ///       "dateOfBirth": "1984-03-22",
     ///       "phone": "24242424",
     ///       "email": "mh@mail.com",
-    ///       "dateOfBirth": "1984-03-22",
     ///       "nationalIdentityNumber": "22222222222",
     ///       "password": "p@ssword",
     ///     }

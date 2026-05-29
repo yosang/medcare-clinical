@@ -13,9 +13,9 @@ public static class PatientMapper
             Id = patient.Id,
             FirstName = patient.FirstName,
             LastName = patient.LastName,
+            DateOfBirth = patient.DateOfBirth,
             Phone = patient.Phone,
             Email = patient.Email,
-            DateOfBirth = patient.DateOfBirth,
             NationalIdentityNumber = patient.NationalIdentityNumber,
             IsRegistered = patient.IsRegistered
         };
@@ -27,6 +27,7 @@ public static class PatientMapper
             Id = patient.Id,
             FirstName = patient.FirstName,
             LastName = patient.LastName,
+            DateOfBirth = patient.DateOfBirth,
             Phone = patient.Phone
         };
     }
@@ -37,6 +38,7 @@ public static class PatientMapper
         {
             FirstName = dto.FirstName,
             LastName = dto.LastName,
+            DateOfBirth = dto.DateOfBirth,
             Phone = dto.Phone
         };
     }
@@ -46,9 +48,9 @@ public static class PatientMapper
         {
             FirstName = dto.FirstName,
             LastName = dto.LastName,
+            DateOfBirth = dto.DateOfBirth,
             Phone = dto.Phone,
             Email = dto.Email,
-            DateOfBirth = dto.DateOfBirth,
             NationalIdentityNumber = dto.NationalIdentityNumber,
         };
     }
@@ -60,9 +62,9 @@ public static class PatientMapper
             Id = patient.Id,
             FirstName = patient.FirstName,
             LastName = patient.LastName,
+            DateOfBirth = patient.DateOfBirth,
             Phone = patient.Phone,
             Email = patient.Email,
-            DateOfBirth = patient.DateOfBirth,
             NationalIdentityNumber = patient.NationalIdentityNumber,
         };
     }
