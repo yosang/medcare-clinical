@@ -5,6 +5,7 @@
     align-items: center;
     width: 100%;
     background-color: var(--color-primary);
+    color: var(--color-primary-text);
     padding: var(--spacing-lg) var(--spacing-sm);
     border-radius: var(--radius);
 }
