@@ -25,17 +25,78 @@ If you need help with any instructions for the course assignment, contact your t
 
 **REMEMBER** Your Moodle LMS submission must have your repository link **AND** your Github username in the text file.
 
-### Installation and Configuration
+### Installation, Configuration and Usage
 
-#### Backend
-#### Frontend
+#### 1. Setup and Usage
+1. Clone the repo with `git clone`.
+2. Navigate into the project with `cd <project>`.
+3. Configure a local `MySQL` database (see instructions below), once configured, setup the `Backend` application.
+4. Configure the `Backend` first (see instructions below), once configured, run it with `dotnet run`.
+5. Configure the `Frontend` (see instructions below), once configured, run it with `npm run dev`.
+6. Open the API documentation for the backend at `http://localhost:5067/doc`.
+7. Open the frontend application at `http://localhost:5173/`.
+
+#### 2. Database
+These instructions require some experience with the `mysql cli client`, if you are using `mysql workbench`, please refer to this [guide](https://dev.mysql.com/doc/workbench/en/wb-mysql-connections-navigator-management-users-and-privileges.html) instead.
+
+1. Log in to your running mysql server with `mysql -u root -p`, you will be prompted for your root password.
+2. Create a database with `CREATE DATABASE bookingDb`;
+3. Create a specific user for this database with `CREATE USER 'bookingUser'@'localhost' IDENTIFIED BY 'password;'`.
+    - If you get an error about the password not meeting the policy requirements, you got two options, use a stronger password or see the instructions for changing the policy requirements below.
+4. Run `SELECT User, Host FROM mysql.user` to verify that the user has been created.
+5. Grant privileges on the newly created database with `GRANT ALL PRIVILEGES ON bookingDb.* TO 'bookingUser'@'localhost';`
+6. Exit the current `mysql` session with `exit` and log in as the new user with `mysql -u bookingUser -p`, enter the password on the next prompt.
+7. Show all databases this user has permission to with `SHOW DATABASES`, bookingDb should be in that list.
+8. All set, you now have a database and a specific user with permissions to manage it.
+
+To change the password policy requirements run these two commands while logged in as `root` 
+- `SET GLOBAL validate_password.policy = LOW;`
+- `SET GLOBAL validate_password.length = 4;`
+
+If after changing the policies, mysql still complains you can run `DROP USER IF EXISTS 'bookingUser'@'localhost';` followed by `FLUSH PRIVILEGES` then try to create the user again.
+
+#### 3. Backend
+The backend runs on `.NET 9`.
+
+Packages:
+- Microsoft.AspNetCore.Authentication.JwtBearer
+- Microsoft.EntityFrameworkCore
+- Microsoft.EntityFrameworkCore.Design
+- Mysql.EntityFrameworkCore
+- Swashbuckle.AspNetCore
+
+Instructions:
+1. If you are not currently on the `Backend` folder, navigate to it with `cd Backend`
+2. Create a copy of `appsettings.json` with the command `cp appsettings.json.example appsettings.json`.
+3. Configure the `ConnectionStrings` section of the copied `appsettings.json` with details of your `MySQL` database, the syntax should look something like this: `server=localhost;database=bookingDb;user=bookingUser;password=password`
+4. Leave the `JwtSettings` section as is, or adjust it if necessary.
+5. Install the required packages with `dotnet restore`
+6. The `Migrations` folder contains everything needed for the database including:
+    - Tables and relationships configuration.
+    - Seed data
+7. For the next step, make sure you have the `Entity Frame Work Core` tool installed, if not, install with `dotnet tool install --global dotnet-ef`.
+8. With `dotnet-ef` installed, synchronize and update the database with the command `dotnet ef database update`.
+9. If everything went well, you should now be able to run the backend application, run it with the command `dotnet run`.
+
+To test the endpoints requiring an admin role, authenticate with the following user and use the returned token:
+- email: dev@dev.com
+- password: p@ssword.
+
+#### 4. Frontend
+The frontend runs on node version `v22.22.0`.
+
+1. If you are not currently on the `Frontend` folder, navigate to it with `cd Frontend`
+2. Create a copy of `.env` with the command `cp .env.example .env`.
+3. Adjust the backend url's on `.env` if necessary (if you changed the port on the backend)
+4. Install the required packages with `npm install`.
+5. Run the application with `npm run dev`.
 
 ### ENDPOINTS
 
 #### Overview:
-- **Auth** - Consits `POST` endpoints to authenticate, register or logout a user as well as refreshing access token.
+- **Auth** - Consists of `POST` endpoints to authenticate, register or logout a user as well as refreshing access token.
 - **Appointments** - Consists `CRUD`endpoints. The frontend must provide an access token in the header when perforimg `GET`, `PUT` or `DELETE` (soft delete) operations. The `POST` endpoint does not require authorization, since we want to allow guests to create appointments, however the frontend must provide the `PatientId`, which has to be retrieved from creating a guest patient before creating the appointment. If the client however sends an access token in the header when performing a `POST` operation, the backend will retrieve the `PatientId` from the token claims and use it during creation.
-- **Patients** - Consits of `CRUD`endpoints. The frontend must provide an access token in the header when perforimg `GET`, `PUT` or `DELETE` operations. Like appointments, the `POST` endpoint does not require authorization, however only a limited set of data is saved in the databae when a patient is created. If a returning patient creates an appoint based on their `Firstname + Lastname` combination, we will use that existing record instead of creating a new patient. Patients with a full set of sensitive data can only be created through the `/register` endpoint.
+- **Patients** - Consists of `CRUD`endpoints. The frontend must provide an access token in the header when perforimg `GET`, `PUT` or `DELETE` operations. Like appointments, the `POST` endpoint does not require authorization, however only a limited set of data is saved in the database when a patient is created. If a returning patient creates an appointment based on their `Firstname + Lastname + DateOfBirth` combination, we will use that existing record instead of creating a new patient. Patients with a full set of sensitive data can only be created through the `/register` endpoint. If during registration a previous patient with a combination of `Firstname + Lastname + DateOfBirth` exists already in the database, we simply update the existing record instead of creating a new one.
 - **Lookup tables** - Entities such as specialties, status, clinics, cities, categories and doctors are considered lookup tables or reference tables. We only need to read data from them that the frontend UI relies on and at the current state of the application they are not used for much else.
 
 #### Backend Authentication
@@ -141,7 +202,7 @@ I implemented Role Based Access Control (RBAC) on the backend for future impleme
 #### Reused Code snippets and packages
 - [Drawer component](https://www.npmjs.com/package/@yosang/react-ui?activeTab=code) - My own custom experimental ui component library
 - [npx @yosang/ds to scaffold a consistent design system with design tokens, variables, fonts etc...](https://www.npmjs.com/package/@yosang/ds?activeTab=code)
-- [ThemeSwitch component, resued from the previous CA](https://github.com/noroff-backend-2/aug25-fts-ca-yosang-2/blob/main/fet-module-5-assignment/src/app/components/Interactivity/ThemeSwitch.tsx) - This one is linked up to work with my design system `@yosang/ds`
+- [ThemeSwitch component, reused from the previous CA](https://github.com/noroff-backend-2/aug25-fts-ca-yosang-2/blob/main/fet-module-5-assignment/src/app/components/Interactivity/ThemeSwitch.tsx) - This one is linked up to work with my design system `@yosang/ds`
 - [Calendar widget on logged-in booking page](https://github.com/yosang/training-calendar) - Reused from a previous github unfinished project
 
 #### Articles and Posts
