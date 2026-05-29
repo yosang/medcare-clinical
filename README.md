@@ -110,10 +110,6 @@ I implemented Role Based Access Control (RBAC) on the backend for future impleme
 - Noroff LMS - Exam Project 2 Assignment Brief (Moodle) - Noroff Portal
 - [Noroff Backend Development Course Materials](https://learning.noroff.no) - Noroff Portal
 
-#### Documentation 
-- [Database ER-Diagram](./Backend/Docs//ER-Diagram.pdf) - Created with draw.io
-- [API Documentation](https://learn.microsoft.com/en-us/aspnet/core/tutorials/getting-started-with-swashbuckle?view=aspnetcore-8.0&tabs=visual-studio-code) - Swagger
-
 #### Official resources
 - [ASP.NET Core Web API Documentation](https://learn.microsoft.com/en-us/aspnet/core/web-api/) - Microsoft Docs
 - [Entity Framework Core Documentation](https://learn.microsoft.com/en-us/ef/core/) - Microsoft Docs
@@ -125,19 +121,19 @@ I implemented Role Based Access Control (RBAC) on the backend for future impleme
 - [Setting secure cookies in .NET ASP.NET Core](https://learn.microsoft.com/en-us/aspnet/core/security/samesite?view=aspnetcore-9.0&utm_source=chatgpt.com)
 
 #### Tutorials and Learning resources
-- [Normalization](https://www.youtube.com/watch?v=ABwD8IYByfk) - YouTube tutorial
+- [Normalization](https://www.youtube.com/watch?v=ABwD8IYByfk) - YouTube video
 - [Notes on Normalization](https://gist.github.com/yosang/1754a374cf3c52b89b10bbe99af9db78) - Github Gists
 - [REST API Design Rulebok](https://www.oreilly.com/library/view/rest-api-design/9781449317904/) - Physical book
 - [C# 12 Pocket Reference](https://www.oreilly.com/library/view/c-12-pocket/9781098147532/) - Physical book
 
 #### Tools and additional resources
-- [DBMS Online Tool for reverse engineering a SQL schema](https://dbdiagram.io/d) - dbdiagram.io
+- [DBMS Online Tool for reverse engineering a SQL schema](https://dbdiagram.io/d/69fd730754a51d93d3c90e54) - dbdiagram.io
 - [mysqldump to backup an existing database schema](https://dev.mysql.com/doc/refman/9.7/en/mysqldump.html) - Command-Line Client
 - [mysql cli client to manage the database](https://dev.mysql.com/doc/refman/9.7/en/mysql.html) - Command-Line Client
 - [Postman](https://www.postman.com/) - Postman for initial API testing before swagger was configured
 - [NuGet](https://www.nuget.org/) - .NET Package manager
 - [Project Management](https://linear.app/) - Linear (Issue based project management, alternative to Jira)
-- [Version Control](https://github.com/) - Git + Github
+- [Version Control and CI/CD](https://github.com/) - Git + Github Actions
 - [Notes on Feature branches workflow](https://gist.github.com/yosang/ff9fba77bc317562aa955b76a2c54c3a) - Github feature branches workflow
 - [AI for sample seed generation and questions around specific assumptions as well as implementation feedback](https://grok.com/) - Grok
 - [AI for stock doctor profile pictures and general use stock image generation](https://grok.com/) - Grok
@@ -146,8 +142,12 @@ I implemented Role Based Access Control (RBAC) on the backend for future impleme
 - [Drawer component](https://www.npmjs.com/package/@yosang/react-ui?activeTab=code) - My own custom experimental ui component library
 - [npx @yosang/ds to scaffold a consistent design system with design tokens, variables, fonts etc...](https://www.npmjs.com/package/@yosang/ds?activeTab=code)
 - [ThemeSwitch component, resued from the previous CA](https://github.com/noroff-backend-2/aug25-fts-ca-yosang-2/blob/main/fet-module-5-assignment/src/app/components/Interactivity/ThemeSwitch.tsx) - This one is linked up to work with my design system `@yosang/ds`
-- [Calendar widget on logged-in booking page](https://github.com/yosang/training-calendar) - Previous github unfinished project
+- [Calendar widget on logged-in booking page](https://github.com/yosang/training-calendar) - Reused from a previous github unfinished project
 
 #### Articles and Posts
 - [Using AsNoTracking for read-only queries](https://learn.microsoft.com/en-us/ef/core/querying/tracking)
 - [Using .include when projecting with .select is redundant](https://stackoverflow.com/questions/38083735/when-to-use-include-in-ef-not-needed-in-projection)
+
+#### Documentation 
+- [Database ER-Diagram](./Backend/Docs//ER-Diagram.pdf) - Created with draw.io
+- [API Documentation](https://learn.microsoft.com/en-us/aspnet/core/tutorials/getting-started-with-swashbuckle?view=aspnetcore-8.0&tabs=visual-studio-code) - Swagger
