@@ -11,6 +11,8 @@ import BookingFormSkeleton from "../components/skeletons/BookingFormSkeleton";
 import AppointmentsTableSkeleton from "../components/skeletons/AppointmentsTableSkeleton";
 import { MessageSquareText, NotebookPen, NotepadText } from "lucide-react";
 import { useAppointmentStore } from "../stores/useAppointmentsStore";
+import Calendar from "../components/elements/Calendar";
+import { useAppointments } from "../queries/useAppointments";
 
 // lazy loaded components
 const BookingForm = lazy(() => import("../components/forms/BookingForm"))
@@ -20,6 +22,7 @@ export default function BookingPage() {
 
     // TanStack reading query
     const { data: patient } = usePatient();
+    const { data: appointments } = useAppointments(); 
 
     // Zustand states
     const token = useLoginStore((s) => s.token);
@@ -46,6 +49,12 @@ export default function BookingPage() {
                             <BookingForm patient={patient}/>
                         </Suspense>
                         <div className={styles.sideCards}>
+                            <div className={styles.linksLayout}>
+                                <p>Links</p>
+                                <a href="#"><NotepadText size={15} style={{ marginRight: "8px"}}/>Lab Results</a>
+                                <a href="#"><NotebookPen size={15} style={{ marginRight: "8px"}}/>Prescriptions</a>
+                                <a href="#"><MessageSquareText size={15} style={{ marginRight: "8px"}}/>Message Doctor</a>
+                            </div>
                             <div className={styles.upComingAppointmentCard}>
                                 <p style={{ color: "var(--color-muted)" }}>Next appointment</p>
                                 <div className={styles.upComingAppointmentCardContent}>
@@ -62,17 +71,13 @@ export default function BookingPage() {
                                     )}
                                 </div>
                             </div>
-                            <div className={styles.linksLayout}>
-                                <p>Links</p>
-                                <a href="#"><NotepadText size={15} style={{ marginRight: "8px"}}/>Lab Results</a>
-                                <a href="#"><NotebookPen size={15} style={{ marginRight: "8px"}}/>Prescriptions</a>
-                                <a href="#"><MessageSquareText size={15} style={{ marginRight: "8px"}}/>Message Doctor</a>
-                            </div>
+
+                            <Calendar upcoming={upcoming} appointments={appointments}/>
                         </div>
                     </div>
                     <div className={styles.appointmentHistory}>
                        <Suspense fallback={<AppointmentsTableSkeleton />}>
-                           <AppointmentsTable />
+                           <AppointmentsTable appointments={appointments}/>
                        </Suspense>
                    </div>
                 </div>

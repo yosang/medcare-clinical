@@ -2,7 +2,7 @@ import { lazy, Suspense,  useEffect,  useMemo, useState } from "react"
 
 import { useLoginStore } from "../../stores/useLoginStore";
 
-import { useAppointments, useAppointment, useUpdateAppointment, useCancelAppointment } from "../../queries/useAppointments";
+import { useAppointment, useUpdateAppointment, useCancelAppointment } from "../../queries/useAppointments";
 
 import styles from "./AppointmentsTable.module.css"
 
@@ -14,20 +14,19 @@ import { toast } from "sonner";
 // Lazy loading
 const UpdateAppointmentForm = lazy(() => import("../forms/UpdateAppointmentForm"))
 
-import type { AppointmentUpdateForm } from "../../types/Appointments";
+import type { Appointment, AppointmentUpdateForm } from "../../types/Appointments";
 import UpdateAppointmentSkeleton from "../skeletons/UpdateAppointmentSkeleton";
 import { History } from "lucide-react";
 import { useAppointmentStore } from "../../stores/useAppointmentsStore";
 import { useShallow } from "zustand/shallow";
 
-export default function AppointmentsTable() {
+export default function AppointmentsTable( { appointments }: { appointments: Appointment[] | undefined}) {
 
     // Local states
     const [open, setOpen] = useState(false)
     const[apId, setApId] = useState<number | null>(null);
     
     // TanStack queries
-    const { data: appointments } = useAppointments(); 
     const { data: selectedAppointment } = useAppointment(apId);
     
     // TanStack mutations

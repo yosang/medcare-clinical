@@ -132,13 +132,21 @@ I implemented Role Based Access Control (RBAC) on the backend for future impleme
 
 #### Tools and additional resources
 - [DBMS Online Tool for reverse engineering a SQL schema](https://dbdiagram.io/d) - dbdiagram.io
-- [Postman](https://www.postman.com/) - Postman for API testing (collection is provided in [Docs](./Backend/Docs/Medical%20Booking%20API.postman_collection.json))
+- [mysqldump to backup an existing database schema](https://dev.mysql.com/doc/refman/9.7/en/mysqldump.html) - Command-Line Client
+- [mysql cli client to manage the database](https://dev.mysql.com/doc/refman/9.7/en/mysql.html) - Command-Line Client
+- [Postman](https://www.postman.com/) - Postman for initial API testing before swagger was configured
 - [NuGet](https://www.nuget.org/) - .NET Package manager
-- [Project Management](https://linear.app/) - Linear (alternative to Jira)
+- [Project Management](https://linear.app/) - Linear (Issue based project management, alternative to Jira)
 - [Version Control](https://github.com/) - Git + Github
 - [Notes on Feature branches workflow](https://gist.github.com/yosang/ff9fba77bc317562aa955b76a2c54c3a) - Github feature branches workflow
-- [AI for sample seed generation and questions around specific assumptions and implementation feedback](https://grok.com/) - Grok
-- [AI for stock image generation](https://grok.com/) - Grok
+- [AI for sample seed generation and questions around specific assumptions as well as implementation feedback](https://grok.com/) - Grok
+- [AI for stock doctor profile pictures and general use stock image generation](https://grok.com/) - Grok
+
+#### Reused Code snippets and packages
+- [Drawer component](https://www.npmjs.com/package/@yosang/react-ui?activeTab=code) - My own custom experimental ui component library
+- [npx @yosang/ds to scaffold a consistent design system with design tokens, variables, fonts etc...](https://www.npmjs.com/package/@yosang/ds?activeTab=code)
+- [ThemeSwitch component, resued from the previous CA](https://github.com/noroff-backend-2/aug25-fts-ca-yosang-2/blob/main/fet-module-5-assignment/src/app/components/Interactivity/ThemeSwitch.tsx) - This one is linked up to work with my design system `@yosang/ds`
+- [Calendar widget on logged-in booking page](https://github.com/yosang/training-calendar) - Previous github unfinished project
 
 #### Articles and Posts
 - [Using AsNoTracking for read-only queries](https://learn.microsoft.com/en-us/ef/core/querying/tracking)
