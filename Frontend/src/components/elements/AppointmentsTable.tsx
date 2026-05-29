@@ -1,4 +1,4 @@
-import { lazy, Suspense,  useEffect,  useMemo, useState } from "react"
+import { lazy, Suspense, useMemo, useState } from "react"
 
 import { useLoginStore } from "../../stores/useLoginStore";
 
@@ -17,8 +17,6 @@ const UpdateAppointmentForm = lazy(() => import("../forms/UpdateAppointmentForm"
 import type { Appointment, AppointmentUpdateForm } from "../../types/Appointments";
 import UpdateAppointmentSkeleton from "../skeletons/UpdateAppointmentSkeleton";
 import { History } from "lucide-react";
-import { useAppointmentStore } from "../../stores/useAppointmentsStore";
-import { useShallow } from "zustand/shallow";
 
 export default function AppointmentsTable( { appointments }: { appointments: Appointment[] | undefined}) {
 
@@ -36,17 +34,12 @@ export default function AppointmentsTable( { appointments }: { appointments: App
     // Zustand states
     const token = useLoginStore(s => s.token)   
 
-    const { setUpcomingAppointment } = useAppointmentStore(useShallow(s => ({
-        setUpcomingAppointment: s.setUpcomingAppointment
-    })))
-    
     const [filter, setFilter] = useState("");
 
-    // Memoized operations
+    // Creates a copy of appoitments, sorts and sorts it by date
     const sortedAppointments = useMemo(() => {
         if(!appointments) return [];
 
-        // We spread appointments to avoid mutating the original state
         const sorted = [...appointments].sort((a, b) => new Date(a.appointmentDate).getTime() - new Date(b.appointmentDate).getTime()) // sorts appointments by calculating the data in a single milliseconds value
 
         return filter ? sorted.filter(a => a.status.id == Number(filter)): sorted; // If a filter is provided we return a filtered array, otherwise just show the sorted list
@@ -117,15 +110,6 @@ export default function AppointmentsTable( { appointments }: { appointments: App
         setApId(null);
         updateMutation.reset();
     }
-
-    useEffect(() => {
-        if(!sortedAppointments.length) return;
-
-        // This is setting the first upcoming appointment with status pending to the zustand store, whichis used in bookingPage
-        const pending = sortedAppointments.find(a => a.status.id == 1);
-        if(pending) setUpcomingAppointment(pending)
-            
-    }, [sortedAppointments, setUpcomingAppointment])
 
     return  <>
     <Drawer title="Appointment" isOpen={open} onClose={handleDrawerClose}>

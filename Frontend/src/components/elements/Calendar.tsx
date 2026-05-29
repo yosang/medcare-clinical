@@ -4,7 +4,7 @@ import styles from "./Calendar.module.css"
 import type { Appointment } from "../../types/Appointments";
 import { toast } from "sonner";
 
-export default function Calendar( { upcoming, appointments }:{ upcoming: Appointment | null, appointments: Appointment[] | undefined}) {
+export default function Calendar( { upcoming, appointments }:{ upcoming: Appointment | undefined, appointments: Appointment[] | undefined}) {
 
     const toastRef = useRef<string | number | null>(null)
 
@@ -51,6 +51,42 @@ export default function Calendar( { upcoming, appointments }:{ upcoming: Appoint
         if(!appointments) return [];
         return appointments.filter(a => a.status.id == 1).map(a => new Date(a.appointmentDate))
     }, [appointments])
+
+    const clickHandler = (e: React.MouseEvent<HTMLDivElement>) => {
+                if(toastRef.current) return;
+
+                const element = e.currentTarget as HTMLDivElement;
+
+                const appointmentsOnThisDay = pendingAppointments.filter(date => 
+                    date.getDate() == Number(element.id) &&
+                    date.getMonth() == month &&
+                    date.getFullYear() == year
+                )
+
+                if(!appointmentsOnThisDay.length) return;
+                
+                const toastContent = (
+                    <div style={{ padding: "var(--spacing-md)" }}>
+
+                    <p>You have {appointmentsOnThisDay.length} {appointmentsOnThisDay.length > 1 ? "appointments":"appointment"} on the {element.id}th:</p>
+                    <br />
+                    <ul style={{ listStyle: "none" }}>
+                        {appointmentsOnThisDay.map((a,index) => <li 
+                            key={`${index}-${a.getTime()}`}
+                            >
+                            <strong>Time: </strong>{a.toLocaleTimeString("no-NO", { hour12: false, timeStyle: "short" })}
+                        </li>)}
+                    </ul>
+                    </div>
+                )
+
+                toastRef.current = toast.info(toastContent, { 
+                    closeButton: true,
+                    duration: 10000,
+                    onDismiss: () => toastRef.current = null,
+                    onAutoClose: () => toastRef.current = null},
+                )
+            }
 
     useEffect(() => {
             
@@ -112,41 +148,7 @@ export default function Calendar( { upcoming, appointments }:{ upcoming: Appoint
                         key={d}
                         id={d}
                         className={`${ isUpcoming() ? styles.upcomingHighlighted : isPending() ? styles.pendingHighlighted: ""}`}
-                        onClick={(e) => {
-                            if(toastRef.current) return;
-
-                            const element = e.currentTarget as HTMLDivElement;
-
-                            const appointmentsOnThisDay = pendingAppointments.filter(date => 
-                                date.getDate() == Number(element.id) &&
-                                date.getMonth() == month &&
-                                date.getFullYear() == year
-                            )
-
-                            if(!appointmentsOnThisDay.length) return;
-                            
-                            const toastContent = (
-                                <div style={{ padding: "var(--spacing-md)" }}>
-
-                                <p>You have {appointmentsOnThisDay.length} {appointmentsOnThisDay.length > 1 ? "appointments":"appointment"} on the {element.id}th:</p>
-                                <br />
-                                <ul style={{ listStyle: "none" }}>
-                                    {appointmentsOnThisDay.map((a,index) => <li 
-                                        key={`${index}-${a.getTime()}`}
-                                        >
-                                        <strong>Time: </strong>{a.toLocaleTimeString("no-NO", { hour12: false, timeStyle: "short" })}
-                                    </li>)}
-                                </ul>
-                                </div>
-                            )
-
-                            toastRef.current = toast.info(toastContent, { 
-                                closeButton: true,
-                                duration: 10000,
-                                onDismiss: () => toastRef.current = null,
-                                onAutoClose: () => toastRef.current = null},
-                            )
-                        }}
+                        onClick={clickHandler}
                     >
                         {d}
                     </div>)

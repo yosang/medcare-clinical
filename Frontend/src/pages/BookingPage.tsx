@@ -1,4 +1,4 @@
-import { lazy, Suspense, useEffect } from "react"
+import { lazy, Suspense, useMemo } from "react"
 
 import styles from "./BookingPage.module.css"
 
@@ -10,7 +10,6 @@ import SideInfo from "../components/elements/SideInfo";
 import BookingFormSkeleton from "../components/skeletons/BookingFormSkeleton";
 import AppointmentsTableSkeleton from "../components/skeletons/AppointmentsTableSkeleton";
 import { MessageSquareText, NotebookPen, NotepadText } from "lucide-react";
-import { useAppointmentStore } from "../stores/useAppointmentsStore";
 import Calendar from "../components/elements/Calendar";
 import { useAppointments } from "../queries/useAppointments";
 
@@ -27,15 +26,15 @@ export default function BookingPage() {
     // Zustand states
     const token = useLoginStore((s) => s.token);
 
-    const upcoming = useAppointmentStore(s => s.upcomingAppointment);
-    const clearUpcomingAppointment = useAppointmentStore(s => s.clearUpcomingAppointment);
+    // Creates a copy of appoitments, sorts it and finds the first upcoming pending appointment
+    const upcoming = useMemo(() => {
+        if (!appointments) return;
 
-    useEffect(() => {
+        return [...appointments]
+                .sort((a, b) => new Date(a.appointmentDate).getTime() - new Date(b.appointmentDate).getTime())
+                .find(a => a.status.id === 1);
 
-        if(!token && upcoming) {
-            clearUpcomingAppointment(); // clear out upcomingAppointments so it doesnt leak into a different user
-        }
-    }, [token, upcoming, clearUpcomingAppointment])
+    }, [appointments])
 
     return <div className={styles.mainLayout}>
             {token ? (
