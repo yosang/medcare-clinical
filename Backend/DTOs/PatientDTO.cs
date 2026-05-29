@@ -20,6 +20,9 @@ public class GuestPatientDTO
     public string LastName { get; set; } = null!;
     public DateTime DateOfBirth { get; set; }
     public string? Phone { get; set; }
+    public string? Email { get; set; }
+    public string? NationalIdentityNumber { get; set; }
+    public bool IsRegistered { get; set; }
 }
 
 public class PatientWithDetailsDTO

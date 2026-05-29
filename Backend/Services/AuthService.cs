@@ -4,6 +4,7 @@ using DTOS;
 using Extensions.Mappers;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Models;
 public class AuthService
 {
     private readonly PasswordHasher<object> _passwordHasher;
@@ -43,17 +44,35 @@ public class AuthService
     /// <returns> Boolean representation of registration result  </returns>
     public async Task<bool> Register(RegisterPatientDTO dto)
     {
-        var existing = await _ctx.Patients.AsNoTracking()
+        var alreadyRegistered = await _ctx.Patients.AsNoTracking()
                                             .Where(p => p.Email == dto.Email || p.NationalIdentityNumber == dto.NationalIdentityNumber)
                                             .FirstOrDefaultAsync();
-        if(existing != null) return false;
+        if(alreadyRegistered != null) return false;
 
-        var newPatient = dto.ToPatient();
+        var existingRecord = await _ctx.Patients.Where(p => p.FirstName == dto.FirstName)
+                                                .Where(p => p.LastName == dto.LastName)
+                                                .Where(p => p.DateOfBirth == dto.DateOfBirth)
+                                                .FirstOrDefaultAsync();
+        Patient patientToRegister;
 
-        newPatient.PasswordHash = _passwordHasher.HashPassword(null!, dto.Password!);
-        newPatient.IsRegistered = true;
+        if(existingRecord != null)
+        {
+            patientToRegister = existingRecord;
 
-        _ctx.Patients.Add(newPatient);
+            // Update with sensitive details attributes
+            patientToRegister.Email = dto.Email;
+            patientToRegister.NationalIdentityNumber = dto.NationalIdentityNumber;
+            patientToRegister.Phone = dto.Phone ?? patientToRegister.Phone;
+
+        } else
+        {
+            patientToRegister = dto.ToPatient();
+            _ctx.Patients.Add(patientToRegister);
+        }
+        
+        // Hash the password and mark as registered
+        patientToRegister.PasswordHash = _passwordHasher.HashPassword(null!, dto.Password!);
+        patientToRegister.IsRegistered = true;
 
         await _ctx.SaveChangesAsync();
 

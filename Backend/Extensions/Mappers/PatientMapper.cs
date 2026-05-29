@@ -28,7 +28,10 @@ public static class PatientMapper
             FirstName = patient.FirstName,
             LastName = patient.LastName,
             DateOfBirth = patient.DateOfBirth,
-            Phone = patient.Phone
+            Phone = patient.Phone,
+            Email = null,
+            NationalIdentityNumber = null,
+            IsRegistered = false
         };
     }
 
