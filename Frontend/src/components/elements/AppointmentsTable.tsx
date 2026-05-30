@@ -1,14 +1,14 @@
-import { lazy, Suspense, useMemo, useState } from "react"
+import { lazy, Suspense, useCallback, useMemo, useState } from "react";
 
 import { useLoginStore } from "../../stores/useLoginStore";
 
 import { useAppointment, useUpdateAppointment, useCancelAppointment } from "../../queries/useAppointments";
 
-import styles from "./AppointmentsTable.module.css"
+import styles from "./AppointmentsTable.module.css";
 
 import LoadingSpinner from "../layout/LoadingSpinner";
 import Button from "./Button";
-import { Drawer } from "./Drawer"
+import { Drawer } from "./Drawer";
 import { toast } from "sonner";
 
 // Lazy loading
@@ -51,7 +51,7 @@ export default function AppointmentsTable( { appointments }: { appointments: App
     }, [appointments, apId])
 
     // Handlers
-    const handleSubmit  = (formData: AppointmentUpdateForm) => {
+    const handleSubmit  = useCallback((formData: AppointmentUpdateForm) => {
         if(!token || !apId) return
 
         toast.promise(updateMutation.mutateAsync({ payload: formData, apId }), {
@@ -60,14 +60,14 @@ export default function AppointmentsTable( { appointments }: { appointments: App
             success: () => {
                 setOpen(false);
                 setApId(null);
-                return "Update successful!"
+                return "Appointment updated!"
             },
             error: (err) => {
                 console.log(err.message)
                 return "Failed to update appointment"
             }
         })
-    }
+    }, [apId, token, updateMutation])
 
     const handleCancel = () => {
         if(!token || !apId) return
@@ -100,7 +100,7 @@ export default function AppointmentsTable( { appointments }: { appointments: App
     }
 
     const handleAppointmentClick = async (id:number) => {
-        setOpen(true)
+        setOpen(true);
         setApId(id);
         updateMutation.reset(); // This clearns the internal state of updateMutation, which allows us to get rid of previous stale error states when opening a new appointment
     }

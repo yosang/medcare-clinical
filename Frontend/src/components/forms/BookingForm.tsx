@@ -1,6 +1,6 @@
 import { ClipboardClock } from "lucide-react"
 
-import { useState, type ChangeEvent, type SyntheticEvent } from "react";
+import { memo, useState, type ChangeEvent, type SyntheticEvent } from "react";
 
 import { useLoginStore } from "../../stores/useLoginStore"
 import { useValidationStore } from "../../stores/useValidationStore";
@@ -26,7 +26,7 @@ import { findClinicIdByDoctorId, useDoctors } from "../../queries/useLookupQueri
 import type { Patient } from "../../types/Patients";
 import DateInput from "../formElements/DateInput";
 
-export default function BookingForm( { patient }:{ patient?: Patient}) {
+export default memo(function BookingForm( { patient }:{ patient?: Patient}) {
 
     // Tanstack reading queries
     const { data: doctors } = useDoctors();
@@ -181,7 +181,7 @@ export default function BookingForm( { patient }:{ patient?: Patient}) {
                 <TextArea
                     name="Note"
                     value={form.note}
-                    onChange={(e: ChangeEvent<HTMLInputElement>) => setForm(prev => ({ ...prev, note: e.target.value}))}
+                    onChange={(e: ChangeEvent<HTMLTextAreaElement>) => setForm(prev => ({ ...prev, note: e.target.value}))}
                 />
             </div>
 
@@ -222,4 +222,4 @@ export default function BookingForm( { patient }:{ patient?: Patient}) {
 
             </div>
         </form>
-}
+})

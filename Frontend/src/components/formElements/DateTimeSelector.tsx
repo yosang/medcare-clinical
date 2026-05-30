@@ -1,4 +1,6 @@
-export default function DateTimeSelector({...props}) {
+import { memo, type InputHTMLAttributes } from "react"
+
+export default memo(function DateTimeSelector({...props}:{} & InputHTMLAttributes<HTMLInputElement>) {
     return <label style={{ display: "flex", flexDirection:"column", gap: "5px", padding:"var(--spacing-sm)" }}>
             Date and time
             <input 
@@ -7,4 +9,4 @@ export default function DateTimeSelector({...props}) {
                 {...props}
             />
             </label>
-}
+})

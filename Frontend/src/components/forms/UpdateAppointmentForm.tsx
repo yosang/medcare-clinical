@@ -3,7 +3,7 @@ import DurationSelection from "../formElements/DurationSelection";
 import DateTimeSelector from "../formElements/DateTimeSelector";
 import TextArea from "../formElements/TextArea";
 
-import { useState, type ChangeEvent } from "react";
+import { memo, useState, type ChangeEvent } from "react";
 import type { Appointment, AppointmentUpdateForm } from "../../types/Appointments";
 import Button from "../elements/Button";
 
@@ -15,7 +15,7 @@ type Props = {
     errorMessage: string | null
 }
 
-export default function UpdateAppointmentForm( { appointment, submitHandler, cancelledState, error, errorMessage }:Props ) {
+export default memo(function UpdateAppointmentForm( { appointment, submitHandler, cancelledState, error, errorMessage }:Props ) {
 
     const[form, setForm] = useState<AppointmentUpdateForm>({
             appointmentDate: appointment?.appointmentDate,
@@ -38,7 +38,7 @@ export default function UpdateAppointmentForm( { appointment, submitHandler, can
                 <DateTimeSelector 
                     disabled={cancelledState}
                     value={form?.appointmentDate}
-                    onChange={(e:ChangeEvent<HTMLSelectElement>) => setForm(prev => prev ? {...prev, appointmentDate: e.target.value}:prev)}
+                    onChange={(e:ChangeEvent<HTMLInputElement>) => setForm(prev => prev ? {...prev, appointmentDate: e.target.value}:prev)}
                 />
 
                 <DurationSelection  
@@ -58,7 +58,7 @@ export default function UpdateAppointmentForm( { appointment, submitHandler, can
                 <TextArea 
                     disabled={cancelledState}
                     value={form?.note}
-                    onChange={(e: ChangeEvent<HTMLSelectElement>) => setForm(prev => prev ? {...prev, note: e.target.value}: prev)}
+                    onChange={(e: ChangeEvent<HTMLTextAreaElement>) => setForm(prev => prev ? {...prev, note: e.target.value}: prev)}
                 />
                 <br />
                 {error && <p style={{ color: "red" }}>{errorMessage}</p>}
@@ -68,4 +68,4 @@ export default function UpdateAppointmentForm( { appointment, submitHandler, can
                 <Button disabled={cancelledState} type="submit" >Save</Button>
             </div>
         </form>
-}
+})

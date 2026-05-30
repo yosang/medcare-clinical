@@ -1,4 +1,4 @@
-import { forwardRef, type InputHTMLAttributes, type Ref } from "react"
+import { forwardRef, memo, type InputHTMLAttributes, type Ref } from "react"
 import styles from "./Inputs.module.css"
 
 type Props = {
@@ -19,4 +19,4 @@ const EmailInput = forwardRef(({labelText, name, ...props}:Props, ref: Ref<HTMLI
             </label>
 })
 
-export default EmailInput;
+export default memo(EmailInput);

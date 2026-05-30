@@ -1,6 +1,7 @@
+import { memo, type SelectHTMLAttributes } from "react"
 import styles from "./SelectElement.module.css"
 
-export default function DurationSelection({...props}) {
+export default memo(function DurationSelection({...props}: {} & SelectHTMLAttributes<HTMLSelectElement>) {
     return <label style={{ display: "flex", flexDirection:"column", gap: "5px", padding:"var(--spacing-sm)" }}>
             Duration
             <select {...props} defaultValue="" className={styles.layout}>
@@ -10,4 +11,4 @@ export default function DurationSelection({...props}) {
                 <option value="90">90 minutes</option>
             </select>
             </label>
-}
+})

@@ -1,4 +1,4 @@
-import type { ButtonHTMLAttributes, ReactNode } from "react";
+import { memo, type ButtonHTMLAttributes, type ReactNode } from "react";
 import styles from "./Button.module.css"
 
 type Props = {
@@ -6,6 +6,6 @@ type Props = {
     variant?: "primary" | "secondary"
 } & ButtonHTMLAttributes<HTMLButtonElement>;
 
-export default function Button({children, variant = "primary", ...props}:Props ) {
+export default memo(function Button({children, variant = "primary", ...props}:Props ) {
     return <button className={`${styles.layout} ${styles[variant]}`} {...props}>{children}</button>
-}
+})

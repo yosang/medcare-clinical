@@ -1,8 +1,9 @@
 import styles from "./SelectElement.module.css"
 import { useCategories } from "../../queries/useLookupQueries";
 import Skeleton from "react-loading-skeleton";
+import { memo, type SelectHTMLAttributes } from "react";
 
-export default function CategorySelection({...props}) {
+export default memo(function CategorySelection({...props}: {} & SelectHTMLAttributes<HTMLSelectElement>) {
     const { data, isLoading, isError } = useCategories();
 
         if(isLoading) return <Skeleton width={200} height={18}/>
@@ -17,4 +18,4 @@ export default function CategorySelection({...props}) {
                         {data.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
                </select>                
                </label>
-}
+});
