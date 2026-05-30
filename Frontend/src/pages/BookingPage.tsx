@@ -26,7 +26,8 @@ export default function BookingPage() {
     // Zustand states
     const token = useLoginStore((s) => s.token);
 
-    // Creates a copy of appoitments, sorts it and finds the first upcoming pending appointment
+    // Creates a copy of appoitments, sorts it and finds the first upcoming pending appointment, recomputes the result when appointments change
+    // We are memoizing this variable to prevent the Calendar component from re-rendering, unless appointments change.
     const upcoming = useMemo(() => {
         if (!appointments) return;
 

@@ -172,6 +172,8 @@ I implemented Role Based Access Control (RBAC) on the backend for future impleme
 - [Noroff Backend Development Course Materials](https://learning.noroff.no) - Noroff Portal
 
 #### Official resources
+
+##### .NET, ASP.NET Core and Entity FrameWork Core
 - [ASP.NET Core Web API Documentation](https://learn.microsoft.com/en-us/aspnet/core/web-api/) - Microsoft Docs
 - [Entity Framework Core Documentation](https://learn.microsoft.com/en-us/ef/core/) - Microsoft Docs
 - [.NET Dependency Injection](https://learn.microsoft.com/en-us/dotnet/core/extensions/dependency-injection/overview) - Microsoft Docs
@@ -180,6 +182,10 @@ I implemented Role Based Access Control (RBAC) on the backend for future impleme
 - [Extension Members/Methods](https://learn.microsoft.com/en-us/dotnet/csharp/programming-guide/classes-and-structs/extension-methods)
 - [Nullable ints, DateTime and using .HasValue](https://learn.microsoft.com/en-us/dotnet/api/system.nullable-1.hasvalue?view=netframework-4.8.1&viewFallbackFrom=net-10.0)
 - [Setting secure cookies in .NET ASP.NET Core](https://learn.microsoft.com/en-us/aspnet/core/security/samesite?view=aspnetcore-9.0&utm_source=chatgpt.com)
+
+##### React
+- [useMemo](https://react.dev/reference/react/useMemo)
+- [Avoiding uneccessary effects](https://react.dev/learn/you-might-not-need-an-effect)
 
 #### Tutorials and Learning resources
 - [Normalization](https://www.youtube.com/watch?v=ABwD8IYByfk) - YouTube video
