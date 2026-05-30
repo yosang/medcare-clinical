@@ -186,6 +186,7 @@ I implemented Role Based Access Control (RBAC) on the backend for future impleme
 ##### React
 - [useMemo](https://react.dev/reference/react/useMemo)
 - [Avoiding uneccessary effects](https://react.dev/learn/you-might-not-need-an-effect)
+- [React-scan to identify performance issues](https://react-scan.com/)
 
 #### Tutorials and Learning resources
 - [Normalization](https://www.youtube.com/watch?v=ABwD8IYByfk) - YouTube video
