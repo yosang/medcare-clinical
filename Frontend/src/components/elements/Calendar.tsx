@@ -10,6 +10,8 @@ export default function Calendar( { upcoming, appointments }:{ upcoming: Appoint
     
     const [month, setMonth] = useState(new Date().getMonth());
     const [year, setYear] = useState(new Date().getFullYear());
+
+    const [prevUpcomingAppointment, setPrevUpcomingAppointment] = useState<string | undefined>(undefined)
     
     const firstDateInCurrentMonth = useMemo(() => new Date(year, month, 1), [month, year])
     const lastDateInCurrentMonth = useMemo(() => new Date(year, month + 1, 0), [month, year])
@@ -18,6 +20,21 @@ export default function Calendar( { upcoming, appointments }:{ upcoming: Appoint
     
     const amountOfPadding = firstDayWeekIndex === 0 ? 6: firstDayWeekIndex - 1;
     const totalDaysInCurrentMonth = lastDateInCurrentMonth.getDate();
+
+    // since data from upcoming is delivered asynchronously (through appointments), prevUpcomingAppointment will start of as undefined
+    // once upcoming becomes available and passed down to this child (causing a re-render) this conditional will pass as true because upcoming.appointmentDate (when it arrives) will not be equal to prevUpcomingAppointment (which is undefined initially)
+    if(upcoming && upcoming.appointmentDate !== prevUpcomingAppointment) { 
+        setPrevUpcomingAppointment(upcoming.appointmentDate);
+        setMonth(new Date(upcoming.appointmentDate).getMonth())
+        setYear(new Date(upcoming.appointmentDate).getFullYear())
+    }
+    
+    // If upcoming is undefined and prevUpcomingAppointment has value, we can stop tracking by resetting prevUpcomingAppointment to undefined and show the current month instead
+    if(!upcoming && prevUpcomingAppointment) {
+        setPrevUpcomingAppointment(undefined)
+        setMonth(new Date().getMonth())
+        setYear(new Date().getFullYear())
+    }
 
     const dayPadding = useMemo(() => {
         const paddingToAdd = [];

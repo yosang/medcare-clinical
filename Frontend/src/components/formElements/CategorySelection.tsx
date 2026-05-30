@@ -3,15 +3,21 @@ import { useCategories } from "../../queries/useLookupQueries";
 import Skeleton from "react-loading-skeleton";
 import { memo, type SelectHTMLAttributes } from "react";
 
-export default memo(function CategorySelection({...props}: {} & SelectHTMLAttributes<HTMLSelectElement>) {
-    const { data, isLoading, isError } = useCategories();
-
+export default memo(function CategorySelection({ value, onChange, ...props}: {} & SelectHTMLAttributes<HTMLSelectElement>) {
+        
+        const { data, isLoading, isError } = useCategories();
+        
         if(isLoading) return <Skeleton width={200} height={18}/>
         if(isError || !data ) return <p style={{ color: "red" }}>Unable to reach server</p>
 
         return <label style={{ display: "flex", flexDirection:"column", gap: "5px", padding:"var(--spacing-sm)" }}>
                Category
-               <select name="CategoryId" defaultValue="" {...props} className={styles.layout}>
+               <select 
+                    value={value}
+                    onChange={onChange}
+                    className={styles.layout}
+                    {...props}
+                >
                         <option value="" disabled hidden>
                             -- Select a category --
                         </option>

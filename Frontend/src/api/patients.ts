@@ -12,8 +12,7 @@ export async function getPatientDetails(token: string): Promise<Patient> {
 
     const res = await fetch(patientsMeUrl, {
         method: "GET",
-        headers: { "Authorization": `Bearer ${token}`},
-        credentials: "include"
+        headers: { "Authorization": `Bearer ${token}`}
     })
 
     if(!res.ok) {

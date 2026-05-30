@@ -184,9 +184,10 @@ I implemented Role Based Access Control (RBAC) on the backend for future impleme
 - [Setting secure cookies in .NET ASP.NET Core](https://learn.microsoft.com/en-us/aspnet/core/security/samesite?view=aspnetcore-9.0&utm_source=chatgpt.com)
 
 ##### React
-- [useMemo](https://react.dev/reference/react/useMemo)
-- [Avoiding uneccessary effects](https://react.dev/learn/you-might-not-need-an-effect)
-- [React-scan to identify performance issues](https://react-scan.com/)
+- [useMemo](https://react.dev/reference/react/useMemo) - Official docs on useMemo
+- [Adjusting the state during rendering without useEffect](https://react.dev/learn/you-might-not-need-an-effect)
+- [Article on adjusting state when a prop changes, builds on the concept from the article above](https://zenn.dev/uhyo/articles/state-update-while-rendering?locale=en) - To see this concept implemented checkout the `Calendar` component on the frontend application
+- [React-scan to identify performance issues](https://react-scan.com/) - Tool that helps find and identify what is causing re-renders.
 
 #### Tutorials and Learning resources
 - [Normalization](https://www.youtube.com/watch?v=ABwD8IYByfk) - YouTube video
@@ -205,6 +206,7 @@ I implemented Role Based Access Control (RBAC) on the backend for future impleme
 - [Notes on Feature branches workflow](https://gist.github.com/yosang/ff9fba77bc317562aa955b76a2c54c3a) - Github feature branches workflow
 - [AI for sample seed generation and questions around specific assumptions as well as implementation feedback](https://grok.com/) - Grok
 - [AI for stock doctor profile pictures and general use stock image generation](https://grok.com/) - Grok
+- [Cookie-Editor Browser extension](https://github.com/moustachauve/cookie-editor)
 
 #### Reused Code snippets and packages
 - [Drawer component](https://www.npmjs.com/package/@yosang/react-ui?activeTab=code) - My own custom experimental ui component library

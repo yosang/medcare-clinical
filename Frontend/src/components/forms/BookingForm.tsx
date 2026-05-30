@@ -53,7 +53,9 @@ export default memo(function BookingForm( { patient }:{ patient?: Patient}) {
         phone: "",
         note: "",
         duration: "",
-        appointmentDateAndTime: ""
+        appointmentDateAndTime: "",
+        DoctorId: "",
+        CategoryId: ""
     }
 
     const [form, setForm] = useState(initialState)
@@ -63,23 +65,20 @@ export default memo(function BookingForm( { patient }:{ patient?: Patient}) {
         e.preventDefault();
         clearErrors();
 
-        const formData = new FormData(e.currentTarget);
-        const docId = formData.get("DoctorId") as string;
-
         try {
             const appointmentData = { 
                 firstname: token && patient ? patient.firstName: form.firstname,
                 lastname: token && patient ? patient.lastName: form.lastname,
                 dateOfBirth: token && patient ? patient.dateOfBirth: form.dateOfBirth,
                 phone: token && patient ? patient.phone: form.phone,
-                DoctorId: docId,
-                ClinicId: findClinicIdByDoctorId(doctors, docId) || "",
-                CategoryId: formData.get("CategoryId") as string,
+                DoctorId: form.DoctorId,
+                ClinicId: findClinicIdByDoctorId(doctors, form.DoctorId) || "",
+                CategoryId: form.CategoryId,
                 AppointmentDate: form.appointmentDateAndTime,
                 Duration: form.duration,
                 Note: form.note
             }
-            
+
             const dataIsValid = validate(AppointmentSchema, appointmentData)
             if(!dataIsValid) return;
 
@@ -175,8 +174,18 @@ export default memo(function BookingForm( { patient }:{ patient?: Patient}) {
             
             <div className={styles.selection}>
 
-                <DoctorSelection style={inputsWithErrors.includes("DoctorId") ? { border: "1px solid red"}:{}} />
-                <CategorySelection style={inputsWithErrors.includes("CategoryId") ? { border: "1px solid red"}:{}} />
+                <DoctorSelection 
+                    style={inputsWithErrors.includes("DoctorId") ? { border: "1px solid red"}:{}} 
+                    value={form.DoctorId}
+                    onChange={(e: ChangeEvent<HTMLSelectElement>) => setForm(prev => ({ ...prev, DoctorId: e.target.value}))}    
+
+                />
+
+                <CategorySelection 
+                    style={inputsWithErrors.includes("CategoryId") ? { border: "1px solid red"}:{}} 
+                    value={form.CategoryId}
+                    onChange={(e: ChangeEvent<HTMLSelectElement>) => setForm(prev => ({ ...prev, CategoryId: e.target.value}))}    
+                />
 
                 <TextArea
                     name="Note"

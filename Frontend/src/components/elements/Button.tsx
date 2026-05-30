@@ -7,5 +7,10 @@ type Props = {
 } & ButtonHTMLAttributes<HTMLButtonElement>;
 
 export default memo(function Button({children, variant = "primary", ...props}:Props ) {
-    return <button className={`${styles.layout} ${styles[variant]}`} {...props}>{children}</button>
+    return <button 
+                className={`${styles.layout} ${styles[variant]}`} 
+                {...props}
+            >
+                {children}
+            </button>
 })

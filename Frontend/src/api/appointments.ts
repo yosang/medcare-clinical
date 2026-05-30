@@ -10,8 +10,7 @@ export async function fetchAppointments(token:string): Promise<Appointment []> {
     }
 
     const res = await fetch(appointmentsUrl, {
-        headers: { "Authorization": `Bearer ${token}`},
-        credentials: "include"
+        headers: { "Authorization": `Bearer ${token}`}
     })
     
     if(!res.ok) {

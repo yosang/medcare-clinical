@@ -15,7 +15,7 @@ const DateInput = forwardRef( ( { labelText, name, ...props}:Props, ref: Ref<HTM
                         name={name}
                         type="date"
                         {...props}
-                        />
+                    />
             </label>
 })
 

@@ -14,9 +14,9 @@ builder.Services.AddCorsConfig()
 
 var app = builder.Build();
 
+app.UseExceptionHandler();
 app.UseCorsMiddleware();
 app.UseJWTMiddlewares();
-app.UseExceptionHandler();
 app.UseSwaggerMiddlewares();
 app.MapControllers();
 
