@@ -15,7 +15,7 @@ async function authFetchHelper(url: string, payload: Login | Registration, custo
     })
 
     if (res.status === 204) {
-        return null;
+        return;
     }
 
     if(!res.ok) {

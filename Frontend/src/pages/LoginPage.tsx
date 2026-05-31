@@ -1,7 +1,7 @@
-import { lazy, Suspense, type ChangeEvent } from "react";
+import { lazy, Suspense, useState, type ChangeEvent } from "react";
 import { useLoginStore } from "../stores/useLoginStore";
 import { toast } from "sonner"
-import { useNavigate } from "react-router";
+import { useLocation, useNavigate } from "react-router";
 
 import styles from "./LoginPage.module.css"
 
@@ -13,6 +13,15 @@ const LoginForm = lazy(() => import("../components/forms/LoginForm"))
 
 export default function LoginPage() {
 
+    // local states
+    const location = useLocation();
+    const { email: derivedEmail } = location.state || {};
+    
+    const [form, setForm] = useState({
+        email: derivedEmail || "",
+        password: ""
+    })
+
     // Zustand states
     const navigate = useNavigate();
     const loginPatient = useLoginStore((s) => s.loginPatient);
@@ -21,11 +30,9 @@ export default function LoginPage() {
     const handleSubmit = (e: ChangeEvent<HTMLFormElement>) => {
         e.preventDefault();
 
-        const formData = new FormData(e.currentTarget)
-
         toast.promise(loginPatient({
-            email: String(formData.get("email")),
-            password: String(formData.get("password"))
+            email: form.email,
+            password: form.password
         }), {
             loading: "Logging you in...",
             success: () => {
@@ -47,7 +54,7 @@ export default function LoginPage() {
                     footerText="Secure Healthcare Certified"
                 />
                 <Suspense fallback={<LoginSkeleton />}>
-                    <LoginForm submitHandler={handleSubmit} />
+                    <LoginForm submitHandler={handleSubmit} formData={form} formSetter={setForm}/>
                 </Suspense>
             </div>
 }

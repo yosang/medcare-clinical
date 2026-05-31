@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, type ChangeEvent } from "react";
+import { useEffect, useRef, type ChangeEvent, type Dispatch, type SetStateAction } from "react";
 import { useLoginStore } from "../../stores/useLoginStore";
 
 import styles from "./LoginForm.module.css"
@@ -8,14 +8,19 @@ import LoadingSpinner from "../layout/LoadingSpinner";
 import EmailInput from "../formElements/EmailInput";
 import PasswordInput from "../formElements/PasswordInput";
 import { useShallow } from "zustand/shallow";
-import { useLocation } from "react-router";
 
-export default function LoginForm({ submitHandler }:{ submitHandler: (e: ChangeEvent<HTMLFormElement>) => void }) {
+interface FormPayload {
+    email: string,
+    password: string
+}
 
-    const location = useLocation();
-    const { email } = location.state || {};
+type Props = { 
+    submitHandler: (e: ChangeEvent<HTMLFormElement>) => void 
+    formData: FormPayload
+    formSetter: Dispatch<SetStateAction< FormPayload >>
+}
 
-    const [emailInput, setEmailInput] = useState(email);
+export default function LoginForm({ submitHandler, formData, formSetter }:Props) {
 
     // Zustands tates
     const { loading, error, errorMessage, clearErrors } = useLoginStore(useShallow(s => ({
@@ -29,16 +34,21 @@ export default function LoginForm({ submitHandler }:{ submitHandler: (e: ChangeE
     const emailRef = useRef<HTMLInputElement | null>(null);
     const passwordRef = useRef<HTMLInputElement | null>(null);
 
-    // effects
     useEffect(() => {
-        if(email) {
+
+        if(formData && formData.email) {
             passwordRef.current?.focus();
-        } else {
+        }
+
+        if(formData && !formData.email) {
             emailRef.current?.focus();
         }
-        
+
         clearErrors();
-    }, [email, clearErrors])
+
+        // Im disabling the next line because we want to specifically put focus only on first mount
+        // eslint-disable-next-line
+    }, [])
 
     return <form onSubmit={submitHandler} className={styles.layout}>
             <div className={styles.loginCard}>
@@ -47,10 +57,14 @@ export default function LoginForm({ submitHandler }:{ submitHandler: (e: ChangeE
                         <h2>Welcome back</h2>
                         <p style={{ color: "var(--text-muted"}}>Please enter your credentials to continue</p>
                     </div>
-                    <EmailInput name={"email"} ref={emailRef} labelText="Email" value={emailInput} onChange={(e) => setEmailInput(e.target.value)} />
-                    <PasswordInput name="password" ref={passwordRef} labelText="Password"/>
+                    <EmailInput ref={emailRef} labelText="Email" value={formData.email} onChange={(e) => formSetter(prev => ({...prev, email: e.target.value}))} />
+
+                    <PasswordInput ref={passwordRef} value={formData.password} onChange={(e) => formSetter(prev => ({...prev, password: e.target.value}))} labelText="Password"/>
+                    
                     <Button type="submit" disabled={loading} >{loading ? (<LoadingSpinner />):"Login"}</Button>
+                    
                     <p style={{ color: "var(--text-muted"}}>Dont have an account? <a style={{ color: "var(--brand-primary)", textDecoration: "none" }} href="/register">Register</a></p>
+                    
                     {error && <p style={{ color: "red", padding: "var(--spacing-md)" }}>{errorMessage}</p>}
                 </div>
             </div>
