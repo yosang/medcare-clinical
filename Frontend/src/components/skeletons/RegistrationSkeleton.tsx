@@ -1,5 +1,6 @@
 import Skeleton from "react-loading-skeleton"
-import styles from "../forms/RegistrationForm.module.css"
+
+import styles from "../forms/styles/RegistrationForm.module.css"
 
 export default function RegistrationSkeleton() {
     return <div className={styles.formLayout} >

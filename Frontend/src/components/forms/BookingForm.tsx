@@ -8,7 +8,7 @@ import { useValidationStore } from "../../stores/useValidationStore";
 import { useCreateAppointment } from "../../queries/useAppointments";
 import { useCreatePatient } from "../../queries/usePatients";
 
-import styles from "./BookingForm.module.css"
+import styles from "./styles/BookingForm.module.css"
 
 import TextInput from "../formElements/TextInput";
 import Button from "../elements/Button";

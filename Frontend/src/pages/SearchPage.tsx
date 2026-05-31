@@ -3,7 +3,7 @@ import type { Doctor } from "../types/Doctors";
 import { fetchDoctorsBySearch } from "../api/shared";
 import LoadingSpinner from "../components/layout/LoadingSpinner";
 import Button from "../components/elements/Button";
-import styles from "./SearchPage.module.css";
+import styles from "./styles/SearchPage.module.css";
 import TextInput from "../components/formElements/TextInput";
 import DoctorListSkeleton from "../components/skeletons/DoctorListSkeleton";
 

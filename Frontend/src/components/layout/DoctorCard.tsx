@@ -1,5 +1,7 @@
 import { MapPin } from "lucide-react";
-import styles from "./DoctorCard.module.css";
+
+import styles from "./styles/DoctorCard.module.css";
+
 import { memo } from "react";
 
 type Props = {

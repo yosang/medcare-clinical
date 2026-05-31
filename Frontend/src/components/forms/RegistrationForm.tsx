@@ -6,7 +6,7 @@ import PasswordInput from "../formElements/PasswordInput";
 import TextInput from "../formElements/TextInput";
 import LoadingSpinner from "../layout/LoadingSpinner";
 
-import styles from "./RegistrationForm.module.css"
+import styles from "./styles/RegistrationForm.module.css"
 
 import { useValidationStore } from "../../stores/useValidationStore";
 import { useShallow } from "zustand/shallow";

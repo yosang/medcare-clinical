@@ -1,5 +1,6 @@
 import Skeleton from "react-loading-skeleton"
-import styles from "../elements/AppointmentsTable.module.css"
+
+import styles from "../elements/styles/AppointmentsTable.module.css"
 
 export default function AppointmentsTableSkeleton() {
     return <div className={styles.layout}>

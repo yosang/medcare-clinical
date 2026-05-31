@@ -1,4 +1,3 @@
-
 import { useLoginStore } from "../../stores/useLoginStore";
 import { useNavigate } from "react-router";
 
@@ -6,7 +5,7 @@ import { toast } from "sonner";
 import { Link } from "react-router";
 import { LogOut } from "lucide-react";
 
-import styles from "./Header.module.css";
+import styles from "./styles/Header.module.css";
 
 import logo from "../../assets/logo.png"
 import Button from "../elements/Button";

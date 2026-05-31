@@ -1,5 +1,6 @@
 import { memo, type ButtonHTMLAttributes, type ReactNode } from "react";
-import styles from "./Button.module.css"
+
+import styles from "./styles/Button.module.css"
 
 type Props = {
     children: ReactNode;

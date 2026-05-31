@@ -1,4 +1,5 @@
-import styles from "./SelectElement.module.css"
+import styles from "./styles/SelectElement.module.css"
+
 import { useCategories } from "../../queries/useLookupQueries";
 import Skeleton from "react-loading-skeleton";
 import { memo, type SelectHTMLAttributes } from "react";

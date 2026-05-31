@@ -1,7 +1,7 @@
 import { useEffect, useRef, type ChangeEvent, type Dispatch, type SetStateAction } from "react";
 import { useLoginStore } from "../../stores/useLoginStore";
 
-import styles from "./LoginForm.module.css"
+import styles from "./styles/LoginForm.module.css"
 
 import Button from "../elements/Button";
 import LoadingSpinner from "../layout/LoadingSpinner";

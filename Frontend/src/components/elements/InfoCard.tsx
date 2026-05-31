@@ -1,5 +1,7 @@
 import type { ReactNode } from "react"
-import styles from "./InfoCard.module.css"
+
+import styles from "./styles/InfoCard.module.css"
+
 import { Info } from "lucide-react"
 
 export default function InfoCard({ children }:{ children: ReactNode}) {

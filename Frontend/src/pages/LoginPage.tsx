@@ -3,7 +3,7 @@ import { useLoginStore } from "../stores/useLoginStore";
 import { toast } from "sonner"
 import { useLocation, useNavigate } from "react-router";
 
-import styles from "./LoginPage.module.css"
+import styles from "./styles/LoginPage.module.css"
 
 import SideCard from "../components/elements/SideCard";
 import LoginSkeleton from "../components/skeletons/LoginSkeleton";

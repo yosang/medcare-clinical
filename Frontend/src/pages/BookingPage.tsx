@@ -1,6 +1,6 @@
 import { lazy, Suspense, useMemo } from "react"
 
-import styles from "./BookingPage.module.css"
+import styles from "./styles/BookingPage.module.css"
 
 import { useLoginStore } from "../stores/useLoginStore";
 

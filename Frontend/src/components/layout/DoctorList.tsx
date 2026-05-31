@@ -1,6 +1,7 @@
 import type { Doctor } from "../../types/Doctors";
 import DoctorCard from "./DoctorCard";
-import styles from "./DoctorList.module.css";
+
+import styles from "./styles/DoctorList.module.css";
 
 type Props = {
     data: Doctor[]

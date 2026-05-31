@@ -1,7 +1,7 @@
 import Skeleton from "react-loading-skeleton"
 
-import cardStyles from "../layout/DoctorCard.module.css"
-import listStyles from "../layout/DoctorList.module.css"
+import cardStyles from "../layout/styles/DoctorCard.module.css"
+import listStyles from "../layout/styles/DoctorList.module.css"
 
 export default function DoctorListSkeleton() {
 

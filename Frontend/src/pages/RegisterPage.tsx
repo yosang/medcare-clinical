@@ -2,7 +2,7 @@ import { lazy, Suspense, type SyntheticEvent } from "react"
 
 import { toast } from "sonner";
 
-import styles from "./RegisterPage.module.css"
+import styles from "./styles/RegisterPage.module.css"
 
 import { RegistrationSchema } from "../schemas/registrationSchema";
 import { useValidationStore } from "../stores/useValidationStore";

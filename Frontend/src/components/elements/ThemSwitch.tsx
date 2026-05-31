@@ -1,5 +1,7 @@
 import { useEffect } from "react"
-import styles from "./ThemeSwitch.module.css"
+
+import styles from "./styles/ThemeSwitch.module.css"
+
 import { Moon, Sun } from "lucide-react";
 import { useThemeStore } from "../../stores/useThemeStore";
 

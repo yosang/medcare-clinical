@@ -1,6 +1,7 @@
 import type { ReactNode } from "react";
 import InfoCard from "./InfoCard";
-import styles from "./SideInfo.module.css";
+
+import styles from "./styles/SideInfo.module.css";
 
 type Props = {
     children: ReactNode

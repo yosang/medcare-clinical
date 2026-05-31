@@ -1,6 +1,6 @@
 import { ShieldCheck } from "lucide-react";
 
-import styles from "./SideCard.module.css"
+import styles from "./styles/SideCard.module.css"
 
 export default function SideCard( { 
     imageLink = "https://i.imgur.com/8WNM1hA.png",

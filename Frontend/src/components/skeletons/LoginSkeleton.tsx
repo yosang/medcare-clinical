@@ -1,5 +1,6 @@
 import Skeleton from "react-loading-skeleton"
-import styles from "../forms/LoginForm.module.css";
+
+import styles from "../forms/styles/LoginForm.module.css";
 
 export default function LoginSkeleton() {
     return <div className={styles.layout}>

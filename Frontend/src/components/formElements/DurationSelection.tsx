@@ -1,5 +1,6 @@
 import { memo, type SelectHTMLAttributes } from "react"
-import styles from "./SelectElement.module.css"
+
+import styles from "./styles/SelectElement.module.css"
 
 export default memo(function DurationSelection({value, onChange, ...props}: {} & SelectHTMLAttributes<HTMLSelectElement>) {
     return <label style={{ display: "flex", flexDirection:"column", gap: "5px", padding:"var(--spacing-sm)" }}>

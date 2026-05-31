@@ -1,6 +1,7 @@
 import { useMemo, useRef, useState } from "react";
 
-import styles from "./Calendar.module.css"
+import styles from "./styles/Calendar.module.css"
+
 import type { Appointment } from "../../types/Appointments";
 import { toast } from "sonner";
 

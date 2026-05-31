@@ -4,7 +4,7 @@ import { useLoginStore } from "../../stores/useLoginStore";
 
 import { useAppointment, useUpdateAppointment, useCancelAppointment } from "../../queries/useAppointments";
 
-import styles from "./AppointmentsTable.module.css";
+import styles from "./styles/AppointmentsTable.module.css";
 
 import LoadingSpinner from "../layout/LoadingSpinner";
 import Button from "./Button";

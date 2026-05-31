@@ -1,6 +1,6 @@
 import Skeleton from 'react-loading-skeleton';
 
-import styles from "../forms/BookingForm.module.css";
+import styles from "../forms/styles/BookingForm.module.css";
 
 export default function BookingFormSkeleton() {
   return (

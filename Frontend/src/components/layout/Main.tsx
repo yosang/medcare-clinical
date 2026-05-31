@@ -1,5 +1,7 @@
 import { type ReactNode } from "react"
-import styles from "./Main.module.css"
+
+import styles from "./styles/Main.module.css"
+
 import Footer from "./Footer"
 
 export default function Main({children}: {children: ReactNode}) {
