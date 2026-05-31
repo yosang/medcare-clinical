@@ -1,4 +1,4 @@
-import type { Categories } from "../types/Appointments";
+import type { Categories, Status } from "../types/Appointments";
 import type { Doctor } from "../types/Doctors";
 
 const statusUrl = import.meta.env.VITE_STATUS;
@@ -6,8 +6,11 @@ const categoriesUrl = import.meta.env.VITE_CATEGORIES;
 const doctorsUrl = import.meta.env.VITE_DOCTORS;
 const searchUrl = import.meta.env.VITE_DOCTORS_SEARCH;
 
-// GET Statuses: Public
-export async function fetchStatus() {
+/**
+ * Retrieves a list of statuses from the backend
+ * @returns {Status} List of statuses
+ */
+export async function fetchStatus(): Promise<Status[]> {
     if(!statusUrl) {
         throw new Error("VITE_STATUS url is not defined in .env")
     }
@@ -19,7 +22,10 @@ export async function fetchStatus() {
     return res.json();
 }
 
-// GET Categories: Public
+/**
+ * Retrieves a list of categories from the backend
+ * @returns {Categories} List of categories
+ */
 export async function fetchCategories(): Promise<Categories[]> {
     if(!categoriesUrl) {
         throw new Error("VITE_CATEGORIES url is not defined in .env")
@@ -32,7 +38,10 @@ export async function fetchCategories(): Promise<Categories[]> {
     return res.json();
 }
 
-// GET Doctors: Public
+/**
+ * Retrieves a list of doctors from the backend
+ * @returns {Doctor} List of doctors
+ */
 export async function fetchDoctors(): Promise<Doctor[]> {
     if(!doctorsUrl) {
         throw new Error("VITE_DOCTORS url is not defined in .env")
@@ -45,14 +54,15 @@ export async function fetchDoctors(): Promise<Doctor[]> {
     return res.json();
 }
 
-// Get Doctors search: Public
+/**
+ * Retrieves a list of doctors from the backend based on search term
+ * @returns {Doctor} List of doctors by search
+ */
 export async function fetchDoctorsBySearch(name: string ): Promise<Doctor[]> {
     if(!searchUrl) {
         throw new Error("VITE_DOCTOR_SEARCH url is not defined in .env")
     }
     
-    if(!name) throw new Error("Doctors name cannot be empty.")
-
     const res = await fetch(`${searchUrl}?name=${name}`)
 
     if(!res.ok) throw new Error("Failed to fetch doctors with search")

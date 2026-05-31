@@ -34,7 +34,7 @@ export default function SearchPage() {
             setError(false);
         } catch(err) {
             setError(true);
-            console.error("An error occurred durin fetch:", err )
+            console.error("An error occurred during fetch:", err )
         } finally {
             setIsLoading(false);
         }
