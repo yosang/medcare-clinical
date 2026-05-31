@@ -4,8 +4,8 @@ import { UnauthorizedError } from "./auth";
 const appointmentsUrl = import.meta.env.VITE_APPOINTMENTS
 
 /**
- * Fetches appointments for a patient, requires a valid access token with PatientId claim
- * @param token Access token to attach to the request header
+ * Fetches appointments for a patient, requires a valid access token with PatientId claim.
+ * @param token Access token to attach to the request header.
  */
 export async function fetchAppointments(token:string): Promise<Appointment []> {
     if(!appointmentsUrl) {
@@ -26,9 +26,9 @@ export async function fetchAppointments(token:string): Promise<Appointment []> {
 }
 
 /**
- * Fetches a single appointment for a patient, requires a valid access token with PatientId claim
- * @param token Access token to attach to the request header
- * @param apId The id of the appointment to fetch
+ * Fetches a single appointment for a patient, requires a valid access token with PatientId claim.
+ * @param token Access token to attach to the request header.
+ * @param apId The id of the appointment to fetch.
  */
 export async function fetchAppointment(token:string, apId:number): Promise<Appointment> {
     if(!appointmentsUrl) {
@@ -78,10 +78,10 @@ export async function createAppointment(payload:AppointmentPayload): Promise<boo
 }
 
 /**
- * Updates an appointment as a logged in patient
- * @param payload The payload contract including changes, the backend supports partial updates
- * @param token Access token to attach to the request header
- * @param apId The id of the appointment to update
+ * Updates an appointment as a logged in patient.
+ * @param payload The payload contract including changes, the backend supports partial updates.
+ * @param token Access token to attach to the request header.
+ * @param apId The id of the appointment to update.
  */
 export async function updateAppointment(payload:AppointmentUpdatePayload, token: string, apId: number): Promise<void> {
     if(!appointmentsUrl) {
@@ -110,9 +110,9 @@ export async function updateAppointment(payload:AppointmentUpdatePayload, token:
 }
 
 /**
- * Cancels an appointment by setting its status to cancelled (soft delete)
- * @param token Access token to attach to the request header
- * @param apId The id of the appointment to cancel
+ * Cancels an appointment by setting its status to cancelled (soft delete).
+ * @param token Access token to attach to the request header.
+ * @param apId The id of the appointment to cancel.
  */
 export async function cancelAppointment(token: string, apId: number): Promise<void> {
     if(!appointmentsUrl) {

@@ -116,10 +116,10 @@ I implemented Role Based Access Control (RBAC) on the backend for future impleme
 - DELETE `api/appointments/:id` - Deletes an existing appointment.
 
 #### Patients
-- GET `api/patients/me` - Returns patient details as a logged in patient.
-- POST `api/patients/guest` - Creates a new guest patient.
-- PUT `api/patients/me` - Updates patient details as a logged in patient.
-- DELETE `api/patients/me` - Deletes patient profile as a logged in patient.
+- GET `api/patients` - Returns patient details as a logged in patient.
+- POST `api/patients` - Creates a new guest patient.
+- PUT `api/patients` - Updates patient details as a logged in patient.
+- DELETE `api/patients` - Deletes patient profile as a logged in patient.
 
 #### Doctors
 - GET `api/doctors` - Returns a list of doctors.

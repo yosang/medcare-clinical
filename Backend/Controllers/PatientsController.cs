@@ -21,9 +21,9 @@ public class PatientsController : ControllerBase
     /// Retrieve details as a logged in patient
     /// </summary>
     /// <response code="200">Resource returned</response>
-    /// <response code="401">Resource not found</response>
+    /// <response code="401">Unauthorizzed</response>
     /// <response code="404">Resource not found</response>
-    [HttpGet("me")]
+    [HttpGet]
     [Authorize]
     [ProducesResponseType(typeof(PatientWithDetailsDTO), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
@@ -52,7 +52,7 @@ public class PatientsController : ControllerBase
     /// </remarks>
     /// <param name="dto"></param>
     /// <response code="201">Resource created</response>
-    [HttpPost("guest")]
+    [HttpPost]
     [ProducesResponseType(typeof(GuestPatientDTO), StatusCodes.Status201Created)]
     public async Task<ActionResult<GuestPatientDTO>> CreateGuestPatient(CreateGuestPatientDTO dto)
     {
@@ -82,7 +82,7 @@ public class PatientsController : ControllerBase
     /// <response code="204">Update successful, no content returned</response>
     /// <response code="401">Unauthorized</response>
     /// <response code="404">Resource not found</response>
-    [HttpPut("me")]
+    [HttpPut]
     [Authorize]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
@@ -104,7 +104,7 @@ public class PatientsController : ControllerBase
     /// <response code="204">Resource deleted</response>
     /// <response code="401">Unauthorized</response>
     /// <response code="404">Resource not found</response>
-    [HttpDelete("me")]
+    [HttpDelete]
     [Authorize]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]

@@ -1,4 +1,5 @@
 import type { Login, Registration, Token } from "../types/Auth";
+import { useLoginStore } from "../stores/useLoginStore";
 
 const refreshURL = import.meta.env.VITE_REFRESH;
 const registrationURL = import.meta.env.VITE_REGISTER;
@@ -6,15 +7,15 @@ const loginURL = import.meta.env.VITE_LOGIN;
 const logoutURL = import.meta.env.VITE_LOGOUT;
 
 /**
- * Authenticates an existing patient
- * - A successful login returns an access token in the json response and a refresh token as httpOnly secured cookie
+ * Authenticates an existing patient.
+ * - A successful login returns an access token in the json response and a refresh token as httpOnly secured cookie.
  * - Since the backend is the one setting the refresh token in the cookies, the browser must identify itself as an accepted origin, hence credentials: "include".
- * - credentials: "include" requires the frontend to be listed as an AllowedOrigin in the backend CORS configuration
- * - The access token is saved in memory with a zustand store, and is used on every query that requires Bearer authentication.
- * - The refresh token is used whenever the backend refuses the access token, in which case we use the refreshToken function to retrieve a new access token and save it memory in order to proceed with our requests.
+ * - credentials: "include" requires the frontend to be listed as an AllowedOrigin in the backend CORS configuration.
+ * - The access token is saved in memory with loginPatient from {@link useLoginStore}, and is used on every query that requires Bearer authentication.
+ * - The refresh token is used whenever the backend refuses the access token, in which case we use the {@link refreshToken} function to retrieve a new access token and save it memory in order to proceed with our requests.
  * - This provides with an extra layer of security, if the access token is stolen, its lives short and little much damage can be done. However the refresh token is harder to steal due to how its configured.
- * @param payload Payload contract required for login
- * @returns {Token} Access token is returned in the json response
+ * @param payload Payload contract required for login.
+ * @returns {Token} Access token is returned in the json response.
  */
 export async function login(payload: Login): Promise<Token> {
     if(!loginURL) throw new Error("VITE_LOGIN url is not defined in .env")
@@ -92,7 +93,7 @@ export async function logoutRequest(): Promise<void> {
  * - The token will validate the refresh token
  * - If validation is successful, the frontend receives a new access token
  */
-export async function refreshToken() {
+export async function refreshToken(): Promise<Token> {
     if(!refreshURL) throw new Error("VITE_REFRESH url is not defined in .env")
 
     const res = await fetch(refreshURL, {
