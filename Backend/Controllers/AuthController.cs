@@ -58,10 +58,10 @@ public class AuthController : ControllerBase
     /// </summary>
     /// <param name="dto"></param>
     /// <response code="200">Returns token on successful registration</response>
-    /// <response code="400">An account that exists already</response>
+    /// <response code="409">An account that exists already</response>
     [HttpPost("register")]
     [ProducesResponseType(typeof(TokenDTO), StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status409Conflict)]
     public async Task<IActionResult> Register(RegisterPatientDTO dto)
     {
         var registered = await _service.Register(dto);
@@ -69,7 +69,7 @@ public class AuthController : ControllerBase
         {
             Title = "Registration failed",
             Detail = "Could not complete registration. Please check your information and try again.",
-            Status = StatusCodes.Status400BadRequest
+            Status = StatusCodes.Status409Conflict
         });
 
         return NoContent();
@@ -83,6 +83,8 @@ public class AuthController : ControllerBase
     /// <response code="200">Returns new access token</response>
     /// <response code="401">Unauthorized</response>
     [HttpPost("refresh")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     public async Task<IActionResult> Refresh()
     {
         var refreshToken = Request.Cookies["refresh_token"];
@@ -111,7 +113,9 @@ public class AuthController : ControllerBase
     }
 
     /// <summary> Deletes a refresh token cookie from the browser </summary>
+    /// <response code="204">No content</response>
     [HttpPost("logout")]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
     public async Task<IActionResult> Logout()
     {
         Response.Cookies.Delete("refresh_token");
