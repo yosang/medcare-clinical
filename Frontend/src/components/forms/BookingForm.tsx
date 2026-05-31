@@ -84,8 +84,6 @@ export default memo(function BookingForm( { patient }:{ patient?: Patient}) {
 
             let patientId: number
 
-            // If unregistered user, we create a guest patient and use the new patient id to create the appointment
-            // If registered user, we use the logged in patient's id on every appointment creation
             if(!token) {
                 const newPatient = await createPatientMutation.mutateAsync({
                     firstname: appointmentData.firstname,

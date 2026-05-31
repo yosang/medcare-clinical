@@ -58,7 +58,7 @@ public class AppointmentsController : ControllerBase
         return Ok(appointment);
     }
 
-    /// <summary>Create a new appointment (Frontend must provide a PatientId for Guests)</summary>
+    /// <summary>Create a new appointment</summary>
     /// <remarks>
     /// Sample request:
     ///
@@ -76,28 +76,19 @@ public class AppointmentsController : ControllerBase
     /// </remarks>
     /// <param name="dto"></param>
     /// <response code="201">Resource created</response>
-    /// <response code="400">Date and time overlaps</response>
-    /// <response code="401">Unauthorized</response>
+    /// <response code="409">Date and time overlaps</response>
     [HttpPost]
     [ProducesResponseType(typeof(AppointmentDTO), StatusCodes.Status201Created)]
-    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status409Conflict)]
     public async Task<ActionResult<AppointmentDTO>> Create(CreateAppointmentDTO dto)
     {
-        if (User.Identity!.IsAuthenticated)
-        {
-            var patientId = User.GetPatientId();
-            if(patientId == null) return Unauthorized();
-
-            dto.PatientId = patientId.Value;
-        }
-
         var result = await _service.CreateAppointment(dto);
 
-        if (result == null) return BadRequest(new ProblemDetails
+        if (result == null) return Conflict(new ProblemDetails
         {
             Title = "Date overlap",
             Detail = "The selected time overlaps with an existing appointment. Please choose a different time slot.",
-            Status = StatusCodes.Status400BadRequest
+            Status = StatusCodes.Status409Conflict
         });
 
         return CreatedAtAction(nameof(Get), new { id = result.Id }, result);
@@ -121,15 +112,15 @@ public class AppointmentsController : ControllerBase
     /// <param name="id"></param>
     /// <param name="dto"></param>
     /// <response code="204">Update successful, no content returned</response>
-    /// <response code="400">Date and time overlaps</response>
     /// <response code="401">Unauthorized</response>
     /// <response code="404">Resource not found by id</response>
+    /// <response code="409">Date and time overlaps</response>
     [HttpPut("{id}")]
     [Authorize]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
-    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status409Conflict)]
     public async Task<IActionResult> Update(int id, UpdateAppointmentDTO dto)
     {
         var patientId = User.GetPatientId();
@@ -139,11 +130,11 @@ public class AppointmentsController : ControllerBase
 
         if(result.notFound) return NotFound();
 
-        if (result.overlap) return BadRequest(new ProblemDetails
+        if (result.overlap) return Conflict(new ProblemDetails
         {
             Title = "Date overlap",
             Detail = "The selected time overlaps with an existing appointment. Please choose a different time slot.",
-            Status = StatusCodes.Status400BadRequest
+            Status = StatusCodes.Status409Conflict
         });
 
         return NoContent();

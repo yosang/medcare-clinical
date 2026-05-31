@@ -4,7 +4,7 @@ import { BrowserRouter, Routes, Route } from "react-router"
 import Main from "./components/layout/Main"
 import Header from "./components/layout/Header"
 
-// Lazy load pages we dont want to load initially
+// Lazy loading
 const BookingPage = lazy(() => import("./pages/BookingPage"))
 const RegisterPage = lazy(() => import("./pages/RegisterPage"))
 const LoginPage = lazy(() => import("./pages/LoginPage"))
