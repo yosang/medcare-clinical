@@ -1,11 +1,18 @@
 import { UnauthorizedError } from "../api/auth";
 import { useLoginStore } from "../stores/useLoginStore";
-
-// A little helper tries to call the cb function, if it failes, we handle two cases of errors
-// If its a 401, we refresh the access token, and call the cb function with the new access token
-// If we cant refresh, that means the refresh token is not valid, we then proceed to logout the user
-// otherwise throw the error back out
-export default async function withAuth<T>(cb: ( token:string ) => Promise<T>): Promise<T> { // This function is generic because some read api calls return json while write api calls are just void
+import { fetchAppointments, fetchAppointment } from "../api/appointments";
+/**
+ * Helper function used by queryFunctions relying on authentication.
+ * - Tries to call the callback function with token in the header.
+ * - - If the backend refuses the token (a 401 error is caught), we use the refreshAccessToken function from {@link useLoginStore} to get a new token.
+ * - - If the refresh token is refused, we log out the user.
+ * - - Otherwise call the callback function again with the newly refreshed access token.
+ * - This function is designed as a generic function because its used with callback functions with different return types.
+ * - - {@link fetchAppointments} returns a promise with a list of appointments, 
+ * - - while {@link fetchAppointment} returns a promise with a single appointment.
+ * @param cb Fetch function passed as a callback function.
+ */
+export default async function withAuth<T>(cb: ( token:string ) => Promise<T>): Promise<T> {
     const currentToken = useLoginStore.getState().token;
 
     try {

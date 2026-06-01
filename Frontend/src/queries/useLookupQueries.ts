@@ -2,6 +2,9 @@ import { useQuery } from "@tanstack/react-query";
 import { fetchCategories, fetchDoctors } from "../api/shared";
 import type { Doctor } from "../types/Doctors";
 
+/**
+ * Read query that fetches and stores categories
+ */
 export function useCategories() {
     return useQuery({
         queryKey: ["categories"],
@@ -9,6 +12,9 @@ export function useCategories() {
     })
 } 
 
+/**
+ * Read query that fetches and stores doctors
+ */
 export function useDoctors() {
     return useQuery({
         queryKey: ["doctors"],
