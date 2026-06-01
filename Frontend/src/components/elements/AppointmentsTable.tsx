@@ -5,6 +5,8 @@ import { useLoginStore } from "../../stores/useLoginStore";
 import { useAppointment, useUpdateAppointment, useCancelAppointment } from "../../queries/useAppointments";
 
 import styles from "./styles/AppointmentsTable.module.css";
+import UpdateAppointmentSkeleton from "../skeletons/UpdateAppointmentSkeleton";
+import { History, MessageCircleMore } from "lucide-react";
 
 import LoadingSpinner from "../layout/LoadingSpinner";
 import Button from "./Button";
@@ -16,8 +18,6 @@ import { Tooltip } from "react-tooltip";
 const UpdateAppointmentForm = lazy(() => import("../forms/UpdateAppointmentForm"))
 
 import type { Appointment, AppointmentUpdateForm } from "../../types/Appointments";
-import UpdateAppointmentSkeleton from "../skeletons/UpdateAppointmentSkeleton";
-import { History, MessageCircleMore } from "lucide-react";
 
 export default function AppointmentsTable( { appointments }: { appointments: Appointment[] | undefined}) {
 
@@ -25,19 +25,19 @@ export default function AppointmentsTable( { appointments }: { appointments: App
     const [open, setOpen] = useState(false)
     const[apId, setApId] = useState<number | null>(null);
     
-    // TanStack queries
+    // queries
     const { data: selectedAppointment } = useAppointment(apId);
     
-    // TanStack mutations
+    // mutations
     const updateMutation = useUpdateAppointment();
     const cancelMutation = useCancelAppointment();
 
-    // Zustand states
+    // global states
     const token = useLoginStore(s => s.token)   
 
     const [filter, setFilter] = useState("");
 
-    // Creates a copy of appoitments, sorts and sorts it by date
+    // Creates a copy of appoitments and sorts it by date
     const sortedAppointments = useMemo(() => {
         if(!appointments) return [];
 
