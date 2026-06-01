@@ -53,17 +53,37 @@ export default function LoginForm({ submitHandler, formData, formSetter }:Props)
     return <form onSubmit={submitHandler} className={styles.layout}>
             <div className={styles.loginCard}>
                 <div className={styles.loginInputs}>
+
                     <div className={styles.loginHeader}>
                         <h2>Welcome back</h2>
                         <p style={{ color: "var(--text-muted"}}>Please enter your credentials to continue</p>
                     </div>
-                    <EmailInput ref={emailRef} labelText="Email" value={formData.email} onChange={(e) => formSetter(prev => ({...prev, email: e.target.value}))} />
 
-                    <PasswordInput ref={passwordRef} value={formData.password} onChange={(e) => formSetter(prev => ({...prev, password: e.target.value}))} labelText="Password"/>
+                    <EmailInput 
+                        ref={emailRef} 
+                        labelText="Email" 
+                        value={formData.email} 
+                        aria-invalid={error}
+                        onChange={(e) => formSetter(prev => ({...prev, email: e.target.value}))} 
+                    />
+
+                    <PasswordInput 
+                        ref={passwordRef} 
+                        labelText="Password"
+                        value={formData.password} 
+                        aria-invalid={error}
+                        onChange={(e) => formSetter(prev => ({...prev, password: e.target.value}))}
+                    />
                     
-                    <Button type="submit" disabled={loading} >{loading ? (<LoadingSpinner />):"Login"}</Button>
+                    <Button 
+                        type="submit" disabled={loading} 
+                    >
+                        {loading ? (<LoadingSpinner />):"Login"}
+                    </Button>
                     
-                    <p style={{ color: "var(--text-muted"}}>Dont have an account? <a style={{ color: "var(--brand-primary)", textDecoration: "none" }} href="/register">Register</a></p>
+                    <p style={{ color: "var(--text-muted"}}>
+                        Dont have an account? <a style={{ color: "var(--brand-primary)", textDecoration: "none" }} href="/register">Register</a>
+                    </p>
                     
                     {error && <p style={{ color: "red", padding: "var(--spacing-md)" }}>{errorMessage}</p>}
                 </div>

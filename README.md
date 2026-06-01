@@ -188,6 +188,9 @@ I implemented Role Based Access Control (RBAC) on the backend for future impleme
 - [Adjusting the state during rendering without useEffect](https://react.dev/learn/you-might-not-need-an-effect)
 - [Article on adjusting state when a prop changes, builds on the concept from the article above](https://zenn.dev/uhyo/articles/state-update-while-rendering?locale=en) - To see this concept implemented checkout the `Calendar` component on the frontend application
 - [React-scan to identify performance issues](https://react-scan.com/) - Tool that helps find and identify what is causing re-renders.
+- [Tanstack Query Official Documentation](https://tanstack.com/query) - The official docs for tanstack query.
+- [Tanstack Query Queries](https://tanstack.com/query/latest/docs/framework/react/guides/queries) - Docs on queries.
+- [Tanstack Query Mutations](https://tanstack.com/query/latest/docs/framework/react/guides/mutations) - Docs on mutation.
 
 #### Tutorials and Learning resources
 - [Normalization](https://www.youtube.com/watch?v=ABwD8IYByfk) - YouTube video

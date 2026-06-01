@@ -1,5 +1,3 @@
-import { ClipboardClock } from "lucide-react"
-
 import { memo, useState, type ChangeEvent, type SyntheticEvent } from "react";
 
 import { useLoginStore } from "../../stores/useLoginStore"
@@ -7,45 +5,46 @@ import { useValidationStore } from "../../stores/useValidationStore";
 
 import { useCreateAppointment } from "../../queries/useAppointments";
 import { useCreatePatient } from "../../queries/usePatients";
+import { findClinicIdByDoctorId, useDoctors } from "../../queries/useLookupQueries";
 
 import styles from "./styles/BookingForm.module.css"
+import { ClipboardClock } from "lucide-react"
 
-import TextInput from "../formElements/TextInput";
 import Button from "../elements/Button";
+import TextInput from "../formElements/TextInput";
 import DoctorSelection from "../formElements/DoctorSelection";
 import CategorySelection from "../formElements/CategorySelection";
 import DateTimeSelector from "../formElements/DateTimeSelector";
 import DurationSelection from "../formElements/DurationSelection";
+import DateInput from "../formElements/DateInput";
+import TextArea from "../formElements/TextArea";
 import LoadingSpinner from "../layout/LoadingSpinner";
 
 import { toast } from "sonner";
 import { useShallow } from "zustand/shallow";
 import { AppointmentSchema } from "../../schemas/appointmentSchema";
-import TextArea from "../formElements/TextArea";
-import { findClinicIdByDoctorId, useDoctors } from "../../queries/useLookupQueries";
 import type { Patient } from "../../types/Patients";
-import DateInput from "../formElements/DateInput";
 
 export default memo(function BookingForm( { patient }:{ patient?: Patient}) {
 
-    // Tanstack reading queries
+    // Reading queries
     const { data: doctors } = useDoctors();
     
-    // TaStack mutations
+    // Mutations
     const createAppointmentMutation = useCreateAppointment();
     const createPatientMutation = useCreatePatient();
 
-    // Zustand states
+    // Global states
     const token = useLoginStore(s => s.token)
 
-    const { validationErrors, inputsWithErrors, validate, clearErrors} = useValidationStore(useShallow(s => ({
+    const { validationErrors, errorIdentifier, validate, clearErrors} = useValidationStore(useShallow(s => ({
         validationErrors: s.validationErrors,
-        inputsWithErrors: s.inputsWithErrors,
+        errorIdentifier: s.errorIdentifier,
         validate: s.validate,
         clearErrors: s.clearErrors
     })))
     
-    // Local form states
+    // Local variables
     const initialState = {
         firstname: "",
         lastname: "",
@@ -66,6 +65,10 @@ export default memo(function BookingForm( { patient }:{ patient?: Patient}) {
         clearErrors();
 
         try {
+
+            // Builds an object of of data required for appointment creation, which has to be validated first through zod.
+            // If a patient is logged in, we use patient details from the patient query
+            // If a ptient is not logged in, we use the form values
             const appointmentData = { 
                 firstname: token && patient ? patient.firstName: form.firstname,
                 lastname: token && patient ? patient.lastName: form.lastname,
@@ -82,6 +85,8 @@ export default memo(function BookingForm( { patient }:{ patient?: Patient}) {
             const dataIsValid = validate(AppointmentSchema, appointmentData)
             if(!dataIsValid) return;
 
+            // If we dont have a token, it means we are not authenticated and this appointment is for a guest user, in which case we create a new guest patient, and assign the new patient Id to patientId.
+            // otherwise we use the patientId from the patient details passed down from the parent component.
             let patientId: number
 
             if(!token) {
@@ -99,6 +104,8 @@ export default memo(function BookingForm( { patient }:{ patient?: Patient}) {
                 patientId = patient.id
             }
 
+            // Toast promise allows us to handles success and errors. mutateAsync gives us a promsie which allows us to link it up here and handle it as a promise.
+            // While I could instead use Tanstacks onSuccess, onError callbacks, Im choosing to keep it in here since we have access component states, such as clearErrors and setForm.
             toast.promise(createAppointmentMutation.mutateAsync({
                 AppointmentDate: form.appointmentDateAndTime,
                 Duration: Number(form.duration),
@@ -131,56 +138,68 @@ export default memo(function BookingForm( { patient }:{ patient?: Patient}) {
     }
 
     return <form onSubmit={handleSubmit} className={styles.formLayout}>
+
             <div className={styles.header}>
-                <ClipboardClock color="var(--color-primary)" />
+                <ClipboardClock size={40} color="var(--color-primary)" />
                 <h1 style={{ color: "var(--color-secondary-text)"}}>Schedule Appointment</h1>
             </div>
             
             {!token && (<div className={styles.personalDetails}>
                 <TextInput 
                     labelText="Firstname"
-                    value={token && patient?.firstName || form.firstname}
-                    placeholder={token && patient ? patient.firstName:"John"}
+                    value={form.firstname}
+                    placeholder={"John"}
                     disabled={!!token}
-                    onChange={(e) => setForm(prev => ({ ...prev, firstname: e.target.value }))}
-                    style={inputsWithErrors.includes("firstname") ? { border: "1px solid red"}:{}}
-                    />
+                    aria-disabled={!!token}
+                    aria-invalid={errorIdentifier("firstname")}
+                    onChange={(e: ChangeEvent<HTMLInputElement>) => setForm(prev => ({ ...prev, firstname: e.target.value }))}
+                    style={errorIdentifier("firstname") ? { border: "1px solid red"}:{}}
+                />
+                        
                 <TextInput 
                     labelText="Lastname"
-                    value={token && patient?.lastName || form.lastname}
-                    placeholder={token && patient ? patient.lastName:"Doe"}
+                    value={form.lastname}
+                    placeholder={"Doe"}
                     disabled={!!token}
-                    onChange={(e) => setForm(prev => ({ ...prev, lastname: e.target.value}))}
-                    style={inputsWithErrors.includes("lastname") ? { border: "1px solid red"}:{}}
+                    aria-disabled={!!token}
+                    aria-invalid={errorIdentifier("lastname")}
+                    onChange={(e: ChangeEvent<HTMLInputElement>) => setForm(prev => ({ ...prev, lastname: e.target.value}))}
+                    style={errorIdentifier("lastname") ? { border: "1px solid red"}:{}}
                 />
                 <DateInput 
                     labelText="Date of birth"
-                    value={token && patient?.dateOfBirth || form.dateOfBirth}
+                    value={form.dateOfBirth}
                     disabled={!!token}
-                    onChange={(e) => setForm(prev => ({ ...prev, dateOfBirth: e.target.value }))}
-                    style={inputsWithErrors.includes("dateOfBirth") ? { border: "1px solid red"}:{}}
+                    aria-disabled={!!token}
+                    aria-invalid={errorIdentifier("dateOfBirth")}
+                    onChange={(e: ChangeEvent<HTMLInputElement>) => setForm(prev => ({ ...prev, dateOfBirth: e.target.value }))}
+                    style={errorIdentifier("dateOfBirth") ? { border: "1px solid red"}:{}}
                 />
                 <TextInput 
                     labelText="Phone number"
-                    value={token && patient?.phone || form.phone}
-                    placeholder={token && patient ? patient.phone:"912 34 567"}
+                    value={form.phone}
+                    placeholder={"912 34 567"}
                     disabled={!!token}
-                    onChange={(e) => setForm(prev => ({ ...prev, phone: e.target.value }))}
-                    style={inputsWithErrors.includes("phone") ? { border: "1px solid red"}:{}}
+                    aria-disabled={!!token}
+                    aria-invalid={errorIdentifier("phone")}
+                    onChange={(e: ChangeEvent<HTMLInputElement>) => setForm(prev => ({ ...prev, phone: e.target.value }))}
+                    style={errorIdentifier("phone") ? { border: "1px solid red"}:{}}
                 />
             </div>)}
             
             <div className={styles.selection}>
 
                 <DoctorSelection 
-                    style={inputsWithErrors.includes("DoctorId") ? { border: "1px solid red"}:{}} 
+                    aria-invalid={errorIdentifier("DoctorId")}                
+                    style={errorIdentifier("DoctorId") ? { border: "1px solid red"}:{}} 
                     value={form.DoctorId}
                     onChange={(e: ChangeEvent<HTMLSelectElement>) => setForm(prev => ({ ...prev, DoctorId: e.target.value}))}    
 
                 />
 
                 <CategorySelection 
-                    style={inputsWithErrors.includes("CategoryId") ? { border: "1px solid red"}:{}} 
+                    aria-invalid={errorIdentifier("CategoryId")}                
+                    style={errorIdentifier("CategoryId") ? { border: "1px solid red"}:{}} 
                     value={form.CategoryId}
                     onChange={(e: ChangeEvent<HTMLSelectElement>) => setForm(prev => ({ ...prev, CategoryId: e.target.value}))}    
                 />
@@ -197,20 +216,24 @@ export default memo(function BookingForm( { patient }:{ patient?: Patient}) {
                     required
                     type="datetime-local"
                     value={form.appointmentDateAndTime}
+                    aria-invalid={createAppointmentMutation.isError}
                     onChange={(e: ChangeEvent<HTMLInputElement>) => setForm(prev => ({ ...prev, appointmentDateAndTime: e.target.value}))}
                     min={new Date().toISOString().slice(0, 16)}
                     style={createAppointmentMutation.isError ? { border: "1px solid red"}:{}}
                 />
                 <DurationSelection 
                     value={form.duration} 
+                    aria-invalid={errorIdentifier("Duration")}      
                     onChange={(e: ChangeEvent<HTMLSelectElement>) => setForm(prev => ({ ...prev, duration: e.target.value}))}
-                    style={inputsWithErrors.includes("Duration") ? { border: "1px solid red"}:{}}
+                    style={errorIdentifier("Duration") ? { border: "1px solid red"}:{}}
                 />
             </div>
             
             <Button 
                     style={{ width: "50%", height: "50px" }} 
                     type="submit" 
+                    aria-disabled={createAppointmentMutation.isPending || createPatientMutation.isPending}
+                    aria-busy={createAppointmentMutation.isPending || createPatientMutation.isPending}
                     disabled={createAppointmentMutation.isPending || createPatientMutation.isPending} 
                 >
                     {createAppointmentMutation.isPending || createPatientMutation.isPending ? (<LoadingSpinner />):"Book appointment"}

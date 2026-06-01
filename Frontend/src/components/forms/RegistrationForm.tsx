@@ -1,4 +1,5 @@
 import { forwardRef, type Ref, type SyntheticEvent } from "react";
+
 import Button from "../elements/Button";
 import DateInput from "../formElements/DateInput";
 import EmailInput from "../formElements/EmailInput";
@@ -19,9 +20,9 @@ type Props = {
 
 const RegistrationForm = forwardRef(({ submitHandler, mutation}:Props, ref: Ref<HTMLFormElement>) => {
 
-    const { validationErrors, inputsWithErrors } = useValidationStore(useShallow(s => ({
+    const { validationErrors, errorIdentifier } = useValidationStore(useShallow(s => ({
         validationErrors: s.validationErrors,
-        inputsWithErrors: s.inputsWithErrors
+        errorIdentifier: s.errorIdentifier
     })));
 
     return <form onSubmit={submitHandler} className={styles.formLayout} ref={ref}>
@@ -35,24 +36,27 @@ const RegistrationForm = forwardRef(({ submitHandler, mutation}:Props, ref: Ref<
                             labelText="Firstname"
                             name="firstName"
                             placeholder="John"
-                            style={inputsWithErrors.includes("firstName") ? { border: "1px solid red"}:{}}
+                            aria-invalid={errorIdentifier("firstName")}
+                            style={errorIdentifier("firstName") ? { border: "1px solid red"}:{}}
                         />
                         <TextInput 
                             labelText="Lastname"
                             name="lastName"
                             placeholder="Doe"
-                            style={inputsWithErrors.includes("lastName") ? { border: "1px solid red"}:{}}
+                            aria-invalid={errorIdentifier("lastName")}
+                            style={errorIdentifier("lastName") ? { border: "1px solid red"}:{}}
                         />
                         <TextInput 
                             labelText="Phone number"
                             name="phone"
                             placeholder="462 00 264"
-                            style={inputsWithErrors.includes("phone") ? { border: "1px solid red"}:{}}
+                            style={errorIdentifier("phone") ? { border: "1px solid red"}:{}}
                             />
                         <DateInput 
                             labelText="Date of birth"
                             name="dateOfBirth"
-                            style={inputsWithErrors.includes("dateOfBirth") ? { border: "1px solid red"}:{}}
+                            aria-invalid={errorIdentifier("dateOfBirth")}
+                            style={errorIdentifier("dateOfBirth") ? { border: "1px solid red"}:{}}
                         />
                     </div>
                     <div className={styles.sensitiveDetails}>
@@ -60,19 +64,22 @@ const RegistrationForm = forwardRef(({ submitHandler, mutation}:Props, ref: Ref<
                             labelText="Email"
                             name="email"
                             placeholder="example@domain.com"
-                            style={inputsWithErrors.includes("email") ? { border: "1px solid red"}:{}}
+                            aria-invalid={errorIdentifier("email")}
+                            style={errorIdentifier("email") ? { border: "1px solid red"}:{}}
                             />
 
                         <TextInput 
                             labelText="National Identity Number"
                             name="nationalIdentityNumber"
                             placeholder="DDMMÅÅXXXXX"
-                            style={inputsWithErrors.includes("nationalIdentityNumber") ? { border: "1px solid red"}:{}}
+                            aria-invalid={errorIdentifier("nationalIdentityNumber")}
+                            style={errorIdentifier("nationalIdentityNumber") ? { border: "1px solid red"}:{}}
                             />
                         <PasswordInput 
                             labelText="Password"
                             name="password"
-                            style={inputsWithErrors.includes("password") ? { border: "1px solid red"}:{}}
+                            aria-invalid={errorIdentifier("password")}
+                            style={errorIdentifier("password") ? { border: "1px solid red"}:{}}
                         />
                     </div>
                 </div>

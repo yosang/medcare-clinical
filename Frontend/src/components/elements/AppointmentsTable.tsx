@@ -10,13 +10,14 @@ import LoadingSpinner from "../layout/LoadingSpinner";
 import Button from "./Button";
 import { Drawer } from "./Drawer";
 import { toast } from "sonner";
+import { Tooltip } from "react-tooltip";
 
 // Lazy loading
 const UpdateAppointmentForm = lazy(() => import("../forms/UpdateAppointmentForm"))
 
 import type { Appointment, AppointmentUpdateForm } from "../../types/Appointments";
 import UpdateAppointmentSkeleton from "../skeletons/UpdateAppointmentSkeleton";
-import { History } from "lucide-react";
+import { History, MessageCircleMore } from "lucide-react";
 
 export default function AppointmentsTable( { appointments }: { appointments: Appointment[] | undefined}) {
 
@@ -134,7 +135,7 @@ export default function AppointmentsTable( { appointments }: { appointments: App
     </Drawer>
     <div className={styles.header}>
         <div className={styles.headerElements}>
-            <History color="var(--color-primary)" />
+            <History size={40} color="var(--color-primary)" />
             <h1 style={{ color: "var(--color-secondary-text)"}}>My Appointments</h1>
         </div>
         <div className={styles.headerElements}>
@@ -161,7 +162,30 @@ export default function AppointmentsTable( { appointments }: { appointments: App
         <tbody>
             {sortedAppointments.map((ap) => (
                 <tr key={ap.id} onClick={() => handleAppointmentClick(ap.id)}>
-                    <td>{ap.category.name}</td>
+                    <td className={styles.apType}>
+                        {ap.category.name} 
+                        {ap.note && (
+                            <>
+                            <span className={styles.apNote} data-tooltip-id={`note-tooltip-${ap.id}`}><MessageCircleMore color="var(--color-primary)" size={20}/></span>
+                            <Tooltip 
+                                id={`note-tooltip-${ap.id}`}
+                                border="1px solid var(--color-primary)"
+                                opacity={1}
+                                style={{
+                                    zIndex: 11,
+                                    backgroundColor: "var(--color-secondary)",
+                                    color: "var(--color-secondary-text)",
+                                    width: "100%",
+                                    borderRadius: "var(--radius)",
+                                    fontSize: "20px",
+                                    padding: "var(--spacing-sm)"
+                                }}
+                            >
+                                {ap.note}
+                            </Tooltip>
+                            </>
+                        )}
+                    </td>
                     <td>{new Date(ap.appointmentDate).toLocaleDateString("no-NO")}</td>
                     <td>{new Date(ap.appointmentDate).toLocaleTimeString("no-NO", { hour: "2-digit", minute: "numeric" })}</td>
                     <td>{ap.duration}</td>

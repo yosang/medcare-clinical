@@ -6,6 +6,7 @@ type ValidationState = {
     inputsWithErrors: string[],
     validate: (schema: ZodObject, data: { [key:string]: FormDataEntryValue;} ) => boolean,
     clearErrors: () => void
+    errorIdentifier: (key: string) => boolean
 }
 
 /**
@@ -13,7 +14,7 @@ type ValidationState = {
  * - validate takes a schema and a data to validate.
  * - - If validation fails, we populate validationErrors and inputsWithErrors so the client can provide visual feedback on what went wrong.
  */
-export const useValidationStore = create<ValidationState>((set) => ({
+export const useValidationStore = create<ValidationState>((set, get) => ({
     validationErrors: [],
     inputsWithErrors: [],
     validate: (schema, data): boolean => {
@@ -35,6 +36,9 @@ export const useValidationStore = create<ValidationState>((set) => ({
             validationErrors: [],
             inputsWithErrors: [],
         })
+    },
+    errorIdentifier: (key: string) => {
+        const errors = get().inputsWithErrors;
+        return errors.includes(key);
     }
-    
 }))

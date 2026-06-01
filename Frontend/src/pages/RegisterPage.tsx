@@ -52,7 +52,7 @@ export default function RegisterPage() {
             loading: "Creating account...",
             success: () => {
                 clearErrors();
-                navigate("/login", { state: { email: formData.get("email")} })
+                navigate("/login", { state: { email: formData.get("email")} }) // Navigates to the login page and sends the registered email to prefill the input
                 return "Registration successful!"
             },
             error: (err) => {

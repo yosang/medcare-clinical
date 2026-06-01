@@ -1,17 +1,16 @@
 import { lazy, Suspense, useMemo } from "react"
 
 import styles from "./styles/BookingPage.module.css"
+import { MessageSquareText, NotebookPen, NotepadText } from "lucide-react";
 
 import { useLoginStore } from "../stores/useLoginStore";
-
 import { usePatient } from "../queries/usePatients";
+import { useAppointments } from "../queries/useAppointments";
 
 import SideInfo from "../components/elements/SideInfo";
+import Calendar from "../components/elements/Calendar";
 import BookingFormSkeleton from "../components/skeletons/BookingFormSkeleton";
 import AppointmentsTableSkeleton from "../components/skeletons/AppointmentsTableSkeleton";
-import { MessageSquareText, NotebookPen, NotepadText } from "lucide-react";
-import Calendar from "../components/elements/Calendar";
-import { useAppointments } from "../queries/useAppointments";
 
 // lazy loaded components
 const BookingForm = lazy(() => import("../components/forms/BookingForm"))
@@ -19,11 +18,11 @@ const AppointmentsTable = lazy(() => import("../components/elements/Appointments
 
 export default function BookingPage() {
 
-    // TanStack reading query
+    // Reading queries
     const { data: patient } = usePatient();
     const { data: appointments } = useAppointments(); 
 
-    // Zustand states
+    // Gloobal states
     const token = useLoginStore((s) => s.token);
 
     // Creates a copy of appoitments, sorts it and finds the first upcoming pending appointment, recomputes the result when appointments change
@@ -38,6 +37,7 @@ export default function BookingPage() {
     }, [appointments])
 
     return <div className={styles.mainLayout}>
+            
             {token ? (
                 <div className={styles.loggedInLayout}>
                     <div>
@@ -97,5 +97,6 @@ export default function BookingPage() {
                 </>
               )
             }
+            
            </div>
 }
