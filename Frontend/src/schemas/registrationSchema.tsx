@@ -9,7 +9,7 @@ export const RegistrationSchema = z.object({
                 .trim()
                 .min(2, "Last name must be at least 2 characters")
                 .max(100, "Last name is oo long"),
-    phone: z.string().trim().regex(/^\d{8}$/, "Phone number must be exactly 8 digits"),
+    phone: z.string().trim().regex(/^\d{8}$/, "Valid norwegian phone number is required (8 digits)"),
     email: z.email(),
     dateOfBirth: z.string(),
     nationalIdentityNumber: z.string()
@@ -17,5 +17,4 @@ export const RegistrationSchema = z.object({
                             .min(11, "National Identity Number must be at least 11 digists")
                             .max(11, "National Identity Number cannot be longer than 11 digits"),
     password: z.string().trim()
-
 })

@@ -15,10 +15,10 @@ export default function LoginPage() {
 
     // local states
     const location = useLocation();
-    const { email: derivedEmail } = location.state || {};
+    const { email: passedFromRegistration } = location.state || {};
     
     const [form, setForm] = useState({
-        email: derivedEmail || "",
+        email: passedFromRegistration || "",
         password: ""
     })
 
