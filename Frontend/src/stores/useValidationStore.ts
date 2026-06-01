@@ -8,6 +8,11 @@ type ValidationState = {
     clearErrors: () => void
 }
 
+/**
+ * Centralized validation to void duplicated code.
+ * - validate takes a schema and a data to validate.
+ * - - If validation fails, we populate validationErrors and inputsWithErrors so the client can provide visual feedback on what went wrong.
+ */
 export const useValidationStore = create<ValidationState>((set) => ({
     validationErrors: [],
     inputsWithErrors: [],
