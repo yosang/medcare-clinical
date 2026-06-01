@@ -7,12 +7,14 @@ const appointmentsUrl = import.meta.env.VITE_APPOINTMENTS
  * Fetches appointments for a patient, requires a valid access token with PatientId claim.
  * @param token Access token to attach to the request header.
  */
-export async function fetchAppointments(token:string): Promise<Appointment []> {
+export async function fetchAppointments<T>(token:string, page?: number, pageSize?: number): Promise<T> {
     if(!appointmentsUrl) {
         throw new Error("VITE_APPOINTMENTS url is not defined in .env")
     }
 
-    const res = await fetch(appointmentsUrl, {
+    const url = page && pageSize ? `${appointmentsUrl}?page=${page}&itemsPerPage=${pageSize}`:appointmentsUrl
+
+    const res = await fetch(url, {
         headers: { "Authorization": `Bearer ${token}`}
     })
     

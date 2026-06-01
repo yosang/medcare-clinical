@@ -5,7 +5,7 @@ import { MessageSquareText, NotebookPen, NotepadText } from "lucide-react";
 
 import { useLoginStore } from "../stores/useLoginStore";
 import { usePatient } from "../queries/usePatients";
-import { useAppointments } from "../queries/useAppointments";
+import { useAppointments, useAppointmentsPaginated } from "../queries/useAppointments";
 
 import SideInfo from "../components/elements/SideInfo";
 import Calendar from "../components/elements/Calendar";
@@ -18,12 +18,22 @@ const AppointmentsTable = lazy(() => import("../components/elements/Appointments
 
 export default function BookingPage() {
 
-    // Reading queries
-    const { data: patient } = usePatient();
-    const { data: appointments } = useAppointments(); 
+    // local states
+    // const [pageSize, setPageSize] = useState(3); // for future implementation: would be nice with a little select dropdown menu to change how many items we want to show
+    const pageSize = 3
 
     // Gloobal states
     const token = useLoginStore((s) => s.token);
+
+    // Reading queries
+    const { data: patient } = usePatient();
+    const { data: appointmentsInfinite, fetchNextPage, hasNextPage, isFetchingNextPage } = useAppointmentsPaginated(pageSize); 
+    const { data: appointmentsCalendarWidget } = useAppointments();
+
+    // Flattens the appointments object, which has pages
+    const appointments = useMemo(() => {
+        return appointmentsInfinite?.pages.flatMap(page => page.data);
+    }, [appointmentsInfinite])
 
     // Creates a copy of appoitments, sorts it and finds the first upcoming pending appointment, recomputes the result when appointments change
     // We are memoizing this variable to prevent the Calendar component from re-rendering, unless appointments change.
@@ -72,12 +82,17 @@ export default function BookingPage() {
                                 </div>
                             </div>
 
-                            <Calendar upcoming={upcoming} appointments={appointments}/>
+                            <Calendar upcoming={upcoming} appointments={appointmentsCalendarWidget}/>
                         </div>
                     </div>
                     <div className={styles.appointmentHistory}>
                        <Suspense fallback={<AppointmentsTableSkeleton />}>
-                           <AppointmentsTable appointments={appointments}/>
+                           <AppointmentsTable 
+                            appointments={appointments} 
+                            nextPage={fetchNextPage} 
+                            hasNextPage={hasNextPage} 
+                            loadingNextPage={isFetchingNextPage} 
+                        />
                        </Suspense>
                    </div>
                 </div>

@@ -19,7 +19,14 @@ const UpdateAppointmentForm = lazy(() => import("../forms/UpdateAppointmentForm"
 
 import type { Appointment, AppointmentUpdateForm } from "../../types/Appointments";
 
-export default function AppointmentsTable( { appointments }: { appointments: Appointment[] | undefined}) {
+type Props = {
+    appointments: Appointment[] | undefined
+    nextPage: () => void
+    hasNextPage: boolean
+    loadingNextPage: boolean
+}
+
+export default function AppointmentsTable( { appointments, nextPage, hasNextPage, loadingNextPage }:Props) {
 
     // Local states
     const [open, setOpen] = useState(false)
@@ -203,6 +210,19 @@ export default function AppointmentsTable( { appointments }: { appointments: App
             ))}
         </tbody>
     </table>
+    {sortedAppointments && sortedAppointments.length > 0 && (
+    <Button 
+        disabled={!hasNextPage || loadingNextPage}
+        aria-busy={loadingNextPage}
+        onClick={() => nextPage()}
+        style={{ 
+            backgroundColor: !hasNextPage ? "var(--color-muted)":"",
+            cursor: !hasNextPage ? "not-allowed":"pointer"
+        }}
+    >
+        {loadingNextPage ? "Loading...":hasNextPage ? "Load more...": "All loaded"}
+    </Button>)
+    }
     {sortedAppointments.length < 1 && <p>No appointments to show...</p>}
     </>
 }

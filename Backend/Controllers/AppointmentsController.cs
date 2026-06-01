@@ -18,7 +18,7 @@ public class AppointmentsController : ControllerBase
     }
 
     /// <summary>
-    /// Returns a list of appointments for a logged in patient
+    /// Returns a list of appointments for a logged in patient, with pagination supported
     /// </summary>
     /// <response code="200">Resources returned</response>
     /// <response code="401">Unauthorized</response>
@@ -26,16 +26,24 @@ public class AppointmentsController : ControllerBase
     [Authorize]
     [ProducesResponseType(typeof(IEnumerable<AppointmentWithDetailsDTO>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-    public async Task<ActionResult<IEnumerable<AppointmentWithDetailsDTO>>> GetMyAppointments( int page = 1, int itemsPerPage = 5 )
+    public async Task<ActionResult<IEnumerable<AppointmentWithDetailsDTO>>> GetMyAppointments( int? page = null, int? itemsPerPage = null )
     {
         var patientId = User.GetPatientId();
         if(patientId == null) return Unauthorized();
 
         var appointments = await _service.GetAppointmentsForPatient(patientId.Value);
 
-        var paginated = appointments.Skip((page - 1) * itemsPerPage).Take(itemsPerPage);
+        if(page == null || itemsPerPage == null) return Ok(appointments);
 
-        return Ok(paginated);
+        var paginated = appointments.Skip((page.Value - 1) * itemsPerPage.Value).Take(itemsPerPage.Value);
+
+        bool hasNextPage = (page.Value * itemsPerPage.Value) < appointments.Count();
+
+        return Ok(new
+        {
+            data = paginated,
+            hasNextPage
+        });
     }
 
     /// <summary>

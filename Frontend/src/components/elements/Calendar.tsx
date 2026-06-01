@@ -29,6 +29,8 @@ export default function Calendar( { upcoming, appointments }:{ upcoming: Appoint
         setMonth(new Date(upcoming.appointmentDate).getMonth())
         setYear(new Date(upcoming.appointmentDate).getFullYear())
     }
+
+    console.log(appointments)
     
     // If upcoming is undefined and prevUpcomingAppointment has value, we can stop tracking by resetting prevUpcomingAppointment to undefined and show the current month instead
     if(!upcoming && prevUpcomingAppointment) {
