@@ -287,7 +287,11 @@ namespace booking_rest_api.Migrations
             migrationBuilder.InsertData(
                 table: "Patients",
                 columns: new[] { "Id", "DateOfBirth", "Email", "FirstName", "IsRegistered", "LastName", "NationalIdentityNumber", "PasswordHash", "Phone", "RoleId" },
-                values: new object[] { 1, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "dev@dev.com", "Admin", false, "Admin", null, "AQAAAAIAAYagAAAAEBoc7/xHyQ88YJ7b5/fvDDkFTAH6GmsiH03ouiYgQWUEx1zu7NsSDmTeHrcdsHHyxg==", "99999999", 2 });
+                values: new object[,]
+                {
+                    { 1, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "admin@dev.com", "Admin", true, "Admin", "99999999999", "AQAAAAIAAYagAAAAEBoc7/xHyQ88YJ7b5/fvDDkFTAH6GmsiH03ouiYgQWUEx1zu7NsSDmTeHrcdsHHyxg==", "99999999", 2 },
+                    { 2, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "user@dev.com", "Ola", true, "Nordman", "88888888888", "AQAAAAIAAYagAAAAEBoc7/xHyQ88YJ7b5/fvDDkFTAH6GmsiH03ouiYgQWUEx1zu7NsSDmTeHrcdsHHyxg==", "99999999", 1 }
+                });
 
             migrationBuilder.InsertData(
                 table: "Doctors",
@@ -297,6 +301,23 @@ namespace booking_rest_api.Migrations
                     { 1, 1, "mb@klinikken.no", "Mathias", "https://i.imgur.com/CeGHXlw.jpeg", "Bekkemellem", 1 },
                     { 2, 2, "cj@klinikken.no", "Carina", "https://i.imgur.com/3WobpO1.jpeg", "Johansen", 2 },
                     { 3, 3, "jc@klinikken.no", "John", "https://i.imgur.com/sPiOLsv.jpeg", "Carlsen", 1 }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Appointments",
+                columns: new[] { "Id", "AppointmentDate", "CategoryId", "ClinicId", "DoctorId", "Duration", "Note", "PatientId", "StatusId" },
+                values: new object[,]
+                {
+                    { 1, new DateTime(2026, 7, 1, 8, 30, 0, 0, DateTimeKind.Unspecified), 1, 1, 1, 30, "Mild headaches for the past two weeks.", 2, 2 },
+                    { 2, new DateTime(2026, 7, 1, 9, 15, 0, 0, DateTimeKind.Unspecified), 2, 1, 1, 60, "Follow-up consultation after blood pressure medication adjustment.", 2, 1 },
+                    { 3, new DateTime(2026, 7, 2, 10, 0, 0, 0, DateTimeKind.Unspecified), 3, 2, 2, 30, null, 2, 1 },
+                    { 4, new DateTime(2026, 7, 2, 11, 0, 0, 0, DateTimeKind.Unspecified), 4, 2, 2, 30, null, 2, 1 },
+                    { 5, new DateTime(2026, 7, 3, 14, 0, 0, 0, DateTimeKind.Unspecified), 5, 3, 3, 60, null, 2, 3 },
+                    { 6, new DateTime(2026, 7, 4, 8, 30, 0, 0, DateTimeKind.Unspecified), 1, 1, 1, 30, null, 2, 1 },
+                    { 7, new DateTime(2026, 7, 5, 13, 0, 0, 0, DateTimeKind.Unspecified), 2, 2, 2, 60, null, 2, 2 },
+                    { 8, new DateTime(2026, 7, 6, 9, 0, 0, 0, DateTimeKind.Unspecified), 3, 3, 3, 30, null, 2, 1 },
+                    { 9, new DateTime(2026, 7, 7, 15, 0, 0, 0, DateTimeKind.Unspecified), 4, 1, 1, 30, null, 2, 3 },
+                    { 10, new DateTime(2026, 7, 8, 10, 30, 0, 0, DateTimeKind.Unspecified), 5, 2, 2, 60, null, 2, 2 }
                 });
 
             migrationBuilder.CreateIndex(

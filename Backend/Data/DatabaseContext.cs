@@ -95,7 +95,7 @@ public class DatabaseContext : DbContext
                     .OnDelete(DeleteBehavior.Restrict);
 
         // Seeds
-        modelBuilder.Entity<Role>().HasData(SeedsData.Roles);
+        modelBuilder.Entity<Appointment>().HasData(SeedsData.Appointments);
         modelBuilder.Entity<City>().HasData(SeedsData.Cities);
         modelBuilder.Entity<Clinic>().HasData(SeedsData.Clinics);
 
@@ -105,6 +105,7 @@ public class DatabaseContext : DbContext
         modelBuilder.Entity<Category>().HasData(SeedsData.Categories);
         modelBuilder.Entity<Status>().HasData(SeedsData.Statuses);
 
+        modelBuilder.Entity<Role>().HasData(SeedsData.Roles);
         modelBuilder.Entity<Patient>().HasData(SeedsData.Patients);
     }
 }

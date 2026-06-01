@@ -79,8 +79,8 @@ Instructions:
 9. If everything went well, you should now be able to run the backend application, run it with the command `dotnet run`.
 
 To test the endpoints requiring an admin role, authenticate with the following user and use the returned token:
-- email: dev@dev.com
-- password: p@ssword.
+- email: admin@dev.com
+- password: p@ssword
 
 #### 4. Frontend
 The frontend runs on node version `v22.22.0`.
@@ -103,6 +103,10 @@ Instructions:
 3. Adjust the backend url's on `.env` if necessary (if you changed the port on the backend)
 4. Install the required packages with `npm install`.
 5. Run the application with `npm run dev`.
+
+To test the frontend with a registerd user with seed appointments data, feel free to log in with:
+- email: user@dev.com
+- password: p@ssword
 
 ### ENDPOINTS
 

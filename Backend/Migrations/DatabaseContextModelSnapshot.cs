@@ -62,6 +62,120 @@ namespace booking_rest_api.Migrations
                     b.HasIndex("StatusId");
 
                     b.ToTable("Appointments");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            AppointmentDate = new DateTime(2026, 7, 1, 8, 30, 0, 0, DateTimeKind.Unspecified),
+                            CategoryId = 1,
+                            ClinicId = 1,
+                            DoctorId = 1,
+                            Duration = 30,
+                            Note = "Mild headaches for the past two weeks.",
+                            PatientId = 2,
+                            StatusId = 2
+                        },
+                        new
+                        {
+                            Id = 2,
+                            AppointmentDate = new DateTime(2026, 7, 1, 9, 15, 0, 0, DateTimeKind.Unspecified),
+                            CategoryId = 2,
+                            ClinicId = 1,
+                            DoctorId = 1,
+                            Duration = 60,
+                            Note = "Follow-up consultation after blood pressure medication adjustment.",
+                            PatientId = 2,
+                            StatusId = 1
+                        },
+                        new
+                        {
+                            Id = 3,
+                            AppointmentDate = new DateTime(2026, 7, 2, 10, 0, 0, 0, DateTimeKind.Unspecified),
+                            CategoryId = 3,
+                            ClinicId = 2,
+                            DoctorId = 2,
+                            Duration = 30,
+                            PatientId = 2,
+                            StatusId = 1
+                        },
+                        new
+                        {
+                            Id = 4,
+                            AppointmentDate = new DateTime(2026, 7, 2, 11, 0, 0, 0, DateTimeKind.Unspecified),
+                            CategoryId = 4,
+                            ClinicId = 2,
+                            DoctorId = 2,
+                            Duration = 30,
+                            PatientId = 2,
+                            StatusId = 1
+                        },
+                        new
+                        {
+                            Id = 5,
+                            AppointmentDate = new DateTime(2026, 7, 3, 14, 0, 0, 0, DateTimeKind.Unspecified),
+                            CategoryId = 5,
+                            ClinicId = 3,
+                            DoctorId = 3,
+                            Duration = 60,
+                            PatientId = 2,
+                            StatusId = 3
+                        },
+                        new
+                        {
+                            Id = 6,
+                            AppointmentDate = new DateTime(2026, 7, 4, 8, 30, 0, 0, DateTimeKind.Unspecified),
+                            CategoryId = 1,
+                            ClinicId = 1,
+                            DoctorId = 1,
+                            Duration = 30,
+                            PatientId = 2,
+                            StatusId = 1
+                        },
+                        new
+                        {
+                            Id = 7,
+                            AppointmentDate = new DateTime(2026, 7, 5, 13, 0, 0, 0, DateTimeKind.Unspecified),
+                            CategoryId = 2,
+                            ClinicId = 2,
+                            DoctorId = 2,
+                            Duration = 60,
+                            PatientId = 2,
+                            StatusId = 2
+                        },
+                        new
+                        {
+                            Id = 8,
+                            AppointmentDate = new DateTime(2026, 7, 6, 9, 0, 0, 0, DateTimeKind.Unspecified),
+                            CategoryId = 3,
+                            ClinicId = 3,
+                            DoctorId = 3,
+                            Duration = 30,
+                            PatientId = 2,
+                            StatusId = 1
+                        },
+                        new
+                        {
+                            Id = 9,
+                            AppointmentDate = new DateTime(2026, 7, 7, 15, 0, 0, 0, DateTimeKind.Unspecified),
+                            CategoryId = 4,
+                            ClinicId = 1,
+                            DoctorId = 1,
+                            Duration = 30,
+                            PatientId = 2,
+                            StatusId = 3
+                        },
+                        new
+                        {
+                            Id = 10,
+                            AppointmentDate = new DateTime(2026, 7, 8, 10, 30, 0, 0, DateTimeKind.Unspecified),
+                            CategoryId = 5,
+                            ClinicId = 2,
+                            DoctorId = 2,
+                            Duration = 60,
+                            PatientId = 2,
+                            StatusId = 2
+                        });
                 });
 
             modelBuilder.Entity("Models.Category", b =>
@@ -333,13 +447,27 @@ namespace booking_rest_api.Migrations
                         {
                             Id = 1,
                             DateOfBirth = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Email = "dev@dev.com",
+                            Email = "admin@dev.com",
                             FirstName = "Admin",
-                            IsRegistered = false,
+                            IsRegistered = true,
                             LastName = "Admin",
+                            NationalIdentityNumber = "99999999999",
                             PasswordHash = "AQAAAAIAAYagAAAAEBoc7/xHyQ88YJ7b5/fvDDkFTAH6GmsiH03ouiYgQWUEx1zu7NsSDmTeHrcdsHHyxg==",
                             Phone = "99999999",
                             RoleId = 2
+                        },
+                        new
+                        {
+                            Id = 2,
+                            DateOfBirth = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Email = "user@dev.com",
+                            FirstName = "Ola",
+                            IsRegistered = true,
+                            LastName = "Nordman",
+                            NationalIdentityNumber = "88888888888",
+                            PasswordHash = "AQAAAAIAAYagAAAAEBoc7/xHyQ88YJ7b5/fvDDkFTAH6GmsiH03ouiYgQWUEx1zu7NsSDmTeHrcdsHHyxg==",
+                            Phone = "99999999",
+                            RoleId = 1
                         });
                 });
 

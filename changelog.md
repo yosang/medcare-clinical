@@ -217,7 +217,7 @@ Today I have worked on:
   ```
 
 But these only account for cases where a Doctor cannot have two appointments at the exact same DateTime value, same for a Patient. What it does not account of is wether an existing appointment time on a doctor ends AFTER a new appoitment. Thats an overlap that needs to be addressed. So I did some searching on this and of course stackoverflow had some good answers, but one in particular helped me understand this, this one was linked referenced on stackoverflow: [https://baodad.blogspot.com/2014/06/date-range-overlap.html](<https://baodad.blogspot.com/2014/06/date-range-overlap.html>), Its not much of an explanation post, but a picture of a piece of paper and a drawing with a visualization. I had to draw one version myself to get it 100%. 
-![alt text](image.png)
+
 So we implemented this check, tested it on the backend + frontend and works perfectly. Currently its only present for creating appointments, but considering a registered patient will be able to update existing patients, there must be a check of the same sort for appointment updates, Ill adress that when I get to that part.
 
 * **Sonner:** I was satisfied with how simple sonner toasts works in the previous CA, specifically toast.promise. So I installed it for this project and implemented it for visual feedback. Im also using zod for simple validation and showing error messages.

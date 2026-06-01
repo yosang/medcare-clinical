@@ -108,7 +108,7 @@ export default function Calendar( { upcoming, appointments }:{ upcoming: Appoint
         const toastContent = (
             <div style={{ padding: "var(--spacing-md)" }}>
 
-            <p>You have <strong>{appointmentsOnThisDay.length}</strong> {appointmentsOnThisDay.length > 1 ? "appointments":"appointment"} on <strong>{new Date(appointmentsOnThisDay[0]).toLocaleDateString()}</strong></p>
+            <p>You have <strong>{appointmentsOnThisDay.length}</strong> pending {appointmentsOnThisDay.length > 1 ? "appointments":"appointment"} on <strong>{new Date(appointmentsOnThisDay[0]).toLocaleDateString()}</strong></p>
             <br />
             <ul style={{ listStyle: "none" }}>
                 {appointmentsOnThisDay.map((a,index) => <li 

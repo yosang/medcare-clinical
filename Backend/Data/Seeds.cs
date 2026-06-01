@@ -55,10 +55,24 @@ public static class SeedsData
         new Status { Id = 3, Name = "Cancelled"}
     };
 
-    // Mixed list of patients, registered and guests
     public static List<Patient> Patients { get; } = new List<Patient>()
     {
-        new Patient { Id = 1, FirstName = "Admin", LastName = "Admin", Phone = "99999999", Email = "dev@dev.com", DateOfBirth = DateTime.MinValue, NationalIdentityNumber = null, PasswordHash = "AQAAAAIAAYagAAAAEBoc7/xHyQ88YJ7b5/fvDDkFTAH6GmsiH03ouiYgQWUEx1zu7NsSDmTeHrcdsHHyxg==", IsRegistered = false, RoleId = 2}
+        new Patient { Id = 1, FirstName = "Admin", LastName = "Admin", Phone = "99999999", Email = "admin@dev.com", DateOfBirth = DateTime.MinValue, NationalIdentityNumber = "99999999999", PasswordHash = "AQAAAAIAAYagAAAAEBoc7/xHyQ88YJ7b5/fvDDkFTAH6GmsiH03ouiYgQWUEx1zu7NsSDmTeHrcdsHHyxg==", IsRegistered = true, RoleId = 2},
+        new Patient { Id = 2, FirstName = "Ola", LastName = "Nordman", Phone = "99999999", Email = "user@dev.com", DateOfBirth = DateTime.MinValue, NationalIdentityNumber = "88888888888", PasswordHash = "AQAAAAIAAYagAAAAEBoc7/xHyQ88YJ7b5/fvDDkFTAH6GmsiH03ouiYgQWUEx1zu7NsSDmTeHrcdsHHyxg==", IsRegistered = true, RoleId = 1}
     };
 
+    public static List<Appointment> Appointments { get; } = new()
+    {
+        new Appointment { Id = 1, AppointmentDate = new DateTime(2026, 7, 1, 8, 30, 0), Duration = 30, CategoryId = 1, DoctorId = 1, ClinicId = 1, PatientId = 2, StatusId = 2, Note = "Mild headaches for the past two weeks." },
+        new Appointment { Id = 2, AppointmentDate = new DateTime(2026, 7, 1, 9, 15, 0), Duration = 60, CategoryId = 2, DoctorId = 1, ClinicId = 1, PatientId = 2, StatusId = 1, Note = "Follow-up consultation after blood pressure medication adjustment." },
+        new Appointment { Id = 3, AppointmentDate = new DateTime(2026, 7, 2, 10, 0, 0), Duration = 30, CategoryId = 3, DoctorId = 2, ClinicId = 2, PatientId = 2, StatusId = 1 },
+        new Appointment { Id = 4, AppointmentDate = new DateTime(2026, 7, 2, 11, 0, 0), Duration = 30, CategoryId = 4, DoctorId = 2, ClinicId = 2, PatientId = 2, StatusId = 1 },
+        new Appointment { Id = 5, AppointmentDate = new DateTime(2026, 7, 3, 14, 0, 0), Duration = 60, CategoryId = 5, DoctorId = 3, ClinicId = 3, PatientId = 2, StatusId = 3 },
+        new Appointment { Id = 6, AppointmentDate = new DateTime(2026, 7, 4, 8, 30, 0), Duration = 30, CategoryId = 1, DoctorId = 1, ClinicId = 1, PatientId = 2, StatusId = 1 },
+        new Appointment { Id = 7, AppointmentDate = new DateTime(2026, 7, 5, 13, 0, 0), Duration = 60, CategoryId = 2, DoctorId = 2, ClinicId = 2, PatientId = 2, StatusId = 2 },
+        new Appointment { Id = 8, AppointmentDate = new DateTime(2026, 7, 6, 9, 0, 0), Duration = 30, CategoryId = 3, DoctorId = 3, ClinicId = 3, PatientId = 2, StatusId = 1 },
+        new Appointment { Id = 9, AppointmentDate = new DateTime(2026, 7, 7, 15, 0, 0), Duration = 30, CategoryId = 4, DoctorId = 1, ClinicId = 1, PatientId = 2, StatusId = 3 },
+        new Appointment { Id = 10, AppointmentDate = new DateTime(2026, 7, 8, 10, 30, 0), Duration = 60, CategoryId = 5, DoctorId = 2, ClinicId = 2, PatientId = 2, StatusId = 2 }
+    };
+    
 }
