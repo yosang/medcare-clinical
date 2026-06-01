@@ -59,11 +59,11 @@ If after changing the policies, mysql still complains you can run `DROP USER IF 
 The backend runs on `.NET 9`.
 
 Packages:
-- Microsoft.AspNetCore.Authentication.JwtBearer
-- Microsoft.EntityFrameworkCore
-- Microsoft.EntityFrameworkCore.Design
-- Mysql.EntityFrameworkCore
-- Swashbuckle.AspNetCore
+- **Microsoft.AspNetCore.Authentication.JwtBearer** - JWT(JSON Web Tokens) framework for securing endpoints. It automatically validates tokens sent by the frontend in the HTTP Authorization header.
+- **Microsoft.EntityFrameworkCore** - ORM (Object-Relational Mapper) which allows us to interact with the database using C# code and typed objects.
+- **Microsoft.EntityFrameworkCore.Design** - Tooling engine required for running migrations as well as updating the database.
+- **Mysql.EntityFrameworkCore** - MySQL driver / provider for Entity Framework Core.
+- **Swashbuckle.AspNetCore** - Generates an interactive API documentation web page where we can view and test API endpoints from the browser.
 
 Instructions:
 1. If you are not currently on the `Backend` folder, navigate to it with `cd Backend`
@@ -85,6 +85,19 @@ To test the endpoints requiring an admin role, authenticate with the following u
 #### 4. Frontend
 The frontend runs on node version `v22.22.0`.
 
+Packages:
+- **@tanstack/react-query** - Server-state management that handles fetching, caching and invalidation.
+- **lucide-react** - Icons
+- **react** - Core react library
+- **react-dom** - Required by react in order to render components in the actual browser.
+- **react-loading-skeleton** - Pre-animated placeholder blocks used as fallbacks for `Suspense` components.
+- **react-router** - Routing library for react, provides navigation without reloading the page and maps specific url's to specific components.
+- **react-tooltip** - Customizable tooltip component as an alternative to `title` attribute.
+- **sonner** - Toast notification library that is less intrusive and blocking than a classic alert.
+- **zod** - Schema based validation library.
+- **zustand** - Client-state management that handles global states such as tokens, themes etc.
+
+Instructions:
 1. If you are not currently on the `Frontend` folder, navigate to it with `cd Frontend`
 2. Create a copy of `.env` with the command `cp .env.example .env`.
 3. Adjust the backend url's on `.env` if necessary (if you changed the port on the backend)
