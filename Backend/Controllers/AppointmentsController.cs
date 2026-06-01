@@ -2,6 +2,7 @@ using DTOS;
 using Extensions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 using Services;
 
 [ApiController]
@@ -25,14 +26,16 @@ public class AppointmentsController : ControllerBase
     [Authorize]
     [ProducesResponseType(typeof(IEnumerable<AppointmentWithDetailsDTO>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-    public async Task<ActionResult<IEnumerable<AppointmentWithDetailsDTO>>> GetMyAppointments()
+    public async Task<ActionResult<IEnumerable<AppointmentWithDetailsDTO>>> GetMyAppointments( int page = 1, int itemsPerPage = 5 )
     {
         var patientId = User.GetPatientId();
         if(patientId == null) return Unauthorized();
 
         var appointments = await _service.GetAppointmentsForPatient(patientId.Value);
 
-        return Ok(appointments);
+        var paginated = appointments.Skip((page - 1) * itemsPerPage).Take(itemsPerPage);
+
+        return Ok(paginated);
     }
 
     /// <summary>
