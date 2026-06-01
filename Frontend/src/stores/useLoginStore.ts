@@ -31,6 +31,7 @@ export const useLoginStore = create<LoginState>((set) => ({
         set({ token })
     },
     logout: async () => {
+        set({ loading: true})
         try {
             set({ token: null });
             await logoutRequest();

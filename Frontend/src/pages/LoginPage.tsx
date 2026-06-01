@@ -13,6 +13,8 @@ const LoginForm = lazy(() => import("../components/forms/LoginForm"))
 
 export default function LoginPage() {
 
+    const navigate = useNavigate();
+    
     // local states
     const location = useLocation();
     const { email: passedFromRegistration } = location.state || {};
@@ -23,7 +25,6 @@ export default function LoginPage() {
     })
 
     // Zustand states
-    const navigate = useNavigate();
     const loginPatient = useLoginStore((s) => s.loginPatient);
 
     // handlers

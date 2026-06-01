@@ -6,6 +6,10 @@ import type { AppointmentPayload, AppointmentUpdatePayload } from "../types/Appo
 import withAuth from "./withAuth";
 
 // Read queries
+/**
+ * Read query that fetches and stores appointments for a logged in user.
+ * - This query is only enabled for as long as there is a token available in memory.
+ */
 export function useAppointments() {
     
     const token = useLoginStore(s => s.token);
@@ -17,6 +21,11 @@ export function useAppointments() {
     })
 }
 
+/**
+ * Read query that fetches and stores a single appointment for a logged in user.
+ * - This query is only enabled for as long as there is a token and apId is passed as an argument.
+ * @param apId The id of the appointment to fetch.
+ */
 export function useAppointment(apId: number | null) {
     const token = useLoginStore(s => s.token);
 
@@ -29,6 +38,9 @@ export function useAppointment(apId: number | null) {
 }
 
 // Mutation queries
+/**
+ * Write query that creates a new appointment and invalidates previous appointments query.
+ */
 export function useCreateAppointment() {
     const qc = useQueryClient();
     const token = useLoginStore(s => s.token);
@@ -43,6 +55,9 @@ export function useCreateAppointment() {
     })
 }
 
+/**
+ * Write query that updates an existing appointment and invalidates previous appointsments and appointment details query.
+ */
 export function useUpdateAppointment() {
     const qc = useQueryClient();
     const token = useLoginStore(s => s.token);
@@ -58,6 +73,9 @@ export function useUpdateAppointment() {
     })
 }
 
+/**
+ * Write query that sets an appointment to cancelled status and invalidates previous appointsments and appointment details query.
+ */
 export function useCancelAppointment() {
     const qc = useQueryClient();
     const token = useLoginStore(s => s.token);
