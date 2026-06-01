@@ -5,7 +5,8 @@
     "JwtSettings": {
         "Issuer": "medicalBookingApi",
         "Audience": "Noroff",
-        "ExpiryMinutes": 15,
+        "AccessTokenExpiryMinutes": 1,
+        "RefreshTokenExpiryDays": 1,
         "SecretKey": "a-string-secret-at-least-256-bits-long"
     }
 }

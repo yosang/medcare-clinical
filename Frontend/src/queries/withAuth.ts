@@ -16,12 +16,16 @@ export default async function withAuth<T>(cb: ( token:string ) => Promise<T>): P
     const currentToken = useLoginStore.getState().token;
 
     try {
+        //  console.log("attempting fetch with auth")
+        
         return await cb(currentToken || "");
     } catch(err) {
-        if(err instanceof UnauthorizedError)  { // handles 401 by attemtping to get a new access token
+        if(err instanceof UnauthorizedError)  {
+            // console.log("refreshing token...: ", currentToken)
             try {
                 await useLoginStore.getState().refreshAccessToken();
                 const newToken = useLoginStore.getState().token
+                // console.log("token refreshed: ", newToken)
 
                 if(newToken) {
                     return await cb(newToken);
@@ -29,7 +33,7 @@ export default async function withAuth<T>(cb: ( token:string ) => Promise<T>): P
 
             } catch(err) {
                 console.log("Refresh token expired or invalid")
-                useLoginStore.getState().logout() // logs out, if the backend refuses the refresh token
+                useLoginStore.getState().logout()
             }
         }
         throw err; // throws the error if this wasnt a 401

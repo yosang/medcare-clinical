@@ -12,7 +12,8 @@ public static class JWTExtension
 
         if(string.IsNullOrWhiteSpace(jwtSettings.Issuer)) throw new InvalidOperationException("JWT Issuer is missing from appsettings.json");
         if(string.IsNullOrWhiteSpace(jwtSettings.Audience)) throw new InvalidOperationException("JWT Audience is missing from appsettings.json");
-        if(!jwtSettings.ExpiryMinutes.HasValue) throw new InvalidOperationException("JWT ExpiryMinutes is missing from appsettings.json");
+        if(!jwtSettings.AccessTokenExpiryMinutes.HasValue) throw new InvalidOperationException("JWT AccessTokenExpiryMinutes is missing from appsettings.json");
+        if(!jwtSettings.RefreshTokenExpiryDays.HasValue) throw new InvalidOperationException("JWT RefreshTokenExpiryDays is missing from appsettings.json");
         if(string.IsNullOrWhiteSpace(jwtSettings.SecretKey)) throw new InvalidOperationException("JWT Secret key is missing from appsettings.json");
 
         service.AddSingleton(jwtSettings);
@@ -20,17 +21,7 @@ public static class JWTExtension
         service.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(options =>
                 {
-                    options.TokenValidationParameters = new TokenValidationParameters
-                    {
-                        ValidateIssuer = true,
-                        ValidIssuer = jwtSettings.Issuer,
-                        ValidateAudience = true,
-                        ValidAudience = jwtSettings.Audience,
-                        ValidateLifetime = true,
-                        ValidateIssuerSigningKey = true,
-                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings.SecretKey!)),
-                        ClockSkew = TimeSpan.Zero
-                    };
+                    options.TokenValidationParameters = new JWTTokenValidationParameters(jwtSettings).tokenValidationParameters;
                 });
 
         service.AddHttpContextAccessor(); // Used to retrieve token claims

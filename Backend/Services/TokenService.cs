@@ -28,7 +28,7 @@ public class TokenService
                 new Claim(ClaimTypes.Role, GetRoleName(patient.RoleId)),
                 new Claim("PatientId", patient.Id.ToString())
             },
-            expires: DateTime.UtcNow.AddMinutes(_jwtSettings.ExpiryMinutes ?? 15),
+            expires: DateTime.UtcNow.AddMinutes(_jwtSettings.AccessTokenExpiryMinutes ?? 15),
             signingCredentials: new SigningCredentials(new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtSettings.SecretKey)), SecurityAlgorithms.HmacSha256)
         );
 
@@ -49,7 +49,7 @@ public class TokenService
             {
                 new Claim("PatientId", patient.Id.ToString())
             },
-            expires: DateTime.UtcNow.AddDays(7),
+            expires: DateTime.UtcNow.AddDays(_jwtSettings.RefreshTokenExpiryDays ?? 7),
             signingCredentials: new SigningCredentials(new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtSettings.SecretKey)), SecurityAlgorithms.HmacSha256)
         );
 

@@ -90,26 +90,32 @@ public class AuthController : ControllerBase
         var refreshToken = Request.Cookies["refresh_token"];
         if(refreshToken == null) return Unauthorized();
 
-        var principal = new JwtSecurityTokenHandler().ValidateToken(refreshToken, new TokenValidationParameters
-                    {
-                        ValidateIssuer = true,
-                        ValidIssuer = _jwtSettings.Issuer,
-                        ValidateAudience = true,
-                        ValidAudience = _jwtSettings.Audience,
-                        ValidateLifetime = true,
-                        ValidateIssuerSigningKey = true,
-                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtSettings.SecretKey!))
-                    }, out SecurityToken validatedToken);
+        // We are letting the JWT framework validate the token based on our TokenValidationParameters configuration
+        // If the validation fails and we get a SecurityTokenException, we return unauthorized instantly, instead of letting it crash the app
+        // Any other error will bubble up and be caught by our global Exception handler, returning a 500 internal error
+        try
+        {
+            var principal = new JwtSecurityTokenHandler().ValidateToken(refreshToken, new JWTTokenValidationParameters(_jwtSettings).tokenValidationParameters, out _);
 
-        var patientId = principal.Claims.FirstOrDefault(p => p.Type == "PatientId");
+            // The refresh token must have a PatientId claim.
+            var patientId = principal.Claims.FirstOrDefault(p => p.Type == "PatientId");
+            if (patientId == null) return Unauthorized();
 
-        if (patientId == null) return Unauthorized();
+            // Fetches patient details using the PatientId claim and creates a new access token
+            var token = await _service.RefreshToken(int.Parse(patientId.Value));
 
-        var token = await _service.RefreshToken(int.Parse(patientId.Value));
+            if(token == null ) return Unauthorized();
 
-        if(token == null ) return Unauthorized();
-
-        return Ok(new { token = token.accessToken});
+            return Ok(new { token = token.accessToken});
+        } catch(SecurityTokenException)
+        {
+            return Unauthorized(new ProblemDetails()
+            {
+               Title = "Unauthorized",
+               Detail = "The refresh token is invalid or has expired.",
+               Status = StatusCodes.Status401Unauthorized 
+            });
+        }
     }
 
     /// <summary> Deletes a refresh token cookie from the browser </summary>
