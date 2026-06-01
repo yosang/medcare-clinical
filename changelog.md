@@ -1,65 +1,57 @@
-# Table of contents
-
+- [Table of contents](#table-of-contents)
 - [Week 1](#week-1)
+  - [May 4](#may-4)
+  - [May 5](#may-5)
+  - [May 6](#may-6)
+  - [May 7](#may-7)
+  - [May 8](#may-8)
+  - [May 9](#may-9)
+  - [May 10](#may-10)
 - [Week 2](#week-2)
+  - [May 11](#may-11)
+  - [May 12](#may-12)
+  - [May 15](#may-15)
+  - [Update on May 17](#update-on-may-17)
 - [Week 3](#week-3)
+  - [May 22](#may-22)
 - [Week 4](#week-4)
+  - [May 28](#may-28)
+  - [May 29](#may-29)
+  - [May 30](#may-30)
 - [Week 5](#week-5)
+  - [Jun 1](#jun-1)
 
 # Week 1
 
-🟢 On track | Yosmel Chiang posted an update on May 4
-
-[7.Submission.pdf](https://uploads.linear.app/ed5668e0-e380-4530-a14e-97ba82128a49/5bb2ebd3-8ab2-43b0-8d13-7aad988d06cb/8c253265-6c6a-4a3a-bf60-436b39301f89)
-
-[6.Documentation.pdf](https://uploads.linear.app/ed5668e0-e380-4530-a14e-97ba82128a49/49a41b1b-f0fb-454f-8023-de81bd58b617/4f4870c7-94ba-4ca4-b33f-66e13c0e84f6)
-
-[5.Frontend.pdf](https://uploads.linear.app/ed5668e0-e380-4530-a14e-97ba82128a49/ee2f7358-b530-410d-8e1b-3a6bcdf13f8f/a6738d42-1d81-4b08-b992-60b7148771b2)
-
-[4.Backend.pdf](https://uploads.linear.app/ed5668e0-e380-4530-a14e-97ba82128a49/215c0082-0ae2-48f3-8cc9-784361ec67da/fdebc5dc-8ecd-420d-bcac-8609c9d1dfca)
-
-[3.Database.pdf](https://uploads.linear.app/ed5668e0-e380-4530-a14e-97ba82128a49/6c01a1f3-afab-4aa9-84b6-1dc2a5474ef6/80288d50-9bb9-46ae-906a-0a13b4cec431)
-
-[2.Instructions.pdf](https://uploads.linear.app/ed5668e0-e380-4530-a14e-97ba82128a49/4260c06e-d8d7-42fc-a0bd-9c635ea286a2/dec604cb-e520-4908-8d68-59545329be83)
-
-[1.Repository.pdf](https://uploads.linear.app/ed5668e0-e380-4530-a14e-97ba82128a49/55f727f8-68be-4fb7-9533-fa39a61fe299/4ce46370-2a70-490b-8601-1fad0289756c)
-
-[0.Overview.pdf](https://uploads.linear.app/ed5668e0-e380-4530-a14e-97ba82128a49/682188d9-5602-4aae-a5e4-5bcae7b3c5a8/6f3c0099-cffa-4b4d-a508-f25a047391be)
+## May 4
 
 The goal today is to just gather project files on brief, description and requirements and focus on what we are going to develop.
 
 --- 
 
-🟢 On track | Yosmel Chiang posted an update on May 5
+## May 5
 
 Today I have worked on repetition, refreshing specifically on normalization. Since the project requires 3rd normal form. I made sure I fully got normalization covered before diving in to the database design.
 
 ---
 
-🟢 On track | Yosmel Chiang posted an update on May 6
+## May 6
 
 Today I finished the ERD, I added a status attribute to the appointments, and a city attribute to the clinic. Everything is in 3rd normal form.
 
 ---
 
-🟢 On track | Yosmel Chiang posted an update on May 7
-
-Today Im setting up the models in .NET Entity Framework Core.
-
-Oppgaver
-
----
-
-🟢 On track | Yosmel Chiang posted an update on May 7
+## May 7
 
 Today I have:
 
+* Today Im setting up the models in .NET Entity Framework Core.
 * Configured ASP.NET Core Controllers with placeholder code.
 * Im starting off by setting up a Postman collection, I havent configured Swagger yet, I just want to test my memory of setting up controllers and test each endpoint.
 
 ---
 
-🟢 On track | Yosmel Chiang posted an update on May 8
+## May 8
 
 I have configured the models in EF Core with:
 
@@ -73,7 +65,7 @@ Challenges:
 
 ---
 
-🟢 On track | Yosmel Chiang posted an update on May 9
+## May 9
 
 Today I have implemented:
 
@@ -87,7 +79,7 @@ Today I have implemented:
 
 ---
 
-🟢 On track | Yosmel Chiang posted an update on May 10
+## May 10
 
 Today I have:
 
@@ -99,7 +91,7 @@ Today I have:
 
 # Week 2
 
-🟢 On track | Yosmel Chiang posted an update on May 11
+## May 11
 
 Today we have:
 
@@ -129,7 +121,7 @@ Today we have:
 ---
 
 
-🟢 On track | Yosmel Chiang posted an update on May 12
+## May 12
 
 Today I have:
 
@@ -191,7 +183,7 @@ Today I have:
 
 ---
 
-🟢 On track | Yosmel Chiang posted an update on May 15
+## May 15
 
 Caught a flu, so theres been slow progress, but so far I have:
 
@@ -203,7 +195,7 @@ Caught a flu, so theres been slow progress, but so far I have:
 
 ---
 
-🟢 On track | Yosmel Chiang posted an update on May 17
+## May 17
 
 Still on the flu, slow progress, but im moving forward regardless.
 
@@ -232,5 +224,56 @@ So we implemented this check, tested it on the backend + frontend and works perf
 
 
 # Week 3
+
+## May 22
+
+Everthing is fully functional, Ive spent some time doing some adjustments on the backend. Remove a few endpoints and do some cleaning up.
+
+---
+
 # Week 4
+
+## May 28
+
+Been a few days since I left an update, so heres what has been going on lately:
+
+* Fully re-designed the frontend to improve user experience.
+* I implemented refresh tokens functionality in the backend, this now enables us to login and get an access token as well as a secure httpOnly refresh cookie in the browser sent by the backend. The access token is saved in memory and is used on each protected endpoint. The backend will validate the access key for both signature, expiration and user id. If validation fails, the backend will refuse access wtih a 401 status code. The frontend will react to this response by pinging a specific /refresh endpoint on the backend. The backend will retrieve the refresh cookie from the browser when this endpoint is hit and validate it. If everything goes well during this validation process, the frontend receives a new access token, which is saved once again in memory. This functionality allows the frontend to seamlessly handle auth without affecting the user experience. The access token is supposed to be shortlived, something between a 1 minute to 15 minutes, while the refresh token can live from a few days, Ive configured it to be 7 days.
+* Initially I used zustand for everything regarding state management, even fetching appointments, patients etc. While this initially seemed like I good idea, I ended up with a lot of boilerplate code and in some parts I had to use useEffect to manage internal states. This felt weird and I knew it could be done differently, so I looked into how I could implement Tanstack Query to make my life easier. Having been toying with Tanstack Query earlier I knew I could gain some benefits, like better internal state management (I didnt have to deal with useEffect) and also caching. So I started slowly migriating my currrent zustand logic to TanStack reading and mutation queries.
+* I also added a new Role table on the backend, while this is not a requirement, I wanted to protect lookup tables from writing operations. It didn't, make sense to just put \[Authorize\] on each controller endpoint, because that ment any Patient with access to the backend could write to the database. So that left us with \[Authorize( Roles "Admin" ) \] option, which ment I had to implement RBAC (Role Based Access Controll). So by implementing a new Role table I simply configured two roles, Patient and Admin, having Patient as a default, and creating a seed for a single admin, in case we want to log in as an admin and do some database writing.
+
+---
+
+## May 29
+
+Today I have:
+
+* Added dateOfBirth as a requirement when creating guest patients during unregistered appointment creation, this is mentioned in the requirements. It also adds a layer of uniqueness to each guest patient. I previously validated duplicated patients by checking Firstname + Lastname combinations each time a guest patient is created, however, by adding email we can now ensure Firstname + Lastname + Date of birth
+* I also retouched the design on the search page, making it more responsive and made it more appealing aesthetically.
+* Ive added logic to the registration so that we dont create duplicates, instead use an existing patient and update it with sensitive details
+* I also added a nice little calendar widget to gain some a quick overview of pending appointments.
+
+---
+
+[Project: Appointment Booking System](https://linear.app/be-yos/project/project-appointment-booking-system-ba39d40a909c/overview)
+
+## May 30
+
+Today I have:
+
+* Done some refactoring to improve performance using React-scan, I found out I could memoize a few parts and cut down some hacky code liens that were doing more harm than good.
+
+---
+
 # Week 5
+
+## Jun 1
+
+Today I worked on:
+
+* **Documentation:** Added JSDoc comments to the frontend.
+* **Refactor:** Moved .modules.css files into their own styles folder to keep things tidy.
+* **Refactor:** Created JWTTokenValidationParameters class as I was using it more than once, so this reduces some duplication.
+* **Feat:** Found this nice little package called `react-tooltip` as a replacement for the title attribute. I implemented it in the appointments table, so we can now hover and see what note is left on each appointment, nice little user experience touch.
+* **Feat:** Implemented pagination on the appointmentsController on the backend and implemented `useInfiniteQuery` on the frontend with tanstack to limit the amount of appointments the table is populated with. 
+We can now click a `Load more` button to load more appointments.
