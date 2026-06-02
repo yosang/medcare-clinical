@@ -8,5 +8,6 @@
         "AccessTokenExpiryMinutes": 5,
         "RefreshTokenExpiryDays": 1,
         "SecretKey": "a-string-secret-at-least-256-bits-long"
-    }
+    },
+    "AllowedOrigins": ["http://localhost:5173"]
 }

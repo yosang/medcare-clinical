@@ -1,14 +1,16 @@
 namespace Extensions;
 public static class CorsConfigExtension
 {
-    public static IServiceCollection AddCorsConfig(this IServiceCollection service)
+    public static IServiceCollection AddCorsConfig(this IServiceCollection service, IConfiguration configuration)
     {
+        var allowedOrigins = configuration.GetSection("AllowedOrigins").Get<string[]>() ?? ["http://localhost:5173"];
+
         service.AddCors(options =>
         {
             options.AddPolicy("AllowFrontend", policy =>
             {
                 policy
-                        .WithOrigins("http://localhost:5173")
+                        .WithOrigins(allowedOrigins)
                         .AllowAnyMethod()
                         .AllowAnyHeader()
                         .AllowCredentials();

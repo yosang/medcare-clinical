@@ -3,7 +3,7 @@ using Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddCorsConfig()
+builder.Services.AddCorsConfig(builder.Configuration)
                 .AddDatabaseConfig(builder.Configuration)
                 .AddJWTConfig(builder.Configuration)
                 .AddServices()
