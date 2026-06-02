@@ -2,7 +2,6 @@ using DTOS;
 using Extensions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
 using Services;
 
 [ApiController]
@@ -17,6 +16,12 @@ public class AppointmentsController : ControllerBase
         _service = service;
     }
 
+    public enum SortOrder
+    {
+        asc,
+        desc
+    }
+
     /// <summary>
     /// Returns a list of appointments for a logged in patient, with pagination supported
     /// </summary>
@@ -25,24 +30,32 @@ public class AppointmentsController : ControllerBase
     [HttpGet]
     [Authorize]
     [ProducesResponseType(typeof(IEnumerable<AppointmentWithDetailsDTO>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(PaginatedAppointments<AppointmentWithDetailsDTO>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-    public async Task<ActionResult<IEnumerable<AppointmentWithDetailsDTO>>> GetMyAppointments( int? page = null, int? itemsPerPage = null )
+    public async Task<ActionResult> Get( 
+        [FromQuery] int? page = null, 
+        [FromQuery] int? itemsPerPage = null,
+        [FromQuery] SortOrder sort = SortOrder.asc
+        )
     {
         var patientId = User.GetPatientId();
         if(patientId == null) return Unauthorized();
 
         var appointments = await _service.GetAppointmentsForPatient(patientId.Value);
+        var sorted = sort == SortOrder.asc ? appointments.OrderBy(a => a.AppointmentDate):appointments.OrderByDescending(a => a.AppointmentDate);
 
-        if(page == null || itemsPerPage == null) return Ok(appointments);
+        // If no pagination is requested, we simply return an array with appointments
+        if(page == null || itemsPerPage == null) return Ok(sorted);
 
-        var paginated = appointments.Skip((page.Value - 1) * itemsPerPage.Value).Take(itemsPerPage.Value);
+        // Returns a paginated object if pagination is requested
+        var paginated = sorted.Skip((page.Value - 1) * itemsPerPage.Value).Take(itemsPerPage.Value);
 
         bool hasNextPage = (page.Value * itemsPerPage.Value) < appointments.Count();
 
-        return Ok(new
+        return Ok(new PaginatedAppointments<AppointmentWithDetailsDTO>
         {
-            data = paginated,
-            hasNextPage
+            Data = paginated,
+            HasNextPage = hasNextPage
         });
     }
 

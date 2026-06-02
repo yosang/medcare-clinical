@@ -20,6 +20,7 @@ export default function BookingPage() {
 
     // local states
     // const [pageSize, setPageSize] = useState(3); // for future implementation: would be nice with a little select dropdown menu to change how many items we want to show
+    // const sortOrder = "asc" // same here, I implemented the posibility to sort on the backend, by default im sorting asc, would be nice to change the order
     const pageSize = 3
 
     // Gloobal states
@@ -28,23 +29,21 @@ export default function BookingPage() {
     // Reading queries
     const { data: patient } = usePatient();
     const { data: appointmentsInfinite, fetchNextPage, hasNextPage, isFetchingNextPage } = useAppointmentsPaginated(pageSize); 
-    const { data: appointmentsCalendarWidget } = useAppointments();
+    const { data: appointmentsCalendarWidget } = useAppointments("asc"); // for the calendar widget we always it to be sorted asc, so our upcoming variable works correctly
 
-    // Flattens the appointments object, which has pages
+    // Flattens the appointments object returned by useInfiniteQuery
     const appointments = useMemo(() => {
         return appointmentsInfinite?.pages.flatMap(page => page.data);
     }, [appointmentsInfinite])
 
-    // Creates a copy of appoitments, sorts it and finds the first upcoming pending appointment, recomputes the result when appointments change
+    // Creates a copy of appoitments for the calendar widget and finds the first upcoming pending appointment
     // We are memoizing this variable to prevent the Calendar component from re-rendering, unless appointments change.
     const upcoming = useMemo(() => {
-        if (!appointments) return;
+        if (!appointmentsCalendarWidget) return;
 
-        return [...appointments]
-                .sort((a, b) => new Date(a.appointmentDate).getTime() - new Date(b.appointmentDate).getTime())
-                .find(a => a.status.id === 1);
+        return [...appointmentsCalendarWidget].find(a => a.status.id === 1);
 
-    }, [appointments])
+    }, [appointmentsCalendarWidget])
 
     return <div className={styles.mainLayout}>
             

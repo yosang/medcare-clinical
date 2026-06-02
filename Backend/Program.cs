@@ -1,3 +1,4 @@
+using System.Text.Json.Serialization;
 using ErrorHandling;
 using Extensions; 
 
@@ -10,7 +11,8 @@ builder.Services.AddCorsConfig(builder.Configuration)
                 .AddExceptionHandler<GlobalExceptionHandler>()
                 .AddSwagger()
                 .AddProblemDetails()
-                .AddControllers();
+                .AddControllers()
+                .AddJsonOptions(options => options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter())); // Converts ENUMs to strings
 
 var app = builder.Build();
 

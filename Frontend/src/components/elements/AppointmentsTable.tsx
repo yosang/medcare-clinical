@@ -44,13 +44,10 @@ export default function AppointmentsTable( { appointments, nextPage, hasNextPage
 
     const [filter, setFilter] = useState("");
 
-    // Creates a copy of appoitments and sorts it by date
-    const sortedAppointments = useMemo(() => {
+    // Creates a copy of appoitments and filters by status id
+    const filteredAppointments = useMemo(() => {
         if(!appointments) return [];
-
-        const sorted = [...appointments].sort((a, b) => new Date(a.appointmentDate).getTime() - new Date(b.appointmentDate).getTime()) // sorts appointments by calculating the data in a single milliseconds value
-
-        return filter ? sorted.filter(a => a.status.id == Number(filter)): sorted; // If a filter is provided we return a filtered array, otherwise just show the sorted list
+        return filter ? [...appointments].filter(a => a.status.id == Number(filter)):appointments
     }, [appointments, filter])
 
     const isCancelled = useMemo(() => {
@@ -167,7 +164,7 @@ export default function AppointmentsTable( { appointments, nextPage, hasNextPage
             </tr>
         </thead>
         <tbody>
-            {sortedAppointments.map((ap) => (
+            {filteredAppointments.map((ap) => (
                 <tr key={ap.id} onClick={() => handleAppointmentClick(ap.id)}>
                     <td className={styles.apType}>
                         {ap.category.name} 
@@ -210,7 +207,7 @@ export default function AppointmentsTable( { appointments, nextPage, hasNextPage
             ))}
         </tbody>
     </table>
-    {sortedAppointments && sortedAppointments.length > 0 && (
+    {filteredAppointments && filteredAppointments.length > 0 && (
     <Button 
         disabled={!hasNextPage || loadingNextPage}
         aria-busy={loadingNextPage}
@@ -223,6 +220,6 @@ export default function AppointmentsTable( { appointments, nextPage, hasNextPage
         {loadingNextPage ? "Loading...":hasNextPage ? "Load more...": "All loaded"}
     </Button>)
     }
-    {sortedAppointments.length < 1 && <p>No appointments to show...</p>}
+    {filteredAppointments.length < 1 && <p>No appointments to show...</p>}
     </>
 }

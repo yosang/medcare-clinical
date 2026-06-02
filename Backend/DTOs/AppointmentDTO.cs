@@ -24,6 +24,12 @@ public class AppointmentWithDetailsDTO
     public ClinicDTO? Clinic { get; set; }
 }
 
+public class PaginatedAppointments<T>
+{
+    public IEnumerable<T> Data { get; set;} = Enumerable.Empty<T>();
+    public bool HasNextPage { get; set; }
+}
+
 public class CreateAppointmentDTO
 {
     [Required]
