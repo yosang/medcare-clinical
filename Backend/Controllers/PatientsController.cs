@@ -28,7 +28,7 @@ public class PatientsController : ControllerBase
     [ProducesResponseType(typeof(PatientWithDetailsDTO), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<ActionResult<PatientWithDetailsDTO>> GetMyProfile()
+    public async Task<ActionResult<PatientWithDetailsDTO>> Get()
     {
         var patientId = User.GetPatientId();
         if(patientId == null) return Unauthorized();
@@ -54,11 +54,11 @@ public class PatientsController : ControllerBase
     /// <response code="201">Resource created</response>
     [HttpPost]
     [ProducesResponseType(typeof(GuestPatientDTO), StatusCodes.Status201Created)]
-    public async Task<ActionResult<GuestPatientDTO>> CreateGuestPatient(CreateGuestPatientDTO dto)
+    public async Task<ActionResult<GuestPatientDTO>> Create(CreateGuestPatientDTO dto)
     {
         var result = await _service.CreatePatient(dto);
 
-        return CreatedAtAction(nameof(CreateGuestPatient), new { id = result.Id }, result);
+        return CreatedAtAction(nameof(Create), new { id = result.Id }, result);
     }
 
     /// <summary>
@@ -87,7 +87,7 @@ public class PatientsController : ControllerBase
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> UpdateMyProfile(UpdatePatientDTO dto)
+    public async Task<IActionResult> Update(UpdatePatientDTO dto)
     {
         var patientId = User.GetPatientId();
         if(patientId == null) return Unauthorized();
@@ -109,7 +109,7 @@ public class PatientsController : ControllerBase
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> DeleteMyAccount()
+    public async Task<IActionResult> Delete()
     {
         var patientId = User.GetPatientId();
         if(patientId == null) return Unauthorized();
