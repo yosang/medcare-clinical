@@ -43,7 +43,7 @@ public class AppointmentsController : ControllerBase
         var patientId = User.GetPatientId();
         if(patientId == null) return Unauthorized();
 
-        var appointments = await _service.GetAppointmentsForPatient(patientId.Value);
+        var appointments = await _service.GetAppointments(patientId.Value);
         var sorted = sort == SortOrder.asc ? appointments.OrderBy(a => a.AppointmentDate):appointments.OrderByDescending(a => a.AppointmentDate);
 
         // If no pagination is requested, we simply return an array with appointments
@@ -181,8 +181,8 @@ public class AppointmentsController : ControllerBase
         var patientId = User.GetPatientId();
         if(patientId == null) return Unauthorized();
 
-        var deleted = await _service.CancelAppointment(id, patientId.Value);
-        if (!deleted) return NotFound();
+        var cancelled = await _service.CancelAppointment(id, patientId.Value);
+        if (!cancelled) return NotFound();
 
         return NoContent();
     }

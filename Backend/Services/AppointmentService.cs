@@ -16,7 +16,7 @@ public class AppointmentService
     /// <summary> Reads appointments for a patient from the database without tracking for reduced performance overhead </summary>
     /// <param name="patientId"></param>
     /// <returns> List of appointments </returns>
-    public async Task<IEnumerable<AppointmentWithDetailsDTO>> GetAppointmentsForPatient(int patientId)
+    public async Task<IEnumerable<AppointmentWithDetailsDTO>> GetAppointments(int patientId)
     {
         var appointments = await _ctx.Appointments.AsNoTracking()
                                                     .Include(ap => ap.Doctor)
@@ -71,7 +71,7 @@ public class AppointmentService
                                                                             ap.AppointmentDate < dto.AppointmentDate.AddMinutes(dto.Duration)
                                                                         );
 
-        if (patientOverlap || doctorOverlap) return null;
+        if (patientOverlap || doctorOverlap) return null; // Since we are only returning two cases of results (Appointment | null), null is used to represent a conflict, im keeping it simple to avoid more code
 
         var newAp = dto.ToAppointment();
 
@@ -97,7 +97,7 @@ public class AppointmentService
         var overlaps = await _ctx.Appointments.AsNoTracking().AnyAsync(ap => 
                                                                             ap.DoctorId == dto.DoctorId 
                                                                             && ap.StatusId != 3 
-                                                                            && ap.Id != id // Excludes the current appointment from overlap matching so that we can update it
+                                                                            && ap.Id != id // Excludes the current appointment from overlap check so that we can update it
                                                                             && ap.AppointmentDate.AddMinutes(ap.Duration) > dto.AppointmentDate 
                                                                             && ap.AppointmentDate < dto.AppointmentDate.AddMinutes(dto.Duration)
 
