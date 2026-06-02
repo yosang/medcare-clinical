@@ -1,5 +1,8 @@
 import type { Login, Registration, Token } from "../types/Auth";
+
 import { useLoginStore } from "../stores/useLoginStore";
+import { UnauthorizedError } from "./errors/UnauthorizedError";
+import { MissingENVError } from "./errors/MissingENVError";
 
 const refreshURL = import.meta.env.VITE_REFRESH;
 const registrationURL = import.meta.env.VITE_REGISTER;
@@ -18,7 +21,7 @@ const logoutURL = import.meta.env.VITE_LOGOUT;
  * @returns {Token} Access token is returned in the json response.
  */
 export async function login(payload: Login): Promise<Token> {
-    if(!loginURL) throw new Error("VITE_LOGIN url is not defined in .env")
+    if(!loginURL) throw new MissingENVError("VITE_LOGIN url is not defined in .env")
         
     const res = await fetch(loginURL, {
         method: "POST",
@@ -48,7 +51,7 @@ export async function login(payload: Login): Promise<Token> {
  * @param payload Payload contract required for registration
  */
 export async function register(payload: Registration): Promise<void> {
-    if(!registrationURL) throw new Error("VITE_REGISTER url is not defined in .env")
+    if(!registrationURL) throw new MissingENVError("VITE_REGISTER url is not defined in .env")
 
     const res = await fetch(registrationURL, {
         method: "POST",
@@ -76,7 +79,7 @@ export async function register(payload: Registration): Promise<void> {
  * - Just like with login, the frontend has to identify itself as an allowed origin in order to get its refresh_token removed from the cookies.
  */
 export async function logoutRequest(): Promise<void> {
-    if(!logoutURL) throw new Error("VITE_LOGOUT url is not defined in .env")
+    if(!logoutURL) throw new MissingENVError("VITE_LOGOUT url is not defined in .env")
 
     const res = await fetch(logoutURL, {
         method: "POST",
@@ -94,7 +97,7 @@ export async function logoutRequest(): Promise<void> {
  * - If validation is successful, the frontend receives a new access token
  */
 export async function refreshToken(): Promise<Token> {
-    if(!refreshURL) throw new Error("VITE_REFRESH url is not defined in .env")
+    if(!refreshURL) throw new MissingENVError("VITE_REFRESH url is not defined in .env")
 
     const res = await fetch(refreshURL, {
       method: "POST",
@@ -111,8 +114,3 @@ export async function refreshToken(): Promise<Token> {
     return await res.json();
 }
 
-export class UnauthorizedError extends Error {
-    constructor(message: string) {
-        super(message)
-    }
-}

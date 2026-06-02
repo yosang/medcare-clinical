@@ -1,9 +1,10 @@
 import { create } from "zustand";
 import { type Login, type LoginState } from "../types/Auth";
 import { login, logoutRequest, refreshToken } from "../api/auth";
+import { MissingENVError } from "../api/errors/MissingENVError";
 
 /**
- * Simple Zustand store that takes care of token storage, login, registration and logout operations as well as refreshing the access token.
+ * Simple Zustand store that takes care of token storage, login and logout operations as well as refreshing the access token.
  * Ive decided to use a zustand store instead of tanstack for this because of the following justifications:
  * - Its perfect for client-wide global state: Im using the token in multiple places, and zustand provides us with synchronous access through useLoginStore.getState().token outside of React components.
  * - - With tanstack there would be a lot more boilerplate code
@@ -22,6 +23,13 @@ export const useLoginStore = create<LoginState>((set) => ({
             set({loading: false, token: result.token })
         } catch(err) {
             set({loading: false, error: true, errorMessage: err.message})
+            
+            if(err instanceof MissingENVError) {
+                set({ errorMessage: null })
+                console.log("Missing ENV configuration Error:", err.message)
+                throw err;
+            }
+
             throw err;
         }
     },
@@ -32,6 +40,12 @@ export const useLoginStore = create<LoginState>((set) => ({
             set({loading: false, token: result.token })
         } catch(err) {
             set({ loading: false, error: true })
+
+            if(err instanceof MissingENVError) {
+                console.log("Missing ENV configuration Error:", err.message)
+                throw err;
+            }
+
             throw err;
         }
     },
@@ -45,6 +59,12 @@ export const useLoginStore = create<LoginState>((set) => ({
             await logoutRequest();
         } catch(err) {
             set({ loading: false, error: true })
+
+            if(err instanceof MissingENVError) {
+                console.log("Missing ENV configuration Error:", err.message)
+                throw err;
+            }
+
             throw err;
         }
     },

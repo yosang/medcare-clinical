@@ -23,14 +23,16 @@ public class AppointmentsController : ControllerBase
     }
 
     /// <summary>
-    /// Returns a list of appointments for a logged in patient, with pagination supported
+    /// Returns a list of appointments for a logged in patient
     /// </summary>
+    /// <param name="page">Page to show</param>
+    /// <param name="itemsPerPage">Amount of items to show per page</param>
+    /// <param name="sort">Orders the items in ascending / descending order by appointment date</param>
     /// <response code="200">Resources returned</response>
     /// <response code="401">Unauthorized</response>
     [HttpGet]
     [Authorize]
     [ProducesResponseType(typeof(IEnumerable<AppointmentWithDetailsDTO>), StatusCodes.Status200OK)]
-    [ProducesResponseType(typeof(PaginatedAppointments<AppointmentWithDetailsDTO>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     public async Task<ActionResult> Get( 
         [FromQuery] int? page = null, 
@@ -60,7 +62,7 @@ public class AppointmentsController : ControllerBase
     }
 
     /// <summary>
-    /// Get a single appointment
+    /// Returns a single appointment
     /// </summary>
     /// <param name="id"></param>
     /// <response code="200">Resouruce returned</response>
@@ -82,7 +84,7 @@ public class AppointmentsController : ControllerBase
         return Ok(appointment);
     }
 
-    /// <summary>Create a new appointment</summary>
+    /// <summary>Creates a new appointment</summary>
     /// <remarks>
     /// Sample request:
     ///
@@ -100,7 +102,7 @@ public class AppointmentsController : ControllerBase
     /// </remarks>
     /// <param name="dto"></param>
     /// <response code="201">Resource created</response>
-    /// <response code="409">Date and time overlaps</response>
+    /// <response code="409">Appointment time overlaps with an existing appointment</response>
     [HttpPost]
     [ProducesResponseType(typeof(AppointmentDTO), StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status409Conflict)]
@@ -111,14 +113,14 @@ public class AppointmentsController : ControllerBase
         if (result == null) return Conflict(new ProblemDetails
         {
             Title = "Date overlap",
-            Detail = "The selected time overlaps with an existing appointment. Please choose a different time slot.",
+            Detail = "Appointment time overlaps with an existing appointment. Please choose a different time slot.",
             Status = StatusCodes.Status409Conflict
         });
 
         return CreatedAtAction(nameof(Get), new { id = result.Id }, result);
     }
 
-    /// <summary>Update an appointment</summary>
+    /// <summary>Updates an appointment</summary>
     /// <remarks>
     /// Sample request:
     ///
@@ -138,7 +140,7 @@ public class AppointmentsController : ControllerBase
     /// <response code="204">Update successful, no content returned</response>
     /// <response code="401">Unauthorized</response>
     /// <response code="404">Resource not found by id</response>
-    /// <response code="409">Date and time overlaps</response>
+    /// <response code="409">Appointment time overlaps with an existing appointment</response>
     [HttpPut("{id}")]
     [Authorize]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
@@ -157,14 +159,14 @@ public class AppointmentsController : ControllerBase
         if (result.overlap) return Conflict(new ProblemDetails
         {
             Title = "Date overlap",
-            Detail = "The selected time overlaps with an existing appointment. Please choose a different time slot.",
+            Detail = "Appointment time overlaps with an existing appointment. Please choose a different time slot.",
             Status = StatusCodes.Status409Conflict
         });
 
         return NoContent();
     }
 
-    /// <summary>Cancel an appointment</summary>
+    /// <summary>Cancels an appointment</summary>
     /// <param name="id"></param>
     /// <response code="204">Cencellation successful, no content returned</response>
     /// <response code="401">Unauthorized</response>

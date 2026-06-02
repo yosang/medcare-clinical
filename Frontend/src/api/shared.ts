@@ -1,5 +1,6 @@
 import type { Categories, Status } from "../types/Appointments";
 import type { Doctor } from "../types/Doctors";
+import { MissingENVError } from "./errors/MissingENVError";
 
 const statusUrl = import.meta.env.VITE_STATUS;
 const categoriesUrl = import.meta.env.VITE_CATEGORIES;
@@ -12,7 +13,7 @@ const searchUrl = import.meta.env.VITE_DOCTORS_SEARCH;
  */
 export async function fetchStatus(): Promise<Status[]> {
     if(!statusUrl) {
-        throw new Error("VITE_STATUS url is not defined in .env")
+        throw new MissingENVError("VITE_STATUS url is not defined in .env")
     }
 
     const res = await fetch(statusUrl)
@@ -28,7 +29,7 @@ export async function fetchStatus(): Promise<Status[]> {
  */
 export async function fetchCategories(): Promise<Categories[]> {
     if(!categoriesUrl) {
-        throw new Error("VITE_CATEGORIES url is not defined in .env")
+        throw new MissingENVError("VITE_CATEGORIES url is not defined in .env")
     }
 
     const res = await fetch(categoriesUrl)
@@ -44,7 +45,7 @@ export async function fetchCategories(): Promise<Categories[]> {
  */
 export async function fetchDoctors(): Promise<Doctor[]> {
     if(!doctorsUrl) {
-        throw new Error("VITE_DOCTORS url is not defined in .env")
+        throw new MissingENVError("VITE_DOCTORS url is not defined in .env")
     }
 
     const res = await fetch(doctorsUrl)
@@ -60,7 +61,7 @@ export async function fetchDoctors(): Promise<Doctor[]> {
  */
 export async function fetchDoctorsBySearch(name: string ): Promise<Doctor[]> {
     if(!searchUrl) {
-        throw new Error("VITE_DOCTOR_SEARCH url is not defined in .env")
+        throw new MissingENVError("VITE_DOCTOR_SEARCH url is not defined in .env")
     }
     
     const res = await fetch(`${searchUrl}?name=${name}`)

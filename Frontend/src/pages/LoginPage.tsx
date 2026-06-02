@@ -40,8 +40,7 @@ export default function LoginPage() {
                 navigate("/book")
                 return "Logged in!"
             },
-            error: (err) => {
-                console.log("Something went wrong during login", err)
+            error: () => {
                 return "Failed to log in."
             }
         })

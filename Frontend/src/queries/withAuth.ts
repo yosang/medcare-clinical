@@ -1,6 +1,6 @@
-import { UnauthorizedError } from "../api/auth";
 import { useLoginStore } from "../stores/useLoginStore";
 import { fetchAppointments, fetchAppointment } from "../api/appointments";
+import { UnauthorizedError } from "../api/errors/UnauthorizedError";
 /**
  * Helper function used by queryFunctions relying on authentication.
  * - Tries to call the callback function with token in the header.

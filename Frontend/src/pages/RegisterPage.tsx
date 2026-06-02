@@ -55,8 +55,7 @@ export default function RegisterPage() {
                 navigate("/login", { state: { email: formData.get("email")} }) // Navigates to the login page and sends the registered email to prefill the input
                 return "Registration successful!"
             },
-            error: (err) => {
-                console.log("Something went wrong during registration", err)
+            error: () => {
                 return "Registration failed"
             }
         })

@@ -1,7 +1,15 @@
 import withAuth from "../queries/withAuth";
 import type { GuestPatientPayload, Patient } from "../types/Patients";
-import { UnauthorizedError } from "./auth";
-const patientsUrl = import.meta.env.VITE_PATIENTS;
+import { MissingENVError } from "./errors/MissingENVError";
+import { UnauthorizedError } from "./errors/UnauthorizedError";
+
+const getBaseUrl = () => {
+    const url = import.meta.env.VITE_PATIENTS
+
+    if(!url) throw new MissingENVError("VITE_APPOINTMENTS url is not defined in .env")
+    
+    return url;
+}
 
 /**
  * Fetches details for a logged in patient.
@@ -11,11 +19,8 @@ const patientsUrl = import.meta.env.VITE_PATIENTS;
  * @returns {Patient} The patient object.
  */
 export async function getPatientDetails(token: string): Promise<Patient> {
-    if(!patientsUrl) {
-        throw new Error("patients url is not defined in .env")
-    }
 
-    const res = await fetch(patientsUrl, {
+    const res = await fetch(getBaseUrl(), {
         method: "GET",
         headers: { "Authorization": `Bearer ${token}`}
     })
@@ -36,11 +41,8 @@ export async function getPatientDetails(token: string): Promise<Patient> {
  * @returns {Patient} The patient created.
  */
 export async function createGuestPatient(payload: GuestPatientPayload): Promise<Patient> {
-    if(!patientsUrl) {
-        throw new Error("patients url is not defined in .env")
-    }
 
-    const res = await fetch(patientsUrl, {
+    const res = await fetch(getBaseUrl(), {
         method: "POST",
         body: JSON.stringify(payload),
         headers: { "Content-Type": "application/json" }
