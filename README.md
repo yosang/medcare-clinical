@@ -201,6 +201,7 @@ I implemented Role Based Access Control (RBAC) on the backend for future impleme
 - [Extension Members/Methods](https://learn.microsoft.com/en-us/dotnet/csharp/programming-guide/classes-and-structs/extension-methods)
 - [Nullable ints, DateTime and using .HasValue](https://learn.microsoft.com/en-us/dotnet/api/system.nullable-1.hasvalue?view=netframework-4.8.1&viewFallbackFrom=net-10.0)
 - [Setting secure cookies in .NET ASP.NET Core](https://learn.microsoft.com/en-us/aspnet/core/security/samesite?view=aspnetcore-9.0&utm_source=chatgpt.com)
+- [Serializing ENUM strings](https://www.conradakunga.com/blog/serializing-enums-with-systemtextjson-in-c-net/)
 
 ##### React
 - [useMemo](https://react.dev/reference/react/useMemo) - Official docs on useMemo
