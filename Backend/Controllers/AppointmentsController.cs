@@ -35,6 +35,7 @@ public class AppointmentsController : ControllerBase
     /// <param name="page">Page to show</param>
     /// <param name="itemsPerPage">Amount of items to show per page</param>
     /// <param name="sort">Orders the items in ascending / descending order by appointment date</param>
+    /// <param name="status">Filters appointments by status id</param>
     /// <response code="200">Resources returned</response>
     /// <response code="401">Unauthorized</response>
     [HttpGet]
