@@ -22,6 +22,13 @@ public class AppointmentsController : ControllerBase
         desc
     }
 
+    public enum StatusFilter
+    {
+        pending = 1,
+        completed,
+        cancelled
+    }
+
     /// <summary>
     /// Returns a list of appointments for a logged in patient
     /// </summary>
@@ -37,20 +44,26 @@ public class AppointmentsController : ControllerBase
     public async Task<ActionResult> Get( 
         [FromQuery] int? page = null, 
         [FromQuery] int? itemsPerPage = null,
-        [FromQuery] SortOrder sort = SortOrder.asc
+        [FromQuery] SortOrder sort = SortOrder.asc,
+        [FromQuery] StatusFilter? status = null
         )
     {
         var patientId = User.GetPatientId();
         if(patientId == null) return Unauthorized();
 
         var appointments = await _service.GetAppointments(patientId.Value);
-        var sorted = sort == SortOrder.asc ? appointments.OrderBy(a => a.AppointmentDate):appointments.OrderByDescending(a => a.AppointmentDate);
+        
+        // Sorts the appointments, asc by default
+        appointments = sort == SortOrder.asc ? appointments.OrderBy(a => a.AppointmentDate):appointments.OrderByDescending(a => a.AppointmentDate);
+
+        // Filters by status
+        if(status.HasValue) appointments = appointments.Where(a => a.Status!.Id == (int)status.Value);
 
         // If no pagination is requested, we simply return an array with appointments
-        if(page == null || itemsPerPage == null) return Ok(sorted);
+        if(page == null || itemsPerPage == null) return Ok(appointments);
 
         // Returns a paginated object if pagination is requested
-        var paginated = sorted.Skip((page.Value - 1) * itemsPerPage.Value).Take(itemsPerPage.Value);
+        var paginated = appointments.Skip((page.Value - 1) * itemsPerPage.Value).Take(itemsPerPage.Value);
 
         bool hasNextPage = (page.Value * itemsPerPage.Value) < appointments.Count();
 
