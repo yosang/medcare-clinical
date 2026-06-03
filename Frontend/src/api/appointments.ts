@@ -19,16 +19,13 @@ const getBaseUrl = (): string => {
  * Fetches appointments for a patient, requires a valid access token with PatientId claim.
  * @param token Access token to attach to the request header.
  */
-export async function fetchAppointments<T>(token:string, page?: number, pageSize?: number, sort?:string, status?: string): Promise<T> {
-    const baseUrl = getBaseUrl();
-    const url = new URL(baseUrl);
+export async function fetchAppointments<T>(token:string, page?: number, pageSize?: string, sort?:string, status?: string): Promise<T> {
+    const url = new URL(getBaseUrl());
 
     if(page) url.searchParams.append("page", String(page));
-    if(pageSize) url.searchParams.append("itemsPerPage", String(pageSize));
+    if(pageSize) url.searchParams.append("itemsPerPage", pageSize);
     if(sort) url.searchParams.append("sort", sort);
     if(status) url.searchParams.append("status", status);
-
-    // const url = page && pageSize ? `${baseUrl}?page=${page}&itemsPerPage=${pageSize}`:`${baseUrl}?sort=${sort}`
 
     const res = await fetch(url.toString(), {
         headers: { "Authorization": `Bearer ${token}`}

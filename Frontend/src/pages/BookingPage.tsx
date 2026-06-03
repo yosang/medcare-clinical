@@ -19,9 +19,7 @@ const AppointmentsTable = lazy(() => import("../components/elements/Appointments
 export default function BookingPage() {
 
     // local states
-    // const [pageSize, setPageSize] = useState(3); // for future implementation: would be nice with a little select dropdown menu to change how many items we want to show
-    // const sortOrder = "asc" // same here, I implemented the posibility to sort on the backend, by default im sorting asc, would be nice to change the order
-    const pageSize = 3
+    const [pageSize, setPageSize] = useState("3")
     const [statusFilter, setStatusFilter] = useState("");
 
     // Gloobal states
@@ -37,12 +35,12 @@ export default function BookingPage() {
         return appointmentsInfinite?.pages.flatMap(page => page.data);
     }, [appointmentsInfinite])
 
-    // Creates a copy of appoitments for the calendar widget and finds the first upcoming pending appointment
+    // Finds the first upcoming pending appointment
     // We are memoizing this variable to prevent the Calendar component from re-rendering, unless appointments change.
     const upcoming = useMemo(() => {
         if (!appointmentsCalendarWidget) return;
 
-        return [...appointmentsCalendarWidget].find(a => a.status.id === 1);
+        return appointmentsCalendarWidget.find(a => a.status.id === 1);
 
     }, [appointmentsCalendarWidget])
 
@@ -88,12 +86,14 @@ export default function BookingPage() {
                     <div className={styles.appointmentHistory}>
                        <Suspense fallback={<AppointmentsTableSkeleton />}>
                            <AppointmentsTable 
-                            appointments={appointments} 
-                            nextPage={fetchNextPage} 
-                            hasNextPage={hasNextPage} 
-                            loadingNextPage={isFetchingNextPage}
-                            statusFilter={statusFilter}
-                            statusSetter={setStatusFilter}
+                                appointments={appointments} 
+                                nextPage={fetchNextPage} 
+                                hasNextPage={hasNextPage} 
+                                loadingNextPage={isFetchingNextPage}
+                                statusFilter={statusFilter}
+                                statusSetter={setStatusFilter}
+                                pageSize={pageSize}
+                                pageSizeSetter={setPageSize}
                         />
                        </Suspense>
                    </div>

@@ -12,12 +12,16 @@ type Paginated = {
 
 // Read queries
 
+/**
+ * Read query that fetches and stores appointments for a logged in user and returns a raw list of appointments.
+ * - This query is only enabled for as long as there is a token available in memory.
+ */
 export function useAppointments(sort:string) {
     
     const token = useLoginStore(s => s.token);
     
     return useQuery({
-        queryKey: ["appointments", token], // This key combination provides caching safety, since every token is unique to each user, no appointments from user A will leak to user B
+        queryKey: ["appointments", "raw", token], // This key combination provides caching safety, since every token is unique to each user, no appointments from user A will leak to user B
         queryFn: () => withAuth((currentToken) => fetchAppointments<Appointment[]>(currentToken,undefined,undefined,sort)),
         enabled: !!token, // only fires the queryFn if there is a token,
     })
@@ -27,12 +31,12 @@ export function useAppointments(sort:string) {
  * Read query that fetches and stores appointments for a logged in user and returns a paginated result.
  * - This query is only enabled for as long as there is a token available in memory.
  */
-export function useAppointmentsPaginated(pageSize: number, status?: string) {
+export function useAppointmentsPaginated(pageSize: string, status?: string) {
     
     const token = useLoginStore(s => s.token);
     
     return useInfiniteQuery({
-        queryKey: ["appointments", "infinite", token, status], // Keeping status here so that when the component re-renders, the new value will trigger a key mismatch and a new refetch
+        queryKey: ["appointments", "paginated", token, status, pageSize], // Keeping pageSize and status here so that when the component re-renders, the new values will trigger a key mismatch and a new refetch will fire
         queryFn: ({ pageParam }) => withAuth((currentToken) => fetchAppointments<Paginated>(currentToken, pageParam, pageSize, undefined, status)),
         enabled: !!token, 
         initialPageParam: 1,
@@ -74,8 +78,8 @@ export function useCreateAppointment() {
         },
         onSuccess: () => {
             if(token) {
-                qc.invalidateQueries({ queryKey: ["appointments", token] })
-                qc.invalidateQueries({ queryKey: ["appointments", "infinite", token] })
+                qc.invalidateQueries({ queryKey: ["appointments", "raw",token] })
+                qc.invalidateQueries({ queryKey: ["appointments", "paginated", token] })
             } // only invalidate if this is a logged-in user
         }
     })
@@ -93,8 +97,8 @@ export function useUpdateAppointment() {
             return withAuth((currentToken) => updateAppointment(payload, currentToken, apId));
         },
         onSuccess(_data, variables) {
-            qc.invalidateQueries({ queryKey: ["appointments", token] });
-            qc.invalidateQueries({ queryKey: ["appointments", "infinite", token] });
+            qc.invalidateQueries({ queryKey: ["appointments", "raw",token] });
+            qc.invalidateQueries({ queryKey: ["appointments", "paginated", token] });
             qc.invalidateQueries( {queryKey: ["appointments", "appointmentDetail", token, variables.apId] })
         }
     })
@@ -112,8 +116,8 @@ export function useCancelAppointment() {
             return withAuth(currentToken => cancelAppointment(currentToken, apId))
         },
         onSuccess(_data, apId) {
-            qc.invalidateQueries({ queryKey: ["appointments", token] });
-            qc.invalidateQueries({ queryKey: ["appointments", "infinite", token] });
+            qc.invalidateQueries({ queryKey: ["appointments", "raw",token] });
+            qc.invalidateQueries({ queryKey: ["appointments", "paginated", token] });
             qc.invalidateQueries( {queryKey: ["appointments", "appointmentDetail", token, apId] })
         }
     })

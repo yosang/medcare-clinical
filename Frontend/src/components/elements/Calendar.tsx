@@ -148,14 +148,21 @@ export default function Calendar( { upcoming, appointments }:{ upcoming: Appoint
             
                 const isUpcoming = (() => upcomingAppointment ? exactDateMatcher(upcomingAppointment, d) : false )()
                 const isPending = (() => pendingAppointments.some(date => exactDateMatcher(date, d) ))()
+                const appointmentsByDay = pendingAppointments.filter(date => exactDateMatcher(date, d))
                 
                 return (<div
                             key={d}
                             id={String(d)}
                             className={`${ isUpcoming ? styles.upcomingHighlighted : isPending ? styles.pendingHighlighted: ""}`}
                             onClick={clickHandler}
+                            style={{ position: "relative"}}
                         >
-                            {d}
+                            <div style={{ display: "flex", flexDirection: "column" }}>
+                                 <span style={{ paddingBottom: "5px"}}>{d}</span>
+                                <div style={{ border:"none", position: "absolute", bottom: "-7px", left: "0", color: "var(--color-primary)", height: "100%"}} >
+                                     {appointmentsByDay && appointmentsByDay.length > 0 && [...Array(Math.min(appointmentsByDay.length, 3))].map((_, index) => <span key={index}>.</span>)}
+                                </div>
+                            </div>
                         </div>)
             })}
         </div>

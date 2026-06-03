@@ -26,9 +26,11 @@ type Props = {
     loadingNextPage: boolean
     statusFilter: string
     statusSetter: (status: string) => void
+    pageSize: string
+    pageSizeSetter: (page: string) => void
 }
 
-export default function AppointmentsTable( { appointments, nextPage, hasNextPage, loadingNextPage, statusFilter, statusSetter }:Props) {
+export default function AppointmentsTable( { appointments, nextPage, hasNextPage, loadingNextPage, statusFilter, statusSetter, pageSize, pageSizeSetter }:Props) {
 
     // Local states
     const [open, setOpen] = useState(false)
@@ -44,6 +46,7 @@ export default function AppointmentsTable( { appointments, nextPage, hasNextPage
     // global states
     const token = useLoginStore(s => s.token)   
 
+    // memoized variables
     const isCancelled = useMemo(() => {
         if(!appointments || !apId) return false;
         return appointments.some(ap => ap.id === apId && ap.status.id === 3)
@@ -137,6 +140,12 @@ export default function AppointmentsTable( { appointments, nextPage, hasNextPage
             <h1 style={{ color: "var(--color-secondary-text)"}}>My Appointments</h1>
         </div>
         <div className={styles.headerElements}>
+            <p>Items to show: </p>
+            <select value={pageSize} onChange={(e) => pageSizeSetter(e.target.value)} >
+                <option value="3" >3</option>
+                <option value="5" >5</option>
+                <option value="8" >8</option>
+            </select>
             <p>Filter by: </p>
             <select value={statusFilter} onChange={(e) => statusSetter(e.target.value)} >
                 <option value="" >All appointments</option>
