@@ -24,9 +24,11 @@ type Props = {
     nextPage: () => void
     hasNextPage: boolean
     loadingNextPage: boolean
+    statusFilter: string
+    statusSetter: (status: string) => void
 }
 
-export default function AppointmentsTable( { appointments, nextPage, hasNextPage, loadingNextPage }:Props) {
+export default function AppointmentsTable( { appointments, nextPage, hasNextPage, loadingNextPage, statusFilter, statusSetter }:Props) {
 
     // Local states
     const [open, setOpen] = useState(false)
@@ -41,14 +43,6 @@ export default function AppointmentsTable( { appointments, nextPage, hasNextPage
 
     // global states
     const token = useLoginStore(s => s.token)   
-
-    const [filter, setFilter] = useState("");
-
-    // Creates a copy of appoitments and filters by status id
-    const filteredAppointments = useMemo(() => {
-        if(!appointments) return [];
-        return filter ? [...appointments].filter(a => a.status.id == Number(filter)):appointments
-    }, [appointments, filter])
 
     const isCancelled = useMemo(() => {
         if(!appointments || !apId) return false;
@@ -144,11 +138,11 @@ export default function AppointmentsTable( { appointments, nextPage, hasNextPage
         </div>
         <div className={styles.headerElements}>
             <p>Filter by: </p>
-            <select value={filter} onChange={(e) => setFilter(e.target.value)} >
+            <select value={statusFilter} onChange={(e) => statusSetter(e.target.value)} >
                 <option value="" >All appointments</option>
-                <option value="1" >Pending</option>
-                <option value="2" >Completed</option>
-                <option value="3" >Cancelled</option>
+                <option value="pending" >Pending</option>
+                <option value="completed" >Completed</option>
+                <option value="cancelled" >Cancelled</option>
             </select>
         </div>
     </div>
@@ -164,7 +158,7 @@ export default function AppointmentsTable( { appointments, nextPage, hasNextPage
             </tr>
         </thead>
         <tbody>
-            {filteredAppointments.map((ap) => (
+            {appointments && appointments.map((ap) => (
                 <tr key={ap.id} onClick={() => handleAppointmentClick(ap.id)}>
                     <td className={styles.apType}>
                         {ap.category.name} 
@@ -207,7 +201,7 @@ export default function AppointmentsTable( { appointments, nextPage, hasNextPage
             ))}
         </tbody>
     </table>
-    {filteredAppointments && filteredAppointments.length > 0 && (
+    {appointments && appointments.length > 0 && (
     <Button 
         disabled={!hasNextPage || loadingNextPage}
         aria-busy={loadingNextPage}
@@ -220,6 +214,6 @@ export default function AppointmentsTable( { appointments, nextPage, hasNextPage
         {loadingNextPage ? "Loading...":hasNextPage ? "Load more...": "All loaded"}
     </Button>)
     }
-    {filteredAppointments.length < 1 && <p>No appointments to show...</p>}
+    {appointments && appointments.length < 1 && <p>No appointments to show...</p>}
     </>
 }

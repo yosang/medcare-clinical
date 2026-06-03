@@ -27,13 +27,13 @@ export function useAppointments(sort:string) {
  * Read query that fetches and stores appointments for a logged in user and returns a paginated result.
  * - This query is only enabled for as long as there is a token available in memory.
  */
-export function useAppointmentsPaginated(pageSize: number) {
+export function useAppointmentsPaginated(pageSize: number, status?: string) {
     
     const token = useLoginStore(s => s.token);
     
     return useInfiniteQuery({
-        queryKey: ["appointments", "infinite", token], 
-        queryFn: ({ pageParam }) => withAuth((currentToken) => fetchAppointments<Paginated>(currentToken, pageParam, pageSize)),
+        queryKey: ["appointments", "infinite", token, status], // Keeping status here so that when the component re-renders, the new value will trigger a key mismatch and a new refetch
+        queryFn: ({ pageParam }) => withAuth((currentToken) => fetchAppointments<Paginated>(currentToken, pageParam, pageSize, undefined, status)),
         enabled: !!token, 
         initialPageParam: 1,
         getNextPageParam: (lastPage, allPages) => {

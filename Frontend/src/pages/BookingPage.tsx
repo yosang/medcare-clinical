@@ -1,4 +1,4 @@
-import { lazy, Suspense, useMemo } from "react"
+import { lazy, Suspense, useMemo, useState } from "react"
 
 import styles from "./styles/BookingPage.module.css"
 import { MessageSquareText, NotebookPen, NotepadText } from "lucide-react";
@@ -22,13 +22,14 @@ export default function BookingPage() {
     // const [pageSize, setPageSize] = useState(3); // for future implementation: would be nice with a little select dropdown menu to change how many items we want to show
     // const sortOrder = "asc" // same here, I implemented the posibility to sort on the backend, by default im sorting asc, would be nice to change the order
     const pageSize = 3
+    const [statusFilter, setStatusFilter] = useState("");
 
     // Gloobal states
     const token = useLoginStore((s) => s.token);
 
     // Reading queries
     const { data: patient } = usePatient();
-    const { data: appointmentsInfinite, fetchNextPage, hasNextPage, isFetchingNextPage } = useAppointmentsPaginated(pageSize); 
+    const { data: appointmentsInfinite, fetchNextPage, hasNextPage, isFetchingNextPage } = useAppointmentsPaginated(pageSize, statusFilter || undefined); 
     const { data: appointmentsCalendarWidget } = useAppointments("asc"); // for the calendar widget we always it to be sorted asc, so our upcoming variable works correctly
 
     // Flattens the appointments object returned by useInfiniteQuery
@@ -90,7 +91,9 @@ export default function BookingPage() {
                             appointments={appointments} 
                             nextPage={fetchNextPage} 
                             hasNextPage={hasNextPage} 
-                            loadingNextPage={isFetchingNextPage} 
+                            loadingNextPage={isFetchingNextPage}
+                            statusFilter={statusFilter}
+                            statusSetter={setStatusFilter}
                         />
                        </Suspense>
                    </div>
