@@ -20,6 +20,7 @@
   - [May 30](#may-30)
 - [Week 5](#week-5)
   - [Jun 1](#jun-1)
+  - [Jun 3](#jun-3)
 
 # Week 1
 
@@ -277,3 +278,19 @@ Today I worked on:
 * **Feat:** Found this nice little package called `react-tooltip` as a replacement for the title attribute. I implemented it in the appointments table, so we can now hover and see what note is left on each appointment, nice little user experience touch.
 * **Feat:** Implemented pagination on the appointmentsController on the backend and implemented `useInfiniteQuery` on the frontend with tanstack to limit the amount of appointments the table is populated with. 
 We can now click a `Load more` button to load more appointments.
+
+---
+
+## Jun 3
+
+New update:
+
+**Backend**
+
+* Polishing, polishing and more polishing, at the moment im just going through the application to make sure everything is tidy, well commented and according to the requirements.
+* Previously I was hardcoding the frontend origin for CORS, I moved this out to appsetings.json
+
+**Frontend**
+
+* Implemented tanstacks queryCache and mutationCache on the query client to handle missing env configurations.
+* Removed all sorting  and filtering logic from the appointment table and implemented it on the backend instead
