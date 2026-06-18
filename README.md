@@ -1,7 +1,7 @@
 # Project
 Clinic Booking System is a full-stack web application designed for managing medical/clinic appointments. It allows patients (both guests and registered users) to easily book, view, and manage appointments with doctors across multiple clinics and specialties.
 
-The backend is built with .NET 9 and Entity Framework Core, while the frontend uses React with modern tools for a smooth user experience. The system supports Role-Based Access Control (RBAC), secure JWT authentication, and a clean separation between public (guest) and authenticated operations.
+The backend is built with .NET 9 and Entity Framework Core, while the frontend uses React with modern tools for a smooth user experience. The system supports secure JWT authentication, and a clean separation between public (guest) and authenticated operations.
 
 # Key Features
 ## For Patients
