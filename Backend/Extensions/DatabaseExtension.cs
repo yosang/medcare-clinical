@@ -11,4 +11,23 @@ public static class DatabaseExtension
         service.AddDbContext<DatabaseContext>(options => options.UseMySQL(conStr));
         return service;
     }
+
+    public static IApplicationBuilder ApplyMigrations(this IApplicationBuilder app)
+    {
+        using (var scope = app.ApplicationServices.CreateScope())
+        {
+            var services = scope.ServiceProvider;
+            try
+            {
+                var context = services.GetRequiredService<DatabaseContext>();
+                context.Database.Migrate(); // This fires the EF migrations
+            }
+            catch (Exception ex)
+            {
+                var logger = services.GetRequiredService<ILogger<DatabaseContext>>();
+                logger.LogError(ex, "An error occurred while migrating the database.");
+            }
+        }
+        return app;
+    }
 }

@@ -1,6 +1,6 @@
 using System.Text.Json.Serialization;
 using ErrorHandling;
-using Extensions; 
+using Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,6 +16,7 @@ builder.Services.AddCorsConfig(builder.Configuration)
 
 var app = builder.Build();
 
+app.ApplyMigrations();
 app.UseExceptionHandler();
 app.UseCorsMiddleware();
 app.UseJWTMiddlewares();
