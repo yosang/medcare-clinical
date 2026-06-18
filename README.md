@@ -16,6 +16,17 @@ The backend is built with .NET 9 and Entity Framework Core, while the frontend u
 
 - Full CRUD management for doctors, clinics, specialties, categories, cities and statuses.
 
+# Deployment
+- Backend is deployed on [Azure Web App](https://azure.microsoft.com/en-us/products/app-service/web)
+- Database is deployed on [Railway](https://railway.com/)
+- Frontend is deployed on [Vercel](https://vercel.com/)
+
+Checkout the [Demo](https://medcare-clinical.vercel.app/)
+
+To test the frontend with a registerd user with seed appointments data, feel free to log in with:
+- email: user@dev.com
+- password: p@ssword
+
 # Screenshots
 ## Booking page for guests
 ![guest booking](https://i.imgur.com/Bx6yRp7.png)
@@ -106,22 +117,7 @@ Instructions:
 4. Install the required packages with `npm install`.
 5. Run the application with `npm run dev`.
 
-To test the frontend with a registerd user with seed appointments data, feel free to log in with:
-- email: user@dev.com
-- password: p@ssword
-
 ### ENDPOINTS
-
-#### Overview:
-- **Auth** - Consists of `POST` endpoints to authenticate, register or logout a user as well as refreshing access token.
-- **Appointments** - Consists `CRUD`endpoints. The frontend must provide an access token in the header when perforimg `GET`, `PUT` or `DELETE` (soft delete) operations. The `POST` endpoint does not require a token in the header, since we want to allow guests to create appointments, however the frontend must provide the `PatientId`. 
-    - When creating an appointment as a guest, we first create a guest patient and uses the patient id from the response. 
-    - When creating an appointment as a registered user, the frontend has patient details stored in a memory zustand store, including the patient id.
-- **Patients** - Consists of `CRUD`endpoints. The frontend must provide an access token in the header when perforimg `GET`, `PUT` or `DELETE` operations. Like appointments, the `POST` endpoint does not require authorization, however only a limited set of data is saved in the database when aguest  patient is created. If a returning patient creates an appointment, we will use that existing record instead of creating a new patient. Patients with a full set of sensitive data can only be created through the `/register` endpoint. If during registration a previous patient exists already, we simply update the existing record instead of creating a new one.
-- **Lookup tables** - Entities such as `specialties`, `status`, `clinics`, `cities`, `categories` and `doctors` are considered lookup tables or reference tables. We only need to read data from them that the frontend UI relies on and at the current state of the application they are not used for much else.
-
-#### Backend Authentication
-I implemented Role Based Access Control (RBAC) on the backend for future implementation, and since Patient users shouldn't be able to write to the database, some of the endpoints are to be used by is an `Admin` role only. I created a seed for a Patient with an `Admin` role, in case we would want to test those endpoints. To retrieve a token with `Admin` access, simply login with the user `dev@dev.com` and password `p@ssword`. 
 
 #### Auth
 - POST `api/Auth/login` - Logs in with an existing account.
