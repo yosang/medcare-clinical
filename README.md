@@ -16,7 +16,18 @@ The backend is built with .NET 9 and Entity Framework Core, while the frontend u
 
 - Full CRUD management for doctors, clinics, specialties, categories, cities and statuses.
 
-### Installation, Configuration and Usage
+# Screenshots
+## Booking page for guests
+![guest booking](https://i.imgur.com/Bx6yRp7.png)
+
+## Booking page for registered patients
+![patients booking](https://i.imgur.com/gKa878u.png)
+![appointments](https://i.imgur.com/IomzfR6.png)
+
+## Doctor search
+![doctor search](https://i.imgur.com/5EqipR5.png)
+
+# Installation, Configuration and Usage
 
 #### 1. Setup and Usage
 1. Clone the repo with `git clone`.
