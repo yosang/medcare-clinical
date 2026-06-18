@@ -9,6 +9,9 @@ on:
       - main
   workflow_dispatch:
 
+env:
+  PROJECT_PATH: 'backend'
+
 jobs:
   build:
     runs-on: windows-latest
